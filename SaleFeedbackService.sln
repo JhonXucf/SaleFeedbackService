@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SaleFeedbackService", "Sale
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SalesFeedBackInfrasturcture", "SalesFeedBackInfrasturcture\SalesFeedBackInfrasturcture.csproj", "{3318A154-E1E7-4746-B915-F5378BF17653}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SalesFeedbackSetting", "SalesFeedbackSetting\SalesFeedbackSetting.csproj", "{9C8271D5-E098-4E95-B99E-C7D77669D2B7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppSettingsHelper", "AppSettingsHelper\AppSettingsHelper.csproj", "{003F9F52-43DE-46A6-B07F-CEA2179E2313}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{3318A154-E1E7-4746-B915-F5378BF17653}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3318A154-E1E7-4746-B915-F5378BF17653}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3318A154-E1E7-4746-B915-F5378BF17653}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9C8271D5-E098-4E95-B99E-C7D77669D2B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9C8271D5-E098-4E95-B99E-C7D77669D2B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9C8271D5-E098-4E95-B99E-C7D77669D2B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9C8271D5-E098-4E95-B99E-C7D77669D2B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{003F9F52-43DE-46A6-B07F-CEA2179E2313}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{003F9F52-43DE-46A6-B07F-CEA2179E2313}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{003F9F52-43DE-46A6-B07F-CEA2179E2313}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{003F9F52-43DE-46A6-B07F-CEA2179E2313}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\Loading1.jpg" />
+    <None Remove="Resources\Logo.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\Loading1.jpg" />
+    <Content Include="Resources\Logo.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="SalesFeedBackMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="SalesFeedBackMain.designer.cs">
+      <DependentUpon>SalesFeedBackMain.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="SalesFeedBackMain.resx">
+      <DependentUpon>SalesFeedBackMain.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>
