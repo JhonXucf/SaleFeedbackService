@@ -23,7 +23,7 @@ namespace SaleFeedbackService
         public WorkerTcp(ILogger<WorkerTcp> logger, IConfiguration configuration)
         {
             _logger = logger;
-            configuration = _configuration;
+            _configuration = configuration;
         }
         public override Task StartAsync(CancellationToken cancellationToken)
         {

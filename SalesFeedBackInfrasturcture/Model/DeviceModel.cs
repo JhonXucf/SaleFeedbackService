@@ -18,9 +18,5 @@ namespace SalesFeedBackInfrasturcture.Model
         /// 设备出厂时间
         /// </summary>
         public DateTime ProductedTime { get; set; }
-        /// <summary>
-        /// 保养周期
-        /// </summary>
-        public int MaintainCycle { get; set; }
     }
 }

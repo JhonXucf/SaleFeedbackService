@@ -30,19 +30,6 @@ namespace SaleFeedbackService
         }
         public override Task StartAsync(CancellationToken cancellationToken)
         {
-            //var arraydata = new List<string>();
-            //for (int i = 0; i < 5; i++)
-            //{
-
-            //    arraydata.Add(i.ToString());//str是i转string
-            //}
-
-            //JsonBuilder json = JsonHelper.CreateJsonObjectBuilder();
-            //JsonBuilder array = JsonHelper.CreateJsonArrayBuilder();
-            //array.AddItem(new JsonBuilder().SetProperty("item1", "item1__value"));
-            //array.AddItem(new JsonBuilder().SetProperty("item2", "item2__value"));
-            //json = json.SetProperty("name", "Zack").SetProperty("blog", "cnblogs").SetProperty("obj", (new JsonBuilder().SetProperty("value", 1000))).SetProperty("array", array).SetProperty("ProjectIds", arraydata);
-            //Console.WriteLine(json.ToJson());
             IFileProvider fileProvider = new PhysicalFileProvider(AppDomain.CurrentDomain.BaseDirectory);
             fileProvider.Watch("*.json").RegisterChangeCallback((obj) =>
             {
@@ -54,13 +41,10 @@ namespace SaleFeedbackService
             {
                 _udpSocketOption = new UdpSocketOption
                 {
-                    //Port = int.Parse(udpSection[nameof(UdpSocketOption.Port)]),string 取值用这个方便
                     Port = udpSection.GetValue<Int32>(nameof(UdpSocketOption.Port)),
                     IsEnableUdp = udpSection.GetValue<Boolean>(nameof(UdpSocketOption.IsEnableUdp)),
                     IsLoggerUdp = udpSection.GetValue<Boolean>(nameof(UdpSocketOption.IsLoggerUdp))
                 };
-                //JsonSerilize.JsonHelper.GetT<UdpSocketOption>(AppDomain.CurrentDomain.BaseDirectory + "appsettings1.json");
-                //JsonSerilize.JsonHelper.WriteT(AppDomain.CurrentDomain.BaseDirectory+"appsettings1.json", nameof(UdpSocketOption), _udpSocketOption);
             }
             if (_udpSocketOption != null && _udpSocketOption.IsEnableUdp)
             {
@@ -69,8 +53,7 @@ namespace SaleFeedbackService
                 {
                     _udpClient.HandleRecMsg = (udpSocket, ipEndPoint, recMsg) =>
                     {
-                        _logger.LogInformation($"The website receive the message {recMsg.GetUtf8Str()}");
-                        _udpClient.Send(System.Text.Encoding.UTF8.GetBytes("我也爱你"), ipEndPoint);
+                        _logger.LogInformation($"The UdpServer receive the message {recMsg.GetUtf8Str()}");
                     };
                     _udpClient.HandleException = e =>
                     {
@@ -82,8 +65,7 @@ namespace SaleFeedbackService
                      };
                     _udpClient.HandleSendMsg = (udpSocket, ipEndPoint, sendMsg) =>
                     {
-                        _logger.LogInformation($"The website receive the message : {sendMsg.GetUtf8Str()}");
-                        _udpClient.Send(System.Text.Encoding.UTF8.GetBytes("我也爱你"), ipEndPoint);
+                        _logger.LogInformation($"The UdpServer Send the message : {sendMsg.GetUtf8Str()}");
                     };
                 }
                 _udpClient.Start();

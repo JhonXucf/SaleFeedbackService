@@ -20,16 +20,4 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="Assests\**" />
-    <EmbeddedResource Remove="Assests\**" />
-    <None Remove="Assests\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="LoadPage.designer.cs">
-      <DependentUpon>LoadPage.cs</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
 </Project>

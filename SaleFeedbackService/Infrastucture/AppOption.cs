@@ -10,9 +10,11 @@ namespace SaleFeedbackService.Infrastucture
         public String AppName { get; set; } = "SaleFeedbackWorkerService";
         public String LoggerPath { get; set; } = AppDomain.CurrentDomain.BaseDirectory;
         public Boolean IsEnableJsonSerilize { get; set; } = true;
+        public List<UdpSocketOption> udpSocketOptions { get; set; }
+        public List<int> tests { get; set; }
     }
     [Serializable]
-    internal class UdpSocketOption
+    public class UdpSocketOption
     {
         public Boolean IsEnableUdp { get; set; }
         /// <summary>
@@ -25,7 +27,7 @@ namespace SaleFeedbackService.Infrastucture
         public Boolean IsLoggerUdp { get; set; }
     }
     [Serializable]
-    internal class TcpSocketOption
+    public class TcpSocketOption
     {
         public Boolean IsEnableTcp { get; set; }
         public String IP { get; set; }

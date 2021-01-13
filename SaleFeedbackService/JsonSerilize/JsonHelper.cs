@@ -9,6 +9,28 @@ namespace SaleFeedbackService.JsonSerilize
 {
     public class JsonHelper
     {
+        #region test
+        //    var appOption = new AppOption { IsEnableJsonSerilize = false, AppName = "TestJson", LoggerPath = AppDomain.CurrentDomain.BaseDirectory };
+        //    var udpSocketOption = new UdpSocketOption { IsEnableUdp = true, IsLoggerUdp = false, Port = 4322 };
+        //    var tcpSocketOption = new TcpSocketOption { IP = "192.168.31.188", Port = 7777, IsEnableTcp = true, IsLoggerTcp = true };
+        //    var testoption = new { AppName = appOption, tcpSocketOption = tcpSocketOption, udpSocketOption = udpSocketOption };
+
+        //    JsonBuilder test = JsonHelper.WriteTToJsonBulider(testoption);
+        //    Console.WriteLine(test.ToJson());
+        //        var arraydata = new List<string>();
+        //        for (int i = 0; i< 5; i++)
+        //        {
+
+        //            arraydata.Add(i.ToString());//str是i转string
+        //        }
+
+        //JsonBuilder json = JsonHelper.CreateJsonObjectBuilder();
+        //JsonBuilder array = JsonHelper.CreateJsonArrayBuilder();
+        //array.AddItem(new JsonBuilder().SetProperty("item1", "item1__value"));
+        //        array.AddItem(new JsonBuilder().SetProperty("item2", "item2__value"));
+        //        json = json.SetProperty("name", "Zack").SetProperty("blog", "cnblogs").SetProperty("obj", (new JsonBuilder().SetProperty("value", 1000))).SetProperty("array", array).SetProperty("ProjectIds", arraydata);
+        //Console.WriteLine(json.ToJson());
+        #endregion
         public static JsonBuilder CreateJsonObjectBuilder()
         {
             JsonBuilder builder = new JsonBuilder();
@@ -30,6 +52,14 @@ namespace SaleFeedbackService.JsonSerilize
             if (obj is null) throw new Exception("Json string is null");
             T res = JsonConvert.DeserializeObject<T>(obj);
             return res;
+        }
+        public static void WriteToFile(String path, String json)
+        {
+            File.WriteAllText(path, json);
+        }
+        public static String ReadFromFile(String path)
+        {
+            return File.ReadAllText(path);
         }
         public static T GetT<T>(string path, string key = null)
         {
@@ -54,63 +84,29 @@ namespace SaleFeedbackService.JsonSerilize
             catch { }
             return default;
         }
-        public static void WriteT<T>(string path, string key, T value)
+        public static JsonBuilder WriteTToJsonBulider<T>(T value)
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(key))
+                if (value == null) return default;
+                var jsonBuilder = new JsonBuilder();
+                var type = value.GetType();
+                if (type.IsTypeDefinition)//数组、引用、指针或实例化泛型类型不是
                 {
-                    throw new Exception("key isn't allow null");
+                    jsonBuilder.SetProperty(type.Name, value);
+                    return jsonBuilder;
                 }
-                if (!File.Exists(path))
+                var props = type.GetProperties();
+
+                foreach (var item in props)
                 {
-                    File.Create(path).Close();
+                    jsonBuilder.SetProperty(item.Name, item.GetValue(value));
                 }
-                string json = File.ReadAllText(path);               
-                dynamic jsonObj = JsonConvert.DeserializeObject(json);
-                string sec = jsonObj is null ? null : jsonObj[key];
-                dynamic secObj = sec != null ? JsonConvert.DeserializeObject(sec) : null;
-                var output = string.Empty;
-                if (secObj != null)
-                {
-                    var type = typeof(T);
-                    PropertyInfo[] props = type.GetProperties();
-                    foreach (var item in props)
-                    {
-                        //if (item.PropertyType.IsClass)以后再说递归实现
-                        //{
-                        //    string secItem = secObj[key];
-                        //    dynamic secObjItem = secItem != null ? JsonConvert.DeserializeObject(secItem) : null;
-                        //    if (secObjItem is null) continue;
-                        //}
-                        secObj[item.Name] = JToken.FromObject(item.GetValue(value));
-                    }
-                    jsonObj[key] = secObj;
-                    output = JsonConvert.SerializeObject(jsonObj, Formatting.Indented);
-                }
-                else if (jsonObj != null && secObj == null)
-                {
-                    JObject jobject = JObject.Parse(json);
-                    JObject newStu = new JObject(
-               new JProperty("id", 2),
-               new JProperty("name", "3班"),
-               new JProperty("teacher", new JObject(
-                                 new JProperty("yu", "qwe "),
-                                 new JProperty("sx", "qwe"),
-                                 new JProperty("yy", "qwe")
-               )
-                        )
-               );
-                    jobject["UdpSocketOption"]["Port"].Last.AddAfterSelf(JToken.FromObject(newStu));
-                    output = JsonConvert.SerializeObject(jsonObj, Formatting.Indented);
-                }
-                else
-                {
-                    output = JsonConvert.SerializeObject(value, Formatting.Indented);
-                }
-                File.WriteAllText(path, output);
+
+                return jsonBuilder;
             }
-            catch(Exception ex) { }
+            catch (Exception) { }
+            return default;
         }
     }
     public class JsonBuilder
@@ -148,7 +144,7 @@ namespace SaleFeedbackService.JsonSerilize
         {
             return JsonArray != null;
         }
-        public JsonBuilder SetProperty(string name, object value)
+        public JsonBuilder SetProperty(string key, object value)
         {
             if (IsArray())
                 return jsonBuilder;
@@ -160,46 +156,45 @@ namespace SaleFeedbackService.JsonSerilize
                 else
                     value = JsonValue.JsonObject;
             }
-            //jsonBuilder = (IDictionary<string, object>)jsonBuilder;
-            if (JsonObject.ContainsKey(name))
+            if (JsonObject.ContainsKey(key))
             {
-                JsonObject[name] = value;
+                JsonObject[key] = value;
             }
             else
             {
-                JsonObject.Add(name, value);
+                JsonObject.Add(key, value);
             }
 
             return jsonBuilder;
 
         }
-        public JsonBuilder RemoveProperty(string name)
+        public JsonBuilder RemoveProperty(string key)
         {
             if (IsArray())
                 return jsonBuilder;
-            if (JsonObject.ContainsKey(name))
+            if (JsonObject.ContainsKey(key))
             {
-                JsonObject.Remove(name);
+                JsonObject.Remove(key);
             }
             return jsonBuilder;
         }
-        public JsonBuilder AddItem(JsonBuilder jb)
+        public JsonBuilder AddItem(JsonBuilder jsonBuilder)
         {
             if (!IsArray())
                 return jsonBuilder;
-            if (jb.IsArray())
-                JsonArray.AddRange(jb.JsonArray);
+            if (jsonBuilder.IsArray())
+                JsonArray.AddRange(jsonBuilder.JsonArray);
             else
-                JsonArray.Add(jb.JsonObject);
+                JsonArray.Add(jsonBuilder.JsonObject);
             return jsonBuilder;
         }
-        public JsonBuilder RemoveItem(JsonBuilder jb)
+        public JsonBuilder RemoveItem(JsonBuilder jsonBuilder)
         {
             if (!IsArray())
-                return jsonBuilder;
-            if (jb.IsArray())
+                return this.jsonBuilder;
+            if (jsonBuilder.IsArray())
             {
-                foreach (var deleItem in jb.JsonArray)
+                foreach (var deleItem in jsonBuilder.JsonArray)
                 {
                     if (JsonArray.Contains(deleItem))
                         JsonArray.Remove(deleItem);
@@ -207,10 +202,10 @@ namespace SaleFeedbackService.JsonSerilize
             }
             else
             {
-                if (JsonArray.Contains(jb.JsonObject))
-                    JsonArray.Remove(jb.JsonObject);
+                if (JsonArray.Contains(jsonBuilder.JsonObject))
+                    JsonArray.Remove(jsonBuilder.JsonObject);
             }
-            return jsonBuilder;
+            return this.jsonBuilder;
         }
         public string ToJson()
         {
