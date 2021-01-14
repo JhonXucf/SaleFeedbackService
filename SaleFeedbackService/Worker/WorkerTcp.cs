@@ -6,8 +6,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
-using SaleFeedbackService.NetWorkService;
-using SaleFeedbackService.Infrastucture;
+using AppCommondHelper.NetWorkService;
+using AppCommondHelper.Infrastucture;
+using AppCommondHelper.JsonSerilize;
 
 namespace SaleFeedbackService
 {
@@ -50,7 +51,7 @@ namespace SaleFeedbackService
                     };
                     _tcpServer.HandleException = e =>
                     {
-                        _logger.LogError(e, "The TcpServer has a problem.");
+                        _logger.LogError(e, "The TcpNetworkServer has a problem.");
                     };
                     _tcpServer.HandleNewClientConnected = (server, connection) =>
                     {
@@ -58,17 +59,17 @@ namespace SaleFeedbackService
                     };
                     _tcpServer.HandleRecMsg = (server, connection, recMsg) =>
                     {
-                        _logger.LogInformation($"The TcpServer receive the message from the TcpClient(ConnectionId : " +
+                        _logger.LogInformation($"The TcpNetworkServer receive the message from the TcpClient(ConnectionId : " +
                             $"{connection.ConnectionId} IP: {connection.IP} Message : {recMsg.GetUtf8Str()})");
                     };
                     _tcpServer.HandleSendMsg = (server, connection, sendMsg) =>
                     {
-                        _logger.LogInformation($"The TcpServer send the message to the TcpClient(ConnectionId : " +
+                        _logger.LogInformation($"The TcpNetworkServer send the message to the TcpClient(ConnectionId : " +
                             $"{connection.ConnectionId} IP: {connection.IP} Message : {sendMsg.GetUtf8Str()})");
                     };
                     _tcpServer.HandleServerStarted = sever =>
                     {
-                        _logger.LogInformation($"The TcpServer was started up");
+                        _logger.LogInformation($"The TcpNetworkServer was started up");
                     };
                 }
                 _tcpServer.StartServer();

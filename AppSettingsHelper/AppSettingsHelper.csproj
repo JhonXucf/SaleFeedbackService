@@ -6,17 +6,41 @@
     <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
   <ItemGroup>
+    <None Remove="appsettings.json" />
     <None Remove="Resources\Loading1.jpg" />
     <None Remove="Resources\Logo.jpg" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
     <Content Include="Resources\Loading1.jpg" />
     <Content Include="Resources\Logo.jpg" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AppCommondHelper\AppCommondHelper.csproj" />
+    <ProjectReference Include="..\SalesFeedBackInfrasturcture\SalesFeedBackInfrasturcture.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Resource.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resource.resx</DependentUpon>
+    </Compile>
     <Compile Update="SalesFeedBackMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -26,6 +50,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Update="Resource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Update="SalesFeedBackMain.resx">
       <DependentUpon>SalesFeedBackMain.cs</DependentUpon>
     </EmbeddedResource>

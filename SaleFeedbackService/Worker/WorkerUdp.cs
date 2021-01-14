@@ -5,11 +5,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using SaleFeedbackService.NetWorkService;
+using AppCommondHelper.NetWorkService;
 using Microsoft.Extensions.Configuration;
-using SaleFeedbackService.Infrastucture;
+using AppCommondHelper.Infrastucture;
 using Microsoft.Extensions.FileProviders;
-using SaleFeedbackService.JsonSerilize;
+using AppCommondHelper.JsonSerilize;
 
 namespace SaleFeedbackService
 {
@@ -53,19 +53,19 @@ namespace SaleFeedbackService
                 {
                     _udpClient.HandleRecMsg = (udpSocket, ipEndPoint, recMsg) =>
                     {
-                        _logger.LogInformation($"The UdpServer receive the message {recMsg.GetUtf8Str()}");
+                        _logger.LogInformation($"The UdpNetworkServer receive the message {recMsg.GetUtf8Str()}");
                     };
                     _udpClient.HandleException = e =>
                     {
-                        _logger.LogError(e, $"The UdpServer has a problem");
+                        _logger.LogError(e, $"The UdpNetworkServer has a problem");
                     };
                     _udpClient.HandleStarted = () =>
                      {
-                         _logger.LogInformation($"The UdpServer was started up.");
+                         _logger.LogInformation($"The UdpNetworkServer was started up.");
                      };
                     _udpClient.HandleSendMsg = (udpSocket, ipEndPoint, sendMsg) =>
                     {
-                        _logger.LogInformation($"The UdpServer Send the message : {sendMsg.GetUtf8Str()}");
+                        _logger.LogInformation($"The UdpNetworkServer Send the message : {sendMsg.GetUtf8Str()}");
                     };
                 }
                 _udpClient.Start();

@@ -1,3 +1,4 @@
+using AppCommondHelper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,9 @@ namespace AppSettingsHelper
 {
     static class Program
     {
+        #region 全局静态成员
+
+        #endregion
         /// <summary>
         ///  The main entry point for the application.
         /// </summary>
@@ -17,7 +21,10 @@ namespace AppSettingsHelper
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            //var logPath = SerilogLogger.GetLogPath();
+            //SerilogLogger.InitSerilog(logPath);
+            //SerilogLogger.Logger.Information("This is AppSetting app");
+            Application.Run(new SalesFeedBackMain());
         }
     }
 }
