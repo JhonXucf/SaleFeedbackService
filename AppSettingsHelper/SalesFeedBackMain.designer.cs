@@ -31,38 +31,9 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SalesFeedBackMain));
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tpg_deviceManager = new System.Windows.Forms.TabPage();
             this.contextMenuDevice = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.ToolStripMenuNewDevice = new System.Windows.Forms.ToolStripMenuItem();
-            this.ToolStripMenuImportDevice = new System.Windows.Forms.ToolStripMenuItem();
             this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.tabControl3 = new System.Windows.Forms.TabControl();
-            this.tabPage7 = new System.Windows.Forms.TabPage();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.textBox_dw800SavePath = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.textBox_dw800SaveTime = new System.Windows.Forms.TextBox();
-            this.radioButton_Per800SaveTime = new System.Windows.Forms.RadioButton();
-            this.radioButton_Pin800SaveTime = new System.Windows.Forms.RadioButton();
-            this.dateTimePicker_dw800SaveTime = new System.Windows.Forms.DateTimePicker();
-            this.groupBox_dw800 = new System.Windows.Forms.GroupBox();
-            this.button_dw800Save = new System.Windows.Forms.Button();
-            this.button_dw800cancelAll = new System.Windows.Forms.Button();
-            this.button_dw800selectAll = new System.Windows.Forms.Button();
-            this.tabPage8 = new System.Windows.Forms.TabPage();
-            this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.textBox_dw900SaveTime = new System.Windows.Forms.TextBox();
-            this.radioButton_Per900SaveTime = new System.Windows.Forms.RadioButton();
-            this.radioButton_Pin900SaveTime = new System.Windows.Forms.RadioButton();
-            this.dateTimePicker_dw900SaveTime = new System.Windows.Forms.DateTimePicker();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.textBox_dw900SavePath = new System.Windows.Forms.TextBox();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button_dw900Save = new System.Windows.Forms.Button();
-            this.button_dw900cancelAll = new System.Windows.Forms.Button();
-            this.button_dw900selectAll = new System.Windows.Forms.Button();
-            this.groupBox_dw900 = new System.Windows.Forms.GroupBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
@@ -89,15 +60,6 @@
             this.pb_icon = new System.Windows.Forms.PictureBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.tabControl1.SuspendLayout();
-            this.contextMenuDevice.SuspendLayout();
-            this.tabPage4.SuspendLayout();
-            this.tabControl3.SuspendLayout();
-            this.tabPage7.SuspendLayout();
-            this.groupBox4.SuspendLayout();
-            this.groupBox2.SuspendLayout();
-            this.tabPage8.SuspendLayout();
-            this.groupBox6.SuspendLayout();
-            this.groupBox5.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.tabControl2.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -111,7 +73,7 @@
             // 
             // tabControl1
             // 
-            this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tpg_deviceManager);
             this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Controls.Add(this.tabPage9);
@@ -129,42 +91,26 @@
             this.toolTip1.SetToolTip(this.tabControl1, "Tip:更改后需要手动重启服务");
             this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
-            // tabPage1
+            // tpg_deviceManager
             // 
-            this.tabPage1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(166)))), ((int)(((byte)(171)))));
-            this.tabPage1.ContextMenuStrip = this.contextMenuDevice;
-            this.tabPage1.Location = new System.Drawing.Point(4, 34);
-            this.tabPage1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.tabPage1.Size = new System.Drawing.Size(1485, 638);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "设备管理";
+            this.tpg_deviceManager.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(166)))), ((int)(((byte)(171)))));
+            this.tpg_deviceManager.ContextMenuStrip = this.contextMenuDevice;
+            this.tpg_deviceManager.Location = new System.Drawing.Point(4, 34);
+            this.tpg_deviceManager.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.tpg_deviceManager.Name = "tpg_deviceManager";
+            this.tpg_deviceManager.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.tpg_deviceManager.Size = new System.Drawing.Size(1485, 638);
+            this.tpg_deviceManager.TabIndex = 0;
+            this.tpg_deviceManager.Text = "设备管理";
             // 
             // contextMenuDevice
             // 
-            this.contextMenuDevice.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ToolStripMenuNewDevice,
-            this.ToolStripMenuImportDevice});
             this.contextMenuDevice.Name = "contextMenuDevice";
-            this.contextMenuDevice.Size = new System.Drawing.Size(127, 48);
-            // 
-            // ToolStripMenuNewDevice
-            // 
-            this.ToolStripMenuNewDevice.Name = "ToolStripMenuNewDevice";
-            this.ToolStripMenuNewDevice.Size = new System.Drawing.Size(126, 22);
-            this.ToolStripMenuNewDevice.Text = "新建设备";
-            // 
-            // ToolStripMenuImportDevice
-            // 
-            this.ToolStripMenuImportDevice.Name = "ToolStripMenuImportDevice";
-            this.ToolStripMenuImportDevice.Size = new System.Drawing.Size(126, 22);
-            this.ToolStripMenuImportDevice.Text = "导入设备";
+            this.contextMenuDevice.Size = new System.Drawing.Size(61, 4);
             // 
             // tabPage4
             // 
             this.tabPage4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(166)))), ((int)(((byte)(171)))));
-            this.tabPage4.Controls.Add(this.tabControl3);
             this.tabPage4.Location = new System.Drawing.Point(4, 34);
             this.tabPage4.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.tabPage4.Name = "tabPage4";
@@ -172,370 +118,6 @@
             this.tabPage4.Size = new System.Drawing.Size(1485, 638);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "配置导出报表数据";
-            // 
-            // tabControl3
-            // 
-            this.tabControl3.Controls.Add(this.tabPage7);
-            this.tabControl3.Controls.Add(this.tabPage8);
-            this.tabControl3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl3.Location = new System.Drawing.Point(4, 3);
-            this.tabControl3.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.tabControl3.Name = "tabControl3";
-            this.tabControl3.Padding = new System.Drawing.Point(0, 0);
-            this.tabControl3.SelectedIndex = 0;
-            this.tabControl3.Size = new System.Drawing.Size(1477, 632);
-            this.tabControl3.TabIndex = 0;
-            // 
-            // tabPage7
-            // 
-            this.tabPage7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(166)))), ((int)(((byte)(171)))));
-            this.tabPage7.Controls.Add(this.groupBox4);
-            this.tabPage7.Controls.Add(this.groupBox2);
-            this.tabPage7.Controls.Add(this.groupBox_dw800);
-            this.tabPage7.Controls.Add(this.button_dw800Save);
-            this.tabPage7.Controls.Add(this.button_dw800cancelAll);
-            this.tabPage7.Controls.Add(this.button_dw800selectAll);
-            this.tabPage7.Location = new System.Drawing.Point(4, 27);
-            this.tabPage7.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.tabPage7.Name = "tabPage7";
-            this.tabPage7.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.tabPage7.Size = new System.Drawing.Size(1469, 601);
-            this.tabPage7.TabIndex = 0;
-            this.tabPage7.Text = "Dw800";
-            // 
-            // groupBox4
-            // 
-            this.groupBox4.Controls.Add(this.textBox_dw800SavePath);
-            this.groupBox4.Controls.Add(this.button1);
-            this.groupBox4.ForeColor = System.Drawing.Color.White;
-            this.groupBox4.Location = new System.Drawing.Point(4, 384);
-            this.groupBox4.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.groupBox4.Size = new System.Drawing.Size(770, 76);
-            this.groupBox4.TabIndex = 13;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "选择固定存储路径";
-            // 
-            // textBox_dw800SavePath
-            // 
-            this.textBox_dw800SavePath.BackColor = System.Drawing.Color.White;
-            this.textBox_dw800SavePath.ForeColor = System.Drawing.Color.Black;
-            this.textBox_dw800SavePath.Location = new System.Drawing.Point(7, 32);
-            this.textBox_dw800SavePath.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.textBox_dw800SavePath.Name = "textBox_dw800SavePath";
-            this.textBox_dw800SavePath.Size = new System.Drawing.Size(650, 24);
-            this.textBox_dw800SavePath.TabIndex = 9;
-            this.textBox_dw800SavePath.Text = "C:\\\\VCAM\\\\SalesFeedBackMain\\\\";
-            // 
-            // button1
-            // 
-            this.button1.BackColor = System.Drawing.Color.White;
-            this.button1.FlatAppearance.BorderSize = 0;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.ForeColor = System.Drawing.Color.Black;
-            this.button1.Location = new System.Drawing.Point(665, 31);
-            this.button1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(88, 30);
-            this.button1.TabIndex = 8;
-            this.button1.Text = "选择";
-            this.button1.UseVisualStyleBackColor = false;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.textBox_dw800SaveTime);
-            this.groupBox2.Controls.Add(this.radioButton_Per800SaveTime);
-            this.groupBox2.Controls.Add(this.radioButton_Pin800SaveTime);
-            this.groupBox2.Controls.Add(this.dateTimePicker_dw800SaveTime);
-            this.groupBox2.ForeColor = System.Drawing.Color.White;
-            this.groupBox2.Location = new System.Drawing.Point(4, 468);
-            this.groupBox2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.groupBox2.Size = new System.Drawing.Size(770, 115);
-            this.groupBox2.TabIndex = 12;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "存储时间模式选择";
-            // 
-            // textBox_dw800SaveTime
-            // 
-            this.textBox_dw800SaveTime.Location = new System.Drawing.Point(296, 70);
-            this.textBox_dw800SaveTime.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.textBox_dw800SaveTime.Name = "textBox_dw800SaveTime";
-            this.textBox_dw800SaveTime.Size = new System.Drawing.Size(167, 24);
-            this.textBox_dw800SaveTime.TabIndex = 13;
-            this.toolTip1.SetToolTip(this.textBox_dw800SaveTime, "请输入大于1的整数！");
-            this.textBox_dw800SaveTime.TextChanged += new System.EventHandler(this.textBox_dw800SaveTime_TextChanged);
-            // 
-            // radioButton_Per800SaveTime
-            // 
-            this.radioButton_Per800SaveTime.AutoSize = true;
-            this.radioButton_Per800SaveTime.Location = new System.Drawing.Point(24, 69);
-            this.radioButton_Per800SaveTime.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.radioButton_Per800SaveTime.Name = "radioButton_Per800SaveTime";
-            this.radioButton_Per800SaveTime.Size = new System.Drawing.Size(176, 22);
-            this.radioButton_Per800SaveTime.TabIndex = 12;
-            this.radioButton_Per800SaveTime.Text = "选择存储间隔（分钟）";
-            this.radioButton_Per800SaveTime.UseVisualStyleBackColor = true;
-            // 
-            // radioButton_Pin800SaveTime
-            // 
-            this.radioButton_Pin800SaveTime.AutoSize = true;
-            this.radioButton_Pin800SaveTime.Checked = true;
-            this.radioButton_Pin800SaveTime.Location = new System.Drawing.Point(24, 27);
-            this.radioButton_Pin800SaveTime.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.radioButton_Pin800SaveTime.Name = "radioButton_Pin800SaveTime";
-            this.radioButton_Pin800SaveTime.Size = new System.Drawing.Size(146, 22);
-            this.radioButton_Pin800SaveTime.TabIndex = 0;
-            this.radioButton_Pin800SaveTime.TabStop = true;
-            this.radioButton_Pin800SaveTime.Text = "选择固定存储时间";
-            this.radioButton_Pin800SaveTime.UseVisualStyleBackColor = true;
-            // 
-            // dateTimePicker_dw800SaveTime
-            // 
-            this.dateTimePicker_dw800SaveTime.CalendarTitleBackColor = System.Drawing.SystemColors.ControlText;
-            this.dateTimePicker_dw800SaveTime.CalendarTitleForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(234)))), ((int)(((byte)(25)))), ((int)(((byte)(91)))));
-            this.dateTimePicker_dw800SaveTime.CustomFormat = "HH:mm:ss";
-            this.dateTimePicker_dw800SaveTime.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dateTimePicker_dw800SaveTime.Location = new System.Drawing.Point(296, 25);
-            this.dateTimePicker_dw800SaveTime.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.dateTimePicker_dw800SaveTime.Name = "dateTimePicker_dw800SaveTime";
-            this.dateTimePicker_dw800SaveTime.Size = new System.Drawing.Size(167, 24);
-            this.dateTimePicker_dw800SaveTime.TabIndex = 11;
-            // 
-            // groupBox_dw800
-            // 
-            this.groupBox_dw800.BackColor = System.Drawing.Color.White;
-            this.groupBox_dw800.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBox_dw800.ForeColor = System.Drawing.Color.Black;
-            this.groupBox_dw800.Location = new System.Drawing.Point(4, 3);
-            this.groupBox_dw800.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.groupBox_dw800.Name = "groupBox_dw800";
-            this.groupBox_dw800.Padding = new System.Windows.Forms.Padding(0);
-            this.groupBox_dw800.Size = new System.Drawing.Size(1461, 328);
-            this.groupBox_dw800.TabIndex = 1;
-            this.groupBox_dw800.TabStop = false;
-            this.groupBox_dw800.Text = "请勾选需要导出报表的字段";
-            // 
-            // button_dw800Save
-            // 
-            this.button_dw800Save.BackColor = System.Drawing.Color.White;
-            this.button_dw800Save.FlatAppearance.BorderSize = 0;
-            this.button_dw800Save.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button_dw800Save.ForeColor = System.Drawing.Color.Black;
-            this.button_dw800Save.Location = new System.Drawing.Point(819, 553);
-            this.button_dw800Save.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.button_dw800Save.Name = "button_dw800Save";
-            this.button_dw800Save.Size = new System.Drawing.Size(88, 30);
-            this.button_dw800Save.TabIndex = 5;
-            this.button_dw800Save.Text = "保存";
-            this.button_dw800Save.UseVisualStyleBackColor = false;
-            this.button_dw800Save.Click += new System.EventHandler(this.button_dw800Save_Click);
-            // 
-            // button_dw800cancelAll
-            // 
-            this.button_dw800cancelAll.BackColor = System.Drawing.Color.White;
-            this.button_dw800cancelAll.FlatAppearance.BorderSize = 0;
-            this.button_dw800cancelAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button_dw800cancelAll.ForeColor = System.Drawing.Color.Black;
-            this.button_dw800cancelAll.Location = new System.Drawing.Point(142, 345);
-            this.button_dw800cancelAll.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.button_dw800cancelAll.Name = "button_dw800cancelAll";
-            this.button_dw800cancelAll.Size = new System.Drawing.Size(88, 30);
-            this.button_dw800cancelAll.TabIndex = 4;
-            this.button_dw800cancelAll.Text = "反选";
-            this.button_dw800cancelAll.UseVisualStyleBackColor = false;
-            // 
-            // button_dw800selectAll
-            // 
-            this.button_dw800selectAll.BackColor = System.Drawing.Color.White;
-            this.button_dw800selectAll.FlatAppearance.BorderSize = 0;
-            this.button_dw800selectAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button_dw800selectAll.ForeColor = System.Drawing.Color.Black;
-            this.button_dw800selectAll.Location = new System.Drawing.Point(10, 345);
-            this.button_dw800selectAll.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.button_dw800selectAll.Name = "button_dw800selectAll";
-            this.button_dw800selectAll.Size = new System.Drawing.Size(88, 30);
-            this.button_dw800selectAll.TabIndex = 3;
-            this.button_dw800selectAll.Text = "全选";
-            this.button_dw800selectAll.UseVisualStyleBackColor = false;
-            // 
-            // tabPage8
-            // 
-            this.tabPage8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(166)))), ((int)(((byte)(171)))));
-            this.tabPage8.Controls.Add(this.groupBox6);
-            this.tabPage8.Controls.Add(this.groupBox5);
-            this.tabPage8.Controls.Add(this.button_dw900Save);
-            this.tabPage8.Controls.Add(this.button_dw900cancelAll);
-            this.tabPage8.Controls.Add(this.button_dw900selectAll);
-            this.tabPage8.Controls.Add(this.groupBox_dw900);
-            this.tabPage8.Location = new System.Drawing.Point(4, 27);
-            this.tabPage8.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.tabPage8.Name = "tabPage8";
-            this.tabPage8.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.tabPage8.Size = new System.Drawing.Size(1469, 601);
-            this.tabPage8.TabIndex = 1;
-            this.tabPage8.Text = "ID900";
-            // 
-            // groupBox6
-            // 
-            this.groupBox6.Controls.Add(this.textBox_dw900SaveTime);
-            this.groupBox6.Controls.Add(this.radioButton_Per900SaveTime);
-            this.groupBox6.Controls.Add(this.radioButton_Pin900SaveTime);
-            this.groupBox6.Controls.Add(this.dateTimePicker_dw900SaveTime);
-            this.groupBox6.ForeColor = System.Drawing.Color.White;
-            this.groupBox6.Location = new System.Drawing.Point(10, 471);
-            this.groupBox6.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.groupBox6.Size = new System.Drawing.Size(769, 114);
-            this.groupBox6.TabIndex = 18;
-            this.groupBox6.TabStop = false;
-            this.groupBox6.Text = "存储时间模式选择";
-            // 
-            // textBox_dw900SaveTime
-            // 
-            this.textBox_dw900SaveTime.Location = new System.Drawing.Point(285, 70);
-            this.textBox_dw900SaveTime.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.textBox_dw900SaveTime.Name = "textBox_dw900SaveTime";
-            this.textBox_dw900SaveTime.Size = new System.Drawing.Size(167, 24);
-            this.textBox_dw900SaveTime.TabIndex = 17;
-            this.toolTip1.SetToolTip(this.textBox_dw900SaveTime, "请输入大于1的整数！");
-            this.textBox_dw900SaveTime.TextChanged += new System.EventHandler(this.textBox_dw800SaveTime_TextChanged);
-            // 
-            // radioButton_Per900SaveTime
-            // 
-            this.radioButton_Per900SaveTime.AutoSize = true;
-            this.radioButton_Per900SaveTime.Location = new System.Drawing.Point(7, 73);
-            this.radioButton_Per900SaveTime.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.radioButton_Per900SaveTime.Name = "radioButton_Per900SaveTime";
-            this.radioButton_Per900SaveTime.Size = new System.Drawing.Size(176, 22);
-            this.radioButton_Per900SaveTime.TabIndex = 14;
-            this.radioButton_Per900SaveTime.Text = "选择存储间隔（分钟）";
-            this.radioButton_Per900SaveTime.UseVisualStyleBackColor = true;
-            // 
-            // radioButton_Pin900SaveTime
-            // 
-            this.radioButton_Pin900SaveTime.AutoSize = true;
-            this.radioButton_Pin900SaveTime.Checked = true;
-            this.radioButton_Pin900SaveTime.Location = new System.Drawing.Point(7, 30);
-            this.radioButton_Pin900SaveTime.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.radioButton_Pin900SaveTime.Name = "radioButton_Pin900SaveTime";
-            this.radioButton_Pin900SaveTime.Size = new System.Drawing.Size(146, 22);
-            this.radioButton_Pin900SaveTime.TabIndex = 13;
-            this.radioButton_Pin900SaveTime.TabStop = true;
-            this.radioButton_Pin900SaveTime.Text = "选择固定存储时间";
-            this.radioButton_Pin900SaveTime.UseVisualStyleBackColor = true;
-            // 
-            // dateTimePicker_dw900SaveTime
-            // 
-            this.dateTimePicker_dw900SaveTime.CustomFormat = "HH:mm:ss";
-            this.dateTimePicker_dw900SaveTime.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dateTimePicker_dw900SaveTime.Location = new System.Drawing.Point(285, 30);
-            this.dateTimePicker_dw900SaveTime.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.dateTimePicker_dw900SaveTime.Name = "dateTimePicker_dw900SaveTime";
-            this.dateTimePicker_dw900SaveTime.Size = new System.Drawing.Size(167, 24);
-            this.dateTimePicker_dw900SaveTime.TabIndex = 16;
-            // 
-            // groupBox5
-            // 
-            this.groupBox5.Controls.Add(this.textBox_dw900SavePath);
-            this.groupBox5.Controls.Add(this.button2);
-            this.groupBox5.ForeColor = System.Drawing.Color.White;
-            this.groupBox5.Location = new System.Drawing.Point(10, 388);
-            this.groupBox5.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.groupBox5.Size = new System.Drawing.Size(769, 76);
-            this.groupBox5.TabIndex = 17;
-            this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "选择固定存储路径";
-            // 
-            // textBox_dw900SavePath
-            // 
-            this.textBox_dw900SavePath.ForeColor = System.Drawing.Color.Black;
-            this.textBox_dw900SavePath.Location = new System.Drawing.Point(9, 31);
-            this.textBox_dw900SavePath.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.textBox_dw900SavePath.Name = "textBox_dw900SavePath";
-            this.textBox_dw900SavePath.Size = new System.Drawing.Size(650, 24);
-            this.textBox_dw900SavePath.TabIndex = 14;
-            this.textBox_dw900SavePath.Text = "C:\\\\VCAM\\\\SalesFeedBackMain\\\\";
-            // 
-            // button2
-            // 
-            this.button2.BackColor = System.Drawing.Color.White;
-            this.button2.FlatAppearance.BorderSize = 0;
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.ForeColor = System.Drawing.Color.Black;
-            this.button2.Location = new System.Drawing.Point(667, 29);
-            this.button2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(88, 30);
-            this.button2.TabIndex = 13;
-            this.button2.Text = "选择";
-            this.button2.UseVisualStyleBackColor = false;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // button_dw900Save
-            // 
-            this.button_dw900Save.BackColor = System.Drawing.Color.White;
-            this.button_dw900Save.FlatAppearance.BorderSize = 0;
-            this.button_dw900Save.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button_dw900Save.ForeColor = System.Drawing.Color.Black;
-            this.button_dw900Save.Location = new System.Drawing.Point(798, 553);
-            this.button_dw900Save.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.button_dw900Save.Name = "button_dw900Save";
-            this.button_dw900Save.Size = new System.Drawing.Size(88, 30);
-            this.button_dw900Save.TabIndex = 8;
-            this.button_dw900Save.Text = "保存";
-            this.button_dw900Save.UseVisualStyleBackColor = false;
-            this.button_dw900Save.Click += new System.EventHandler(this.button_dw900Save_Click);
-            // 
-            // button_dw900cancelAll
-            // 
-            this.button_dw900cancelAll.BackColor = System.Drawing.Color.White;
-            this.button_dw900cancelAll.FlatAppearance.BorderSize = 0;
-            this.button_dw900cancelAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button_dw900cancelAll.ForeColor = System.Drawing.Color.Black;
-            this.button_dw900cancelAll.Location = new System.Drawing.Point(142, 347);
-            this.button_dw900cancelAll.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.button_dw900cancelAll.Name = "button_dw900cancelAll";
-            this.button_dw900cancelAll.Size = new System.Drawing.Size(88, 30);
-            this.button_dw900cancelAll.TabIndex = 7;
-            this.button_dw900cancelAll.Text = "反选";
-            this.button_dw900cancelAll.UseVisualStyleBackColor = false;
-            this.button_dw900cancelAll.Click += new System.EventHandler(this.button_dw900cancelAll_Click);
-            // 
-            // button_dw900selectAll
-            // 
-            this.button_dw900selectAll.BackColor = System.Drawing.Color.White;
-            this.button_dw900selectAll.FlatAppearance.BorderSize = 0;
-            this.button_dw900selectAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button_dw900selectAll.ForeColor = System.Drawing.Color.Black;
-            this.button_dw900selectAll.Location = new System.Drawing.Point(10, 347);
-            this.button_dw900selectAll.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.button_dw900selectAll.Name = "button_dw900selectAll";
-            this.button_dw900selectAll.Size = new System.Drawing.Size(88, 30);
-            this.button_dw900selectAll.TabIndex = 6;
-            this.button_dw900selectAll.Text = "全选";
-            this.button_dw900selectAll.UseVisualStyleBackColor = false;
-            this.button_dw900selectAll.Click += new System.EventHandler(this.button_dw900selectAll_Click);
-            // 
-            // groupBox_dw900
-            // 
-            this.groupBox_dw900.BackColor = System.Drawing.Color.White;
-            this.groupBox_dw900.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBox_dw900.ForeColor = System.Drawing.Color.Black;
-            this.groupBox_dw900.Location = new System.Drawing.Point(4, 3);
-            this.groupBox_dw900.Margin = new System.Windows.Forms.Padding(0);
-            this.groupBox_dw900.Name = "groupBox_dw900";
-            this.groupBox_dw900.Padding = new System.Windows.Forms.Padding(0);
-            this.groupBox_dw900.Size = new System.Drawing.Size(1461, 331);
-            this.groupBox_dw900.TabIndex = 2;
-            this.groupBox_dw900.TabStop = false;
-            this.groupBox_dw900.Text = "请勾选需要导出报表的字段";
             // 
             // tabPage3
             // 
@@ -855,19 +437,6 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.tabControl1.ResumeLayout(false);
-            this.contextMenuDevice.ResumeLayout(false);
-            this.tabPage4.ResumeLayout(false);
-            this.tabControl3.ResumeLayout(false);
-            this.tabPage7.ResumeLayout(false);
-            this.groupBox4.ResumeLayout(false);
-            this.groupBox4.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
-            this.tabPage8.ResumeLayout(false);
-            this.groupBox6.ResumeLayout(false);
-            this.groupBox6.PerformLayout();
-            this.groupBox5.ResumeLayout(false);
-            this.groupBox5.PerformLayout();
             this.tabPage3.ResumeLayout(false);
             this.tabControl2.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
@@ -885,26 +454,9 @@
 
         #endregion
         private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage tpg_deviceManager;
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.TabPage tabPage4;
-        private System.Windows.Forms.TabControl tabControl3;
-        private System.Windows.Forms.TabPage tabPage7;
-        private System.Windows.Forms.GroupBox groupBox_dw800;
-        private System.Windows.Forms.TabPage tabPage8;
-        private System.Windows.Forms.GroupBox groupBox_dw900;
-        private System.Windows.Forms.Button button_dw800Save;
-        private System.Windows.Forms.Button button_dw800cancelAll;
-        private System.Windows.Forms.Button button_dw800selectAll;
-        private System.Windows.Forms.Button button_dw900Save;
-        private System.Windows.Forms.Button button_dw900cancelAll;
-        private System.Windows.Forms.Button button_dw900selectAll;
-        private System.Windows.Forms.DateTimePicker dateTimePicker_dw800SaveTime;
-        private System.Windows.Forms.TextBox textBox_dw800SavePath;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.DateTimePicker dateTimePicker_dw900SaveTime;
-        private System.Windows.Forms.TextBox textBox_dw900SavePath;
-        private System.Windows.Forms.Button button2;
         private System.Windows.Forms.ContextMenuStrip contextMenuLog;
         private System.Windows.Forms.ToolStripMenuItem 刷新ToolStripMenuItem;
         private System.Windows.Forms.TabPage tabPage9;
@@ -921,20 +473,8 @@
         private System.Windows.Forms.Button btn_minimize;
         private System.Windows.Forms.ToolStripMenuItem 清空日志ToolStripMenuItem;
         private System.Windows.Forms.Label lbMessage;
-        private System.Windows.Forms.GroupBox groupBox4;
-        private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.TextBox textBox_dw800SaveTime;
-        private System.Windows.Forms.RadioButton radioButton_Per800SaveTime;
-        private System.Windows.Forms.RadioButton radioButton_Pin800SaveTime;
-        private System.Windows.Forms.GroupBox groupBox6;
-        private System.Windows.Forms.TextBox textBox_dw900SaveTime;
-        private System.Windows.Forms.RadioButton radioButton_Per900SaveTime;
-        private System.Windows.Forms.RadioButton radioButton_Pin900SaveTime;
-        private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.ContextMenuStrip contextMenuDevice;
-        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuNewDevice;
-        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuImportDevice;
         private System.Windows.Forms.TabControl tabControl2;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.RichTextBox richTextBox1;

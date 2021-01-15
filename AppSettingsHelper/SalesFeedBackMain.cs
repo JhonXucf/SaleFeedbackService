@@ -7,7 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Threading;
+using SalesFeedBackInfrasturcture.Entities;
 using System.Collections;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
@@ -15,6 +15,7 @@ using Microsoft.Win32;
 using System.Diagnostics;
 using SalesFeedBackInfrasturcture.Infrastructure;
 using AppCommondHelper;
+using AppSettingsHelper.CustomControls;
 
 namespace AppSettingsHelper
 {
@@ -30,41 +31,6 @@ namespace AppSettingsHelper
             this.pnl_title.Controls.Add(_clock);
             InitBorder();
         }
-
-        void InitIconFont()
-        {
-            string[] names = IconFontAwesome.TypeDict.Select(v => v.Key).ToArray();
-            //this.cmbFontAwesomeType.Items.AddRange(names);
-            string[] colorNames = Enum.GetNames(typeof(KnownColor));
-            //this.cmbForeColor.Items.AddRange(colorNames);
-            //this.cmbBackColor.Items.AddRange(colorNames);
-            //this.cmbBorderColor.Items.AddRange(colorNames);
-            //this.cmbFontAwesomeType.SelectedIndex = 0;
-            //if (this.cmbFontAwesomeType.SelectedIndex < 0)
-            //{
-            //    return;
-            //}
-            //FontAwesome.IconSize = (int)this.nudIconSize.Value;
-            //if (this.cmbBackColor.SelectedIndex > -1)
-            //{
-            //    FontAwesome.BackColer = Color.FromName(this.cmbBackColor.Text);
-            //}
-            //if (this.cmbBorderColor.SelectedIndex > -1)
-            //{
-            //    FontAwesome.BorderColer = Color.FromName(this.cmbBorderColor.Text);
-            //}
-            //if (this.cmbForeColor.SelectedIndex > -1)
-            //{
-            //    FontAwesome.ForeColer = Color.FromName(this.cmbForeColor.Text);
-            //}
-            //FontAwesome.BorderVisible = this.cbShowBorder.Checked == true;
-
-            //int val = FontAwesome.TypeDict[this.cmbFontAwesomeType.Text];
-            //Bitmap bmp = FontAwesome.GetImage(val);//f188
-            //this.panel1.BackgroundImage = bmp;
-            //this.Icon = FontAwesome.GetIcon(val);//f188;
-        }
- 
         #region 私有成员
 
         private Clock _clock = null;
@@ -82,7 +48,7 @@ namespace AppSettingsHelper
         string FilePath = System.AppDomain.CurrentDomain.BaseDirectory;
         #endregion
 
-
+        #region 边框鼠标拖动及关闭
         /// <summary>
         /// 初始化窗体边框,（Form1设置无边框，需要自定义边框）
         /// </summary>
@@ -121,18 +87,6 @@ namespace AppSettingsHelper
             UpdateBorder();
         }
 
-        void InitDeviceManagerMenu()
-        {
-            Type deviceType = typeof(DeviceOpreatorStyle);
-            PropertyInfo[] props = deviceType.GetProperties();
-            for (int i = 0; i < props.Length; i++)
-            {
-                PropertyDescriptor des = TypeDescriptor.GetProperties(deviceType)[i];
-                this.contextMenuDevice.Items.Add(des.Description);
-            }
-            this.contextMenuDevice.Items.AddRange(new ToolStripItem[] { new ToolStripMenuItem("sd") });
-        }
-
         /// <summary>
         /// 边框鼠标按压事件
         /// </summary>
@@ -145,8 +99,6 @@ namespace AppSettingsHelper
             this._mousePoint.X = MousePosition.X;
             this._mousePoint.Y = MousePosition.Y;
         }
-
-
 
         /// <summary>
         /// 左边框拖动事件
@@ -171,8 +123,6 @@ namespace AppSettingsHelper
 
         }
 
-
-
         /// <summary>
         /// 右边框边框拖动事件
         /// </summary>
@@ -186,8 +136,6 @@ namespace AppSettingsHelper
             }
 
         }
-
-
 
         /// <summary>
         /// 上边框边框拖动事件
@@ -207,8 +155,6 @@ namespace AppSettingsHelper
 
         }
 
-
-
         /// <summary>
         /// 下边框拖动事件
         /// </summary>
@@ -223,8 +169,6 @@ namespace AppSettingsHelper
 
         }
 
-
-
         /// <summary>
         /// 自定义给窗体添加边框
         /// </summary>
@@ -233,8 +177,6 @@ namespace AppSettingsHelper
             _labels[1].Height = _labels[3].Height = 2;
             _labels[0].Width = _labels[2].Width = 2;
         }
-
-
 
         /// <summary>
         /// 最小化按钮点击事件
@@ -246,8 +188,6 @@ namespace AppSettingsHelper
             WindowState = FormWindowState.Minimized;
         }
 
-
-
         /// <summary>
         /// 关闭按钮点击事件
         /// </summary>
@@ -257,9 +197,19 @@ namespace AppSettingsHelper
         {
             Close();
         }
-
-
-
+        /// <summary>
+        /// 关闭窗口
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            DialogResult dr = MessageBox.Show("确定关闭吗?", "Closing.....", MessageBoxButtons.OKCancel);
+            if (dr == DialogResult.Cancel)
+            {
+                e.Cancel = true;
+            }
+        }
         /// <summary>
         /// 标题块按压事件（记住鼠标的位置）
         /// </summary>
@@ -270,8 +220,6 @@ namespace AppSettingsHelper
             this._mousePoint.X = e.X;
             this._mousePoint.Y = e.Y;
         }
-
-
 
         /// <summary>
         /// 鼠标移动事件（根据鼠标按下的位置和鼠标移动后的位置 移动窗体）
@@ -287,39 +235,132 @@ namespace AppSettingsHelper
                 this.Left = Control.MousePosition.X - _mousePoint.X;
             }
         }
+        #endregion
+
+        #region 初始化
         //Form1加载过程
         private void Form1_Load(object sender, EventArgs e)
         {
             try
             {
                 //设置窗体的启动位置
-                this.StartPosition = FormStartPosition.CenterParent;
-
+                this.StartPosition = FormStartPosition.CenterScreen;
+                //初始化设备菜单管理按钮
+                InitDeviceManagerMenu();
             }
             catch (Exception ex)
             {
             }
         }
-
-
-
-        //启动时，控件状态
-        private void Btn_EnabledStopAndUninstall1()
+        void InitIconFont()
         {
-            btnDw800Stop.Enabled = btnDw800Uninstall.Enabled = false;
+            string[] names = IconFontAwesome.TypeDict.Select(v => v.Key).ToArray();
+            //this.cmbFontAwesomeType.Items.AddRange(names);
+            string[] colorNames = Enum.GetNames(typeof(KnownColor));
+            //this.cmbForeColor.Items.AddRange(colorNames);
+            //this.cmbBackColor.Items.AddRange(colorNames);
+            //this.cmbBorderColor.Items.AddRange(colorNames);
+            //this.cmbFontAwesomeType.SelectedIndex = 0;
+            //if (this.cmbFontAwesomeType.SelectedIndex < 0)
+            //{
+            //    return;
+            //}
+            //FontAwesome.IconSize = (int)this.nudIconSize.Value;
+            //if (this.cmbBackColor.SelectedIndex > -1)
+            //{
+            //    FontAwesome.BackColer = Color.FromName(this.cmbBackColor.Text);
+            //}
+            //if (this.cmbBorderColor.SelectedIndex > -1)
+            //{
+            //    FontAwesome.BorderColer = Color.FromName(this.cmbBorderColor.Text);
+            //}
+            //if (this.cmbForeColor.SelectedIndex > -1)
+            //{
+            //    FontAwesome.ForeColer = Color.FromName(this.cmbForeColor.Text);
+            //}
+            //FontAwesome.BorderVisible = this.cbShowBorder.Checked == true;
+
+            //int val = FontAwesome.TypeDict[this.cmbFontAwesomeType.Text];
+            //Bitmap bmp = FontAwesome.GetImage(val);//f188
+            //this.panel1.BackgroundImage = bmp;
+            //this.Icon = FontAwesome.GetIcon(val);//f188;
+        }
+        void InitDeviceManagerMenu()
+        {
+            this.contextMenuDevice.Items.Clear();
+            var deviceOprs = typeof(DeviceMenuStyle).GetFields();
+            foreach (var fieldInfo in deviceOprs)
+            {
+                if (!fieldInfo.FieldType.IsEnum) continue;
+                var des = (DescriptionAttribute)(fieldInfo.GetCustomAttributes(typeof(DescriptionAttribute), false)[0]);
+                var iconImage = fieldInfo.Name.ToString().Equals("NewDevice") ? "fa-plus-circle".GetBitmap() : "fa-houzz".GetBitmap();
+                var toolStripMenuItem = new ToolStripMenuItem
+                {
+                    Name = "toolStripMenu" + fieldInfo.Name,
+                    Text = des.Description,
+                    Tag = fieldInfo.Name,
+                    Image = iconImage,
+                };
+                toolStripMenuItem.Click += ToolStripMenuItem_Click;
+                this.contextMenuDevice.Items.Add(toolStripMenuItem);
+            }
         }
 
-        //启动后，控件状态
-        private void Btn_EnabledStopAndUninstall2()
+        public enum DeviceMenuStyle
         {
-            btnDw800Stop.Enabled = btnDw800Uninstall.Enabled = true;
+            [Description("新增设备")]
+            NewDevice = 0x01,
+            [Description("导出设备信息到文件")]
+            Export = 0x02,
+        }
+        enum OperatorType
+        {
+            Add = 1,
+            Modify = 2,
+            Delete = 3,
+        }
+        int _StartX = 10, _StartY = 10, _Offset = 10;
+        private void ShowAutoItem(OperatorType operatorType, Device device = null)
+        {
+           var deviceEdit = new DeviceEdit();
+            if (null != device) deviceEdit._Device = device;
+            deviceEdit.StartPosition = FormStartPosition.CenterParent;
+            deviceEdit.ShowDialog();
+            if (deviceEdit.DialogResult == DialogResult.OK && operatorType == OperatorType.Add)
+            {
+                var deviceSingle = new DeviceSingleFrm();
+                if (null != deviceEdit._Device) deviceSingle._Device = deviceEdit._Device;
+                deviceSingle.ModifyEventClicked += deviceSingle_ModifyEventClicked;
+                deviceSingle.DeleteEventClicked += deviceSingle_DeleteEventClicked;
+                deviceSingle.Location = this.tpg_deviceManager.SetControlLocation(_StartX, _StartY, _Offset);
+                this.tpg_deviceManager.Controls.Add(deviceSingle);
+            }
+        }
+        private void deviceSingle_DeleteEventClicked(object sender, EventArgs e)
+        {
+            this.tpg_deviceManager.Controls.Remove((DeviceSingleFrm)sender);
+            if (this.tpg_deviceManager.Controls.Count > 0)
+                this.tpg_deviceManager.UpdateControlLocation(_StartX, _StartY, _Offset);
         }
 
-        //卸载时，控件状态
-        private void Btn_EnabledStartAndStop()
+        private void deviceSingle_ModifyEventClicked(object sender, EventArgs e)
         {
-            btnDw800Start.Enabled = btnDw800Stop.Enabled = false;
+            var itemShow = (DeviceSingleFrm)sender;
+            ShowAutoItem(OperatorType.Modify, itemShow._Device);
         }
+        private void ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var toolMenu = (ToolStripMenuItem)sender;
+            if (toolMenu.Name.Contains("NewDevice"))
+            {
+                ShowAutoItem(OperatorType.Add);
+            }
+            else
+            {
+                MessageBox.Show("导出设备信息到文件");
+            }
+        }
+        #endregion
 
         ///事件：安装服务（使用线程）
         private void btnDwInstall_Click(object sender, EventArgs e)
@@ -359,39 +400,7 @@ namespace AppSettingsHelper
             this.lbMessage.Text = "正在安装服务，请稍后...";
 
         }
-        private void InstallCMD(Process p, string cmd)
-        {
 
-        }
-        /// <summary>
-        /// 关闭窗口
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            DialogResult dr = MessageBox.Show("确定关闭吗?", "Closing.....", MessageBoxButtons.OKCancel);
-            if (dr == DialogResult.Cancel)
-            {
-                e.Cancel = true;
-            }
-        }
-        /// <summary>
-        /// 校验IP地址
-        /// </summary>
-        /// <param name="strIP"></param>
-        /// <returns></returns>
-        /// 方法：判断IP地址
-        public static bool ValidateIPAddress(string strIP)
-        {
-            bool istrue = false;
-            if (null == strIP || "" == strIP.Trim() || Convert.IsDBNull(strIP))
-                return istrue;
-            Regex reg = new Regex(@"^(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])$");
-            //指定的正则表达式，在指定的输入字符串中，是否找到了匹配项
-            istrue = reg.IsMatch(strIP);
-            return istrue;
-        }
         /// <summary>
         /// 切换选项卡
         /// </summary>
@@ -466,121 +475,6 @@ namespace AppSettingsHelper
                 sr.Dispose();
             }
         }
-
-        //事件：dw800 保存
-        private void button_dw800Save_Click(object sender, EventArgs e)
-        {
-            //声明泛型类型
-            List<string> dw800Title = new List<string>();
-            List<string> dw800Value = new List<string>();
-
-            //遍历控件groupBox_dw800  中所有控件
-            foreach (Control item in groupBox_dw800.Controls)
-            {
-                if (item is CheckBox)
-                {
-                    //强转item类型
-                    CheckBox checkBox = (CheckBox)item;
-                    //向  泛型类型  中  添加元素 （名称、单选框选中状态）
-                    dw800Title.Add(checkBox.Name);
-                    dw800Value.Add(checkBox.Checked.ToString());
-                }
-            }
-            //向泛型类型中   添加元素 （保存地址、保存时间）
-            dw800Title.Add("Dw800SavePath");
-            dw800Value.Add(this.textBox_dw800SavePath.Text);
-            dw800Title.Add("Dw800SaveTimeModel");//保存时间模式
-            if (radioButton_Pin800SaveTime.Checked)
-            {
-                dw800Value.Add("Time");
-                dw800Title.Add("Dw800SaveTime");
-                dw800Value.Add(this.dateTimePicker_dw800SaveTime.Text);
-            }
-            else
-            {
-                dw800Value.Add("Minutes");
-                dw800Title.Add("Dw800SaveTime");
-                dw800Value.Add(int.Parse(this.textBox_dw800SaveTime.Text).ToString());
-            }
-            string section = "Dw800Export";
-            string path = FilePath + @"SalesFeedBackMainNet\DW800Set\Dw800ExportSet.ini";
-            for (int i = 0; i < dw800Title.Count; i++)
-            {
-
-            }
-            MessageBox.Show("保存成功！");
-        }
-
-        //事件：dw900 全选
-        private void button_dw900selectAll_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        //事件：dw900 反选
-        private void button_dw900cancelAll_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        //事件：dw900 保存
-        private void button_dw900Save_Click(object sender, EventArgs e)
-        {
-            List<string> dw800Title = new List<string>();
-            List<string> dw800Value = new List<string>();
-            foreach (Control item in groupBox_dw900.Controls)
-            {
-
-                if (item is CheckBox)
-                {
-                    CheckBox checkBox = (CheckBox)item;
-                    dw800Title.Add(checkBox.Name);
-                    dw800Value.Add(checkBox.Checked.ToString());
-                }
-            }
-            dw800Title.Add("ID900SavePath");
-            dw800Value.Add(this.textBox_dw900SavePath.Text);
-            dw800Title.Add("ID900SaveTimeModel");//保存时间模式
-            if (radioButton_Pin900SaveTime.Checked)
-            {
-                dw800Value.Add("Time");
-                dw800Title.Add("ID900SaveTime");
-                dw800Value.Add(this.dateTimePicker_dw900SaveTime.Text);
-            }
-            else
-            {
-                dw800Value.Add("Minutes");
-                dw800Title.Add("ID900SaveTime");
-                dw800Value.Add(int.Parse(this.textBox_dw900SaveTime.Text).ToString());
-            }
-            string section = "ID900Export";
-            string path = FilePath + @"SalesFeedBackMainNet\ID900Set\ID900ExportSet.ini";
-            for (int i = 0; i < dw800Title.Count; i++)
-            {
-
-            }
-            MessageBox.Show("保存成功！");
-        }
-
-        //事件：dw800 选择文件保存路径
-        private void button1_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                FolderBrowserDialog openFileDialog = new FolderBrowserDialog();
-
-                openFileDialog.Description = "请选择文件路径";
-                if (openFileDialog.ShowDialog() == DialogResult.OK)
-                {
-                    this.textBox_dw800SavePath.Text = openFileDialog.SelectedPath;
-                }
-            }
-            catch (Exception ex)
-            {
-            }
-        }
-
-        //事件：dw900 选择文件保存路径
         private void button2_Click(object sender, EventArgs e)
         {
             try
@@ -590,7 +484,7 @@ namespace AppSettingsHelper
                 openFileDialog.Description = "请选择文件路径";
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    this.textBox_dw900SavePath.Text = openFileDialog.SelectedPath;
+
                 }
             }
             catch (Exception ex)
@@ -605,8 +499,6 @@ namespace AppSettingsHelper
                 Read();
             });
         }
-
-
         private void 清空日志ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string path = FilePath + "LOGFile.txt";
@@ -630,30 +522,6 @@ namespace AppSettingsHelper
                     fs = new FileStream(path, FileMode.Create, FileAccess.Write);
                 }
                 fs.Close();
-            }
-        }
-
-        private void textBox_dw800SaveTime_TextChanged(object sender, EventArgs e)
-        {
-            try
-            {
-
-                TextBox t = (TextBox)sender;
-                if (string.IsNullOrEmpty(t.Text))
-                {
-                    return;
-                }
-                int result = 0;
-                if (!int.TryParse(t.Text, out result))
-                {
-                    t.Text = "";
-                    MessageBox.Show("请输入整数！");
-                }
-            }
-            catch (Exception)
-            {
-
-                throw;
             }
         }
     }

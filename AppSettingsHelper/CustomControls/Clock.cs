@@ -1,4 +1,4 @@
-﻿namespace AppSettingsHelper
+﻿namespace AppSettingsHelper.CustomControls
 {
     using System;
     using System.ComponentModel;
