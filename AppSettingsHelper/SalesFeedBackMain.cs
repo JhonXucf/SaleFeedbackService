@@ -46,6 +46,7 @@ namespace AppSettingsHelper
         /// 获取本地bin路径
         /// </summary>
         string FilePath = System.AppDomain.CurrentDomain.BaseDirectory;
+        DeviceSingleFrm deviceSingleFrm;
         #endregion
 
         #region 边框鼠标拖动及关闭
@@ -252,39 +253,6 @@ namespace AppSettingsHelper
             {
             }
         }
-        void InitIconFont()
-        {
-            string[] names = IconFontAwesome.TypeDict.Select(v => v.Key).ToArray();
-            //this.cmbFontAwesomeType.Items.AddRange(names);
-            string[] colorNames = Enum.GetNames(typeof(KnownColor));
-            //this.cmbForeColor.Items.AddRange(colorNames);
-            //this.cmbBackColor.Items.AddRange(colorNames);
-            //this.cmbBorderColor.Items.AddRange(colorNames);
-            //this.cmbFontAwesomeType.SelectedIndex = 0;
-            //if (this.cmbFontAwesomeType.SelectedIndex < 0)
-            //{
-            //    return;
-            //}
-            //FontAwesome.IconSize = (int)this.nudIconSize.Value;
-            //if (this.cmbBackColor.SelectedIndex > -1)
-            //{
-            //    FontAwesome.BackColer = Color.FromName(this.cmbBackColor.Text);
-            //}
-            //if (this.cmbBorderColor.SelectedIndex > -1)
-            //{
-            //    FontAwesome.BorderColer = Color.FromName(this.cmbBorderColor.Text);
-            //}
-            //if (this.cmbForeColor.SelectedIndex > -1)
-            //{
-            //    FontAwesome.ForeColer = Color.FromName(this.cmbForeColor.Text);
-            //}
-            //FontAwesome.BorderVisible = this.cbShowBorder.Checked == true;
-
-            //int val = FontAwesome.TypeDict[this.cmbFontAwesomeType.Text];
-            //Bitmap bmp = FontAwesome.GetImage(val);//f188
-            //this.panel1.BackgroundImage = bmp;
-            //this.Icon = FontAwesome.GetIcon(val);//f188;
-        }
         void InitDeviceManagerMenu()
         {
             this.contextMenuDevice.Items.Clear();
@@ -313,7 +281,7 @@ namespace AppSettingsHelper
             [Description("导出设备信息到文件")]
             Export = 0x02,
         }
-        enum OperatorType
+        public enum OperatorType
         {
             Add = 1,
             Modify = 2,
@@ -322,7 +290,7 @@ namespace AppSettingsHelper
         int _StartX = 10, _StartY = 10, _Offset = 10;
         private void ShowAutoItem(OperatorType operatorType, Device device = null)
         {
-           var deviceEdit = new DeviceEdit();
+            var deviceEdit = new DeviceEdit(operatorType);
             if (null != device) deviceEdit._Device = device;
             deviceEdit.StartPosition = FormStartPosition.CenterParent;
             deviceEdit.ShowDialog();
@@ -332,21 +300,29 @@ namespace AppSettingsHelper
                 if (null != deviceEdit._Device) deviceSingle._Device = deviceEdit._Device;
                 deviceSingle.ModifyEventClicked += deviceSingle_ModifyEventClicked;
                 deviceSingle.DeleteEventClicked += deviceSingle_DeleteEventClicked;
-                deviceSingle.Location = this.tpg_deviceManager.SetControlLocation(_StartX, _StartY, _Offset);
                 this.tpg_deviceManager.Controls.Add(deviceSingle);
+                if (this.tpg_deviceManager.Controls.Count > 0)
+                    this.tpg_deviceManager.UpdateControlLocation(_StartX, _StartY, _Offset);
+            }
+            else if (deviceEdit.DialogResult == DialogResult.OK && operatorType == OperatorType.Modify)
+            {
+                deviceSingleFrm._Device = deviceEdit._Device;
             }
         }
         private void deviceSingle_DeleteEventClicked(object sender, EventArgs e)
         {
-            this.tpg_deviceManager.Controls.Remove((DeviceSingleFrm)sender);
-            if (this.tpg_deviceManager.Controls.Count > 0)
-                this.tpg_deviceManager.UpdateControlLocation(_StartX, _StartY, _Offset);
+            if (MessageBox.Show("确定删除" + ((DeviceSingleFrm)sender)._Device.DeviceName + "设备吗?", "提示", MessageBoxButtons.OKCancel) == DialogResult.OK)
+            {
+                this.tpg_deviceManager.Controls.Remove((DeviceSingleFrm)sender);
+                if (this.tpg_deviceManager.Controls.Count > 0)
+                    this.tpg_deviceManager.UpdateControlLocation(_StartX, _StartY, _Offset);
+            }
         }
 
         private void deviceSingle_ModifyEventClicked(object sender, EventArgs e)
         {
-            var itemShow = (DeviceSingleFrm)sender;
-            ShowAutoItem(OperatorType.Modify, itemShow._Device);
+            deviceSingleFrm = (DeviceSingleFrm)sender;
+            ShowAutoItem(OperatorType.Modify, deviceSingleFrm._Device);
         }
         private void ToolStripMenuItem_Click(object sender, EventArgs e)
         {

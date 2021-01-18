@@ -32,14 +32,14 @@ namespace AppSettingsHelper.CustomControls
             this.label1 = new System.Windows.Forms.Label();
             this.lbl_title = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label6 = new System.Windows.Forms.Label();
+            this.lbl_deviceDescription = new System.Windows.Forms.Label();
+            this.lbl_devicePartNum = new System.Windows.Forms.Label();
+            this.lbl_deviceName = new System.Windows.Forms.Label();
+            this.lbl_deviceId = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -63,10 +63,10 @@ namespace AppSettingsHelper.CustomControls
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.label9);
-            this.groupBox1.Controls.Add(this.label8);
-            this.groupBox1.Controls.Add(this.label7);
-            this.groupBox1.Controls.Add(this.label6);
+            this.groupBox1.Controls.Add(this.lbl_deviceDescription);
+            this.groupBox1.Controls.Add(this.lbl_devicePartNum);
+            this.groupBox1.Controls.Add(this.lbl_deviceName);
+            this.groupBox1.Controls.Add(this.lbl_deviceId);
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.label3);
@@ -77,14 +77,40 @@ namespace AppSettingsHelper.CustomControls
             this.groupBox1.TabIndex = 7;
             this.groupBox1.TabStop = false;
             // 
-            // label6
+            // lbl_deviceDescription
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(93, 19);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(114, 15);
-            this.label6.TabIndex = 4;
-            this.label6.Text = "babc220e-4d78-4f9a";
+            this.lbl_deviceDescription.Location = new System.Drawing.Point(93, 106);
+            this.lbl_deviceDescription.Name = "lbl_deviceDescription";
+            this.lbl_deviceDescription.Size = new System.Drawing.Size(125, 47);
+            this.lbl_deviceDescription.TabIndex = 7;
+            this.lbl_deviceDescription.Text = "24-365监控回流炉的状态";
+            // 
+            // lbl_devicePartNum
+            // 
+            this.lbl_devicePartNum.AutoSize = true;
+            this.lbl_devicePartNum.Location = new System.Drawing.Point(93, 77);
+            this.lbl_devicePartNum.Name = "lbl_devicePartNum";
+            this.lbl_devicePartNum.Size = new System.Drawing.Size(20, 15);
+            this.lbl_devicePartNum.TabIndex = 6;
+            this.lbl_devicePartNum.Text = "无";
+            // 
+            // lbl_deviceName
+            // 
+            this.lbl_deviceName.AutoSize = true;
+            this.lbl_deviceName.Location = new System.Drawing.Point(93, 48);
+            this.lbl_deviceName.Name = "lbl_deviceName";
+            this.lbl_deviceName.Size = new System.Drawing.Size(61, 15);
+            this.lbl_deviceName.TabIndex = 5;
+            this.lbl_deviceName.Text = "PIS 24-365";
+            // 
+            // lbl_deviceId
+            // 
+            this.lbl_deviceId.AutoSize = true;
+            this.lbl_deviceId.Location = new System.Drawing.Point(93, 19);
+            this.lbl_deviceId.Name = "lbl_deviceId";
+            this.lbl_deviceId.Size = new System.Drawing.Size(114, 15);
+            this.lbl_deviceId.TabIndex = 4;
+            this.lbl_deviceId.Text = "babc220e-4d78-4f9a";
             // 
             // label5
             // 
@@ -122,32 +148,6 @@ namespace AppSettingsHelper.CustomControls
             this.label2.TabIndex = 0;
             this.label2.Text = "设备ID";
             // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(93, 48);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(61, 15);
-            this.label7.TabIndex = 5;
-            this.label7.Text = "PIS 24-365";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(93, 77);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(20, 15);
-            this.label8.TabIndex = 6;
-            this.label8.Text = "无";
-            // 
-            // label9
-            // 
-            this.label9.Location = new System.Drawing.Point(93, 106);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(125, 47);
-            this.label9.TabIndex = 7;
-            this.label9.Text = "24-365监控回流炉的状态";
-            // 
             // DeviceSingleFrm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -173,9 +173,9 @@ namespace AppSettingsHelper.CustomControls
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label lbl_deviceId;
+        private System.Windows.Forms.Label lbl_deviceDescription;
+        private System.Windows.Forms.Label lbl_devicePartNum;
+        private System.Windows.Forms.Label lbl_deviceName;
     }
 }

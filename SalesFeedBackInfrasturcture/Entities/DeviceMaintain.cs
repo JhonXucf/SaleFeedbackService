@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Drawing;
 using SalesFeedBackInfrasturcture.Shared;
 
 namespace SalesFeedBackInfrasturcture.Entities
@@ -22,5 +23,10 @@ namespace SalesFeedBackInfrasturcture.Entities
         /// 保养内容
         /// </summary>
         public String MaintainBody { get; set; } = String.Empty;
+        [Description("保养照片")]
+        /// <summary>
+        /// 保养照片
+        /// </summary>
+        public String MaintainImagePath { get; set; } = String.Empty;
     }
 }

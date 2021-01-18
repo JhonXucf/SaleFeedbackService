@@ -11,7 +11,7 @@ namespace SalesFeedBackInfrasturcture.Entities
     [Serializable]
     public class DevicePart : BaseEntity
     {
-        [Description("部件名称")]
+        [Description("部件名称-品名")]
         /// <summary>
         /// 部件名称-品名
         /// </summary>
@@ -55,16 +55,16 @@ namespace SalesFeedBackInfrasturcture.Entities
         /// <summary>
         /// 保养周期
         /// </summary>
-        public IEnumerable<KeyValuePair<DeviceMaintainStyle, Int32>> MaintainCycles { get; set; } = new Dictionary<DeviceMaintainStyle, Int32>();
+        public Dictionary<DeviceMaintainStyle, Int32> MaintainCycles { get; set; } = new Dictionary<DeviceMaintainStyle, Int32>();
         [Description("保养明细")]
         /// <summary>
         /// 保养明细
         /// </summary>
-        public IEnumerable<KeyValuePair<Int32, DeviceMaintain>> MaintainDetails { get; set; } = new Dictionary<Int32, DeviceMaintain>();
+        public Dictionary<Int32, DeviceMaintain> MaintainDetails { get; set; } = new Dictionary<Int32, DeviceMaintain>();
         [Description("维修明细")]
         /// <summary>
         /// 维修明细
         /// </summary>
-        public IEnumerable<KeyValuePair<Int32, DeviceRepair>> RepairDetails { get; set; } = new Dictionary<Int32, DeviceRepair>();
+        public Dictionary<Int32, DeviceRepair> RepairDetails { get; set; } = new Dictionary<Int32, DeviceRepair>();
     }
 }

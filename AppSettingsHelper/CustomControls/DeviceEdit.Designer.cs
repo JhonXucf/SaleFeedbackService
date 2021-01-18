@@ -29,13 +29,13 @@ namespace AppSettingsHelper.CustomControls
         /// </summary>
         private void InitializeComponent()
         {
-            this.btn_Save = new System.Windows.Forms.Button();
-            this.btn_Cancle = new System.Windows.Forms.Button();
+            this.components = new System.ComponentModel.Container();
             this.lbl_deviceId = new System.Windows.Forms.Label();
             this.tbx_deviceId = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.lbl_title = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.lbl_error = new System.Windows.Forms.Label();
             this.tbx_description = new System.Windows.Forms.TextBox();
             this.dtp_ScrapTime = new System.Windows.Forms.DateTimePicker();
             this.dtp_productTime = new System.Windows.Forms.DateTimePicker();
@@ -46,28 +46,12 @@ namespace AppSettingsHelper.CustomControls
             this.lbl_deviceType = new System.Windows.Forms.Label();
             this.tbx_deviceName = new System.Windows.Forms.TextBox();
             this.lbl_deviceName = new System.Windows.Forms.Label();
+            this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.btn_Save = new AppSettingsHelper.UCBtnExt();
+            this.btn_Cancle = new AppSettingsHelper.UCBtnExt();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
-            // 
-            // btn_Save
-            // 
-            this.btn_Save.Location = new System.Drawing.Point(46, 406);
-            this.btn_Save.Name = "btn_Save";
-            this.btn_Save.Size = new System.Drawing.Size(75, 27);
-            this.btn_Save.TabIndex = 0;
-            this.btn_Save.Text = "保   存";
-            this.btn_Save.UseVisualStyleBackColor = true;
-            this.btn_Save.Click += new System.EventHandler(this.btn_Save_Click);
-            // 
-            // btn_Cancle
-            // 
-            this.btn_Cancle.Location = new System.Drawing.Point(167, 406);
-            this.btn_Cancle.Name = "btn_Cancle";
-            this.btn_Cancle.Size = new System.Drawing.Size(75, 27);
-            this.btn_Cancle.TabIndex = 1;
-            this.btn_Cancle.Text = "取   消";
-            this.btn_Cancle.UseVisualStyleBackColor = true;
-            this.btn_Cancle.Click += new System.EventHandler(this.btn_Cancle_Click);
             // 
             // lbl_deviceId
             // 
@@ -102,9 +86,12 @@ namespace AppSettingsHelper.CustomControls
             this.lbl_title.Size = new System.Drawing.Size(84, 25);
             this.lbl_title.TabIndex = 5;
             this.lbl_title.Text = "设备新增";
+            this.lbl_title.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Control_MouseDown);
+            this.lbl_title.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Control_MouseMove);
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.lbl_error);
             this.groupBox1.Controls.Add(this.tbx_description);
             this.groupBox1.Controls.Add(this.dtp_ScrapTime);
             this.groupBox1.Controls.Add(this.dtp_productTime);
@@ -122,6 +109,16 @@ namespace AppSettingsHelper.CustomControls
             this.groupBox1.Size = new System.Drawing.Size(271, 346);
             this.groupBox1.TabIndex = 6;
             this.groupBox1.TabStop = false;
+            // 
+            // lbl_error
+            // 
+            this.lbl_error.AutoSize = true;
+            this.lbl_error.ForeColor = System.Drawing.Color.Red;
+            this.lbl_error.Location = new System.Drawing.Point(57, 28);
+            this.lbl_error.Name = "lbl_error";
+            this.lbl_error.Size = new System.Drawing.Size(12, 15);
+            this.lbl_error.TabIndex = 14;
+            this.lbl_error.Text = "*";
             // 
             // tbx_description
             // 
@@ -178,6 +175,7 @@ namespace AppSettingsHelper.CustomControls
             // 
             // cbx_deviceType
             // 
+            this.cbx_deviceType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbx_deviceType.FormattingEnabled = true;
             this.cbx_deviceType.Location = new System.Drawing.Point(84, 104);
             this.cbx_deviceType.Name = "cbx_deviceType";
@@ -209,30 +207,89 @@ namespace AppSettingsHelper.CustomControls
             this.lbl_deviceName.TabIndex = 4;
             this.lbl_deviceName.Text = "设备名称";
             // 
+            // errorProvider1
+            // 
+            this.errorProvider1.ContainerControl = this;
+            // 
+            // btn_Save
+            // 
+            this.btn_Save.BackColor = System.Drawing.Color.White;
+            this.btn_Save.BtnBackColor = System.Drawing.Color.White;
+            this.btn_Save.BtnFont = new System.Drawing.Font("Microsoft YaHei", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btn_Save.BtnForeColor = System.Drawing.Color.Black;
+            this.btn_Save.BtnText = "保  存";
+            this.btn_Save.ConerRadius = 5;
+            this.btn_Save.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btn_Save.EnabledMouseEffect = false;
+            this.btn_Save.FillColor = System.Drawing.Color.Silver;
+            this.btn_Save.Font = new System.Drawing.Font("Microsoft YaHei", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.btn_Save.IsRadius = true;
+            this.btn_Save.IsShowRect = false;
+            this.btn_Save.IsShowTips = false;
+            this.btn_Save.Location = new System.Drawing.Point(48, 408);
+            this.btn_Save.Margin = new System.Windows.Forms.Padding(0);
+            this.btn_Save.Name = "btn_Save";
+            this.btn_Save.RectColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(77)))), ((int)(((byte)(58)))));
+            this.btn_Save.RectWidth = 1;
+            this.btn_Save.Size = new System.Drawing.Size(73, 25);
+            this.btn_Save.TabIndex = 51;
+            this.btn_Save.TabStop = false;
+            this.btn_Save.TipsColor = System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(30)))), ((int)(((byte)(99)))));
+            this.btn_Save.TipsText = "";
+            this.btn_Save.BtnClick += new System.EventHandler(this.btn_Save_Click);
+            // 
+            // btn_Cancle
+            // 
+            this.btn_Cancle.BackColor = System.Drawing.Color.White;
+            this.btn_Cancle.BtnBackColor = System.Drawing.Color.White;
+            this.btn_Cancle.BtnFont = new System.Drawing.Font("Microsoft YaHei", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btn_Cancle.BtnForeColor = System.Drawing.Color.Black;
+            this.btn_Cancle.BtnText = "取消";
+            this.btn_Cancle.ConerRadius = 5;
+            this.btn_Cancle.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btn_Cancle.EnabledMouseEffect = false;
+            this.btn_Cancle.FillColor = System.Drawing.Color.Silver;
+            this.btn_Cancle.Font = new System.Drawing.Font("Microsoft YaHei", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.btn_Cancle.IsRadius = true;
+            this.btn_Cancle.IsShowRect = false;
+            this.btn_Cancle.IsShowTips = false;
+            this.btn_Cancle.Location = new System.Drawing.Point(169, 408);
+            this.btn_Cancle.Margin = new System.Windows.Forms.Padding(0);
+            this.btn_Cancle.Name = "btn_Cancle";
+            this.btn_Cancle.RectColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(77)))), ((int)(((byte)(58)))));
+            this.btn_Cancle.RectWidth = 1;
+            this.btn_Cancle.Size = new System.Drawing.Size(73, 25);
+            this.btn_Cancle.TabIndex = 52;
+            this.btn_Cancle.TabStop = false;
+            this.btn_Cancle.TipsColor = System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(30)))), ((int)(((byte)(99)))));
+            this.btn_Cancle.TipsText = "";
+            this.btn_Cancle.BtnClick += new System.EventHandler(this.btn_Cancle_Click);
+            // 
             // DeviceEdit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(296, 450);
+            this.Controls.Add(this.btn_Cancle);
+            this.Controls.Add(this.btn_Save);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.lbl_title);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.btn_Cancle);
-            this.Controls.Add(this.btn_Save);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "DeviceEdit";
             this.Text = "DeviceEdit";
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Control_MouseDown);
+            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Control_MouseMove);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.Button btn_Save;
-        private System.Windows.Forms.Button btn_Cancle;
         private System.Windows.Forms.Label lbl_deviceId;
         private System.Windows.Forms.TextBox tbx_deviceId;
         private System.Windows.Forms.Label label2;
@@ -245,10 +302,12 @@ namespace AppSettingsHelper.CustomControls
         private System.Windows.Forms.TextBox tbx_description;
         private System.Windows.Forms.DateTimePicker dtp_ScrapTime;
         private System.Windows.Forms.DateTimePicker dtp_productTime;
-        private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label lbl_ScrapTime;
         private System.Windows.Forms.Label lbl_productTime;
-        private System.Windows.Forms.Label lbl_;
         private System.Windows.Forms.Label lbl_description;
+        private System.Windows.Forms.Label lbl_error;
+        private System.Windows.Forms.ErrorProvider errorProvider1;
+        private UCBtnExt btn_Save;
+        private UCBtnExt btn_Cancle;
     }
 }
