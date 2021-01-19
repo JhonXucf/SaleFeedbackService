@@ -15,6 +15,20 @@ namespace AppSettingsHelper.CustomControls
 {
     public static class ControlHelper
     {
+        public static String GetEnumDescription<T>(this Enum deviceStyle)
+        {
+            var deviceOprs = typeof(T).GetFields();
+            foreach (var fieldInfo in deviceOprs)
+            {
+                if (!fieldInfo.FieldType.IsEnum) continue;
+                if (fieldInfo.Name.Equals(deviceStyle.ToString()))
+                {
+                    var des = (DescriptionAttribute)(fieldInfo.GetCustomAttributes(typeof(DescriptionAttribute), false)[0]);
+                    return des.Description;
+                }
+            }
+            return null;
+        }
         /// <summary>
         /// 获取当前控件的空余位置并返回
         /// </summary>

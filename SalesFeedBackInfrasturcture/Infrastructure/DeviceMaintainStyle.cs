@@ -11,14 +11,12 @@ namespace SalesFeedBackInfrasturcture.Infrastructure
         Hour = 0x02,
         [Description("天"), SortOrder(2)]
         Day = 0x04,
-        [Description("周"), SortOrder(3)]
-        Week = 0x08,
-        [Description("月"), SortOrder(4)]
-        Month = 0x16,
-        [Description("季度"), SortOrder(5)]
-        Quarter = 0x32,
-        [Description("年"), SortOrder(6)]
-        Year = 0x64,
+        [Description("月"), SortOrder(3)]
+        Month = 0x8,
+        [Description("季度"), SortOrder(4)]
+        Quarter = 0x16,
+        [Description("年"), SortOrder(5)]
+        Year = 0x32,
     }
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = false)]
     public class SortOrderAttribute : Attribute

@@ -350,7 +350,7 @@
             // 
             // btn_close
             // 
-            this.btn_close.BackColor = System.Drawing.Color.Red;
+            this.btn_close.BackColor = System.Drawing.Color.Brown;
             this.btn_close.FlatAppearance.BorderSize = 0;
             this.btn_close.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_close.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);

@@ -57,7 +57,7 @@ namespace AppSettingsHelper.CustomControls
         {
             this.tbx_deviceId.Text = device.ID;
             this.tbx_deviceName.Text = device.DeviceName;
-            this.cbx_deviceType.Text = GetEnumDescription(device.DeviceStyle);
+            this.cbx_deviceType.Text = device.DeviceStyle.GetEnumDescription<DeviceStyle>();
             this.dtp_productTime.Value = device.ProductedTime;
             this.dtp_ScrapTime.Value = device.ProductScrapTime;
             this.tbx_description.Text = device.DeviceDescription;
@@ -100,20 +100,6 @@ namespace AppSettingsHelper.CustomControls
                 default:
                     break;
             }
-        }
-        public String GetEnumDescription(DeviceStyle deviceStyle)
-        {
-            var deviceOprs = typeof(DeviceStyle).GetFields();
-            foreach (var fieldInfo in deviceOprs)
-            {
-                if (!fieldInfo.FieldType.IsEnum) continue;
-                if (fieldInfo.Name.Equals(deviceStyle.ToString()))
-                {
-                    var des = (DescriptionAttribute)(fieldInfo.GetCustomAttributes(typeof(DescriptionAttribute), false)[0]);
-                    return des.Description;
-                }
-            }
-            return null;
         }
         void InitDeviceStyles()
         {

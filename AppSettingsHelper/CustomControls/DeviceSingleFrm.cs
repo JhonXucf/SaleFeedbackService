@@ -36,25 +36,11 @@ namespace AppSettingsHelper.CustomControls
         }
         private void SetDeviceInfo(Device device)
         {
-            this.lbl_title.Text = GetEnumDescription(device.DeviceStyle);
+            this.lbl_title.Text = device.DeviceStyle.GetEnumDescription<DeviceStyle>();
             this.lbl_deviceId.Text = device.ID;
             this.lbl_deviceName.Text = device.DeviceName;
-            this.lbl_devicePartNum.Text = "0";
+            this.lbl_devicePartNum.Text = device.DeviceParts.Count.ToString();
             this.lbl_deviceDescription.Text = device.DeviceDescription;
-        }
-        public String GetEnumDescription(DeviceStyle deviceStyle)
-        {
-            var deviceOprs = typeof(DeviceStyle).GetFields();
-            foreach (var fieldInfo in deviceOprs)
-            {
-                if (!fieldInfo.FieldType.IsEnum) continue;
-                if (fieldInfo.Name.Equals(deviceStyle.ToString()))
-                {
-                    var des = (DescriptionAttribute)(fieldInfo.GetCustomAttributes(typeof(DescriptionAttribute), false)[0]);
-                    return des.Description;
-                }
-            }
-            return null;
         }
         void InitDeviceOpreatorMenu()
         {
@@ -123,7 +109,8 @@ namespace AppSettingsHelper.CustomControls
                     deviceMaintain.StartPosition = FormStartPosition.CenterParent;
                     if (deviceMaintain.ShowDialog() == DialogResult.OK)
                     {
-
+                        this._device.DeviceParts = deviceMaintain._deviceParts;
+                        this.lbl_devicePartNum.Text = _device.DeviceParts.Count.ToString();
                     }
                     break;
                 case "ModifyDevice":
@@ -142,16 +129,17 @@ namespace AppSettingsHelper.CustomControls
                     deviceRepair.StartPosition = FormStartPosition.CenterParent;
                     if (deviceRepair.ShowDialog() == DialogResult.OK)
                     {
-
+                        this._device.DeviceParts = deviceRepair._deviceParts;
+                        this.lbl_devicePartNum.Text = _device.DeviceParts.Count.ToString();
                     }
                     break;
                 case "DevicePart":
                     var devicePartEdit = new DevicePartEdit();
                     devicePartEdit.StartPosition = FormStartPosition.CenterParent;
-                    devicePartEdit.ShowDialog();
                     if (devicePartEdit.ShowDialog() == DialogResult.OK)
                     {
-
+                        this._device.DeviceParts[devicePartEdit._DevicePart.ID] = devicePartEdit._DevicePart;
+                        this.lbl_devicePartNum.Text = _device.DeviceParts.Count.ToString();
                     }
                     break;
                 default:

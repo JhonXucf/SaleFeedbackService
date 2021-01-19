@@ -27,6 +27,6 @@ namespace SalesFeedBackInfrasturcture.Entities
         /// <summary>
         /// 维修照片
         /// </summary>
-        public String MaintainImagePath { get; set; } = String.Empty;
+        public String RepairImagePath { get; set; } = String.Empty;
     }
 }

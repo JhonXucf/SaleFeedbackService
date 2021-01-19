@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using SalesFeedBackInfrasturcture.Shared;
 using System.Drawing;
 using System.ComponentModel;
-
+using System.Linq.Expressions;
 
 namespace SalesFeedBackInfrasturcture.Entities
 {
@@ -60,11 +60,16 @@ namespace SalesFeedBackInfrasturcture.Entities
         /// <summary>
         /// 保养明细
         /// </summary>
-        public Dictionary<Int32, DeviceMaintain> MaintainDetails { get; set; } = new Dictionary<Int32, DeviceMaintain>();
+        public Dictionary<String, DeviceMaintain> MaintainDetails { get; set; } = new Dictionary<String, DeviceMaintain>();
         [Description("维修明细")]
         /// <summary>
         /// 维修明细
         /// </summary>
-        public Dictionary<Int32, DeviceRepair> RepairDetails { get; set; } = new Dictionary<Int32, DeviceRepair>();
+        public Dictionary<String, DeviceRepair> RepairDetails { get; set; } = new Dictionary<String, DeviceRepair>();
+        public Boolean Find(Expression<Func<DevicePart, String, bool>> criteria, String text)
+        {
+            var func = criteria.Compile();
+            return func(this, text);
+        }
     }
 }

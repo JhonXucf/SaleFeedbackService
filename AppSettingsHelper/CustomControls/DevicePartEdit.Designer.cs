@@ -31,33 +31,37 @@ namespace AppSettingsHelper.CustomControls
         {
             this.components = new System.ComponentModel.Container();
             this.gbxContainer = new System.Windows.Forms.GroupBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.label13 = new System.Windows.Forms.Label();
-            this.label14 = new System.Windows.Forms.Label();
-            this.comboBox5 = new System.Windows.Forms.ComboBox();
-            this.comboBox6 = new System.Windows.Forms.ComboBox();
-            this.label11 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
-            this.comboBox3 = new System.Windows.Forms.ComboBox();
-            this.comboBox4 = new System.Windows.Forms.ComboBox();
-            this.label10 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.label8 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.textBox6 = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.textBox5 = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.textBox4 = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
+            this.lbl_error2 = new System.Windows.Forms.Label();
+            this.cbx_Unit = new System.Windows.Forms.ComboBox();
+            this.btn_Translate = new AppSettingsHelper.UCBtnExt();
+            this.btn_Clear = new AppSettingsHelper.UCBtnExt();
+            this.btnAdd = new AppSettingsHelper.UCBtnExt();
+            this.pcb_PartImage = new System.Windows.Forms.PictureBox();
+            this.lbl_Minute = new System.Windows.Forms.Label();
+            this.lbl_Hour = new System.Windows.Forms.Label();
+            this.cbx_Minute = new System.Windows.Forms.ComboBox();
+            this.cbx_Hour = new System.Windows.Forms.ComboBox();
+            this.lbl_Day = new System.Windows.Forms.Label();
+            this.lbl_Month = new System.Windows.Forms.Label();
+            this.cbx_Day = new System.Windows.Forms.ComboBox();
+            this.cbx_Month = new System.Windows.Forms.ComboBox();
+            this.lbl_Quarter = new System.Windows.Forms.Label();
+            this.lbl_Year = new System.Windows.Forms.Label();
+            this.cbx_Quarter = new System.Windows.Forms.ComboBox();
+            this.cbx_Year = new System.Windows.Forms.ComboBox();
+            this.lbl_PartImage = new System.Windows.Forms.Label();
+            this.lbl_MaintainCycles = new System.Windows.Forms.Label();
+            this.tbx_PartDescription = new System.Windows.Forms.TextBox();
+            this.lbl_PartDescription = new System.Windows.Forms.Label();
+            this.tbx_Count = new System.Windows.Forms.TextBox();
+            this.lbl_Count = new System.Windows.Forms.Label();
+            this.lbl_Unit = new System.Windows.Forms.Label();
+            this.tbx_Consumption = new System.Windows.Forms.TextBox();
+            this.lbl_Consumption = new System.Windows.Forms.Label();
+            this.tbx_ModelNumber = new System.Windows.Forms.TextBox();
+            this.lbl_ModelNumber = new System.Windows.Forms.Label();
+            this.tbx_PartId = new System.Windows.Forms.TextBox();
+            this.lbl_PartId = new System.Windows.Forms.Label();
             this.lbl_error = new System.Windows.Forms.Label();
             this.tbx_deviceName = new System.Windows.Forms.TextBox();
             this.lbl_deviceName = new System.Windows.Forms.Label();
@@ -68,46 +72,45 @@ namespace AppSettingsHelper.CustomControls
             this.label15 = new System.Windows.Forms.Label();
             this.btn_Close = new AppSettingsHelper.UCBtnExt();
             this.btn_Save = new AppSettingsHelper.UCBtnExt();
-            this.btnAdd = new AppSettingsHelper.UCBtnExt();
-            this.btn_Clear = new AppSettingsHelper.UCBtnExt();
-            this.ucBtnExt2 = new AppSettingsHelper.UCBtnExt();
+            this.button1 = new System.Windows.Forms.Button();
             this.gbxContainer.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pcb_PartImage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
             // 
             // gbxContainer
             // 
-            this.gbxContainer.Controls.Add(this.ucBtnExt2);
+            this.gbxContainer.Controls.Add(this.lbl_error2);
+            this.gbxContainer.Controls.Add(this.cbx_Unit);
+            this.gbxContainer.Controls.Add(this.btn_Translate);
             this.gbxContainer.Controls.Add(this.btn_Clear);
             this.gbxContainer.Controls.Add(this.btnAdd);
-            this.gbxContainer.Controls.Add(this.pictureBox1);
-            this.gbxContainer.Controls.Add(this.label13);
-            this.gbxContainer.Controls.Add(this.label14);
-            this.gbxContainer.Controls.Add(this.comboBox5);
-            this.gbxContainer.Controls.Add(this.comboBox6);
-            this.gbxContainer.Controls.Add(this.label11);
-            this.gbxContainer.Controls.Add(this.label12);
-            this.gbxContainer.Controls.Add(this.comboBox3);
-            this.gbxContainer.Controls.Add(this.comboBox4);
-            this.gbxContainer.Controls.Add(this.label10);
-            this.gbxContainer.Controls.Add(this.label9);
-            this.gbxContainer.Controls.Add(this.comboBox2);
-            this.gbxContainer.Controls.Add(this.comboBox1);
-            this.gbxContainer.Controls.Add(this.label8);
-            this.gbxContainer.Controls.Add(this.label7);
-            this.gbxContainer.Controls.Add(this.textBox6);
-            this.gbxContainer.Controls.Add(this.label6);
-            this.gbxContainer.Controls.Add(this.textBox5);
-            this.gbxContainer.Controls.Add(this.label5);
-            this.gbxContainer.Controls.Add(this.textBox4);
-            this.gbxContainer.Controls.Add(this.label4);
-            this.gbxContainer.Controls.Add(this.textBox3);
-            this.gbxContainer.Controls.Add(this.label3);
-            this.gbxContainer.Controls.Add(this.textBox2);
-            this.gbxContainer.Controls.Add(this.label2);
-            this.gbxContainer.Controls.Add(this.textBox1);
-            this.gbxContainer.Controls.Add(this.label1);
+            this.gbxContainer.Controls.Add(this.pcb_PartImage);
+            this.gbxContainer.Controls.Add(this.lbl_Minute);
+            this.gbxContainer.Controls.Add(this.lbl_Hour);
+            this.gbxContainer.Controls.Add(this.cbx_Minute);
+            this.gbxContainer.Controls.Add(this.cbx_Hour);
+            this.gbxContainer.Controls.Add(this.lbl_Day);
+            this.gbxContainer.Controls.Add(this.lbl_Month);
+            this.gbxContainer.Controls.Add(this.cbx_Day);
+            this.gbxContainer.Controls.Add(this.cbx_Month);
+            this.gbxContainer.Controls.Add(this.lbl_Quarter);
+            this.gbxContainer.Controls.Add(this.lbl_Year);
+            this.gbxContainer.Controls.Add(this.cbx_Quarter);
+            this.gbxContainer.Controls.Add(this.cbx_Year);
+            this.gbxContainer.Controls.Add(this.lbl_PartImage);
+            this.gbxContainer.Controls.Add(this.lbl_MaintainCycles);
+            this.gbxContainer.Controls.Add(this.tbx_PartDescription);
+            this.gbxContainer.Controls.Add(this.lbl_PartDescription);
+            this.gbxContainer.Controls.Add(this.tbx_Count);
+            this.gbxContainer.Controls.Add(this.lbl_Count);
+            this.gbxContainer.Controls.Add(this.lbl_Unit);
+            this.gbxContainer.Controls.Add(this.tbx_Consumption);
+            this.gbxContainer.Controls.Add(this.lbl_Consumption);
+            this.gbxContainer.Controls.Add(this.tbx_ModelNumber);
+            this.gbxContainer.Controls.Add(this.lbl_ModelNumber);
+            this.gbxContainer.Controls.Add(this.tbx_PartId);
+            this.gbxContainer.Controls.Add(this.lbl_PartId);
             this.gbxContainer.Controls.Add(this.lbl_error);
             this.gbxContainer.Controls.Add(this.tbx_deviceName);
             this.gbxContainer.Controls.Add(this.lbl_deviceName);
@@ -119,231 +122,379 @@ namespace AppSettingsHelper.CustomControls
             this.gbxContainer.TabIndex = 0;
             this.gbxContainer.TabStop = false;
             // 
-            // pictureBox1
+            // lbl_error2
             // 
-            this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBox1.Location = new System.Drawing.Point(421, 55);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(253, 253);
-            this.pictureBox1.TabIndex = 46;
-            this.pictureBox1.TabStop = false;
+            this.lbl_error2.AutoSize = true;
+            this.lbl_error2.ForeColor = System.Drawing.Color.Red;
+            this.lbl_error2.Location = new System.Drawing.Point(80, 277);
+            this.lbl_error2.Name = "lbl_error2";
+            this.lbl_error2.Size = new System.Drawing.Size(12, 15);
+            this.lbl_error2.TabIndex = 53;
+            this.lbl_error2.Text = "*";
             // 
-            // label13
+            // cbx_Unit
             // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(733, 23);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(20, 15);
-            this.label13.TabIndex = 45;
-            this.label13.Text = "秒";
+            this.cbx_Unit.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbx_Unit.FormattingEnabled = true;
+            this.cbx_Unit.Location = new System.Drawing.Point(109, 229);
+            this.cbx_Unit.Name = "cbx_Unit";
+            this.cbx_Unit.Size = new System.Drawing.Size(167, 23);
+            this.cbx_Unit.TabIndex = 52;
             // 
-            // label14
+            // btn_Translate
             // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(677, 23);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(20, 15);
-            this.label14.TabIndex = 44;
-            this.label14.Text = "分";
+            this.btn_Translate.BackColor = System.Drawing.Color.White;
+            this.btn_Translate.BtnBackColor = System.Drawing.Color.White;
+            this.btn_Translate.BtnFont = new System.Drawing.Font("Microsoft YaHei", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btn_Translate.BtnForeColor = System.Drawing.Color.Black;
+            this.btn_Translate.BtnText = "旋  转";
+            this.btn_Translate.ConerRadius = 5;
+            this.btn_Translate.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btn_Translate.EnabledMouseEffect = false;
+            this.btn_Translate.FillColor = System.Drawing.Color.Silver;
+            this.btn_Translate.Font = new System.Drawing.Font("Microsoft YaHei", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.btn_Translate.IsRadius = true;
+            this.btn_Translate.IsShowRect = false;
+            this.btn_Translate.IsShowTips = false;
+            this.btn_Translate.Location = new System.Drawing.Point(680, 137);
+            this.btn_Translate.Margin = new System.Windows.Forms.Padding(0);
+            this.btn_Translate.Name = "btn_Translate";
+            this.btn_Translate.RectColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(77)))), ((int)(((byte)(58)))));
+            this.btn_Translate.RectWidth = 1;
+            this.btn_Translate.Size = new System.Drawing.Size(73, 23);
+            this.btn_Translate.TabIndex = 51;
+            this.btn_Translate.TabStop = false;
+            this.btn_Translate.TipsColor = System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(30)))), ((int)(((byte)(99)))));
+            this.btn_Translate.TipsText = "";
+            this.btn_Translate.BtnClick += new System.EventHandler(this.btn_Translate_BtnClick);
             // 
-            // comboBox5
+            // btn_Clear
             // 
-            this.comboBox5.FormattingEnabled = true;
-            this.comboBox5.Location = new System.Drawing.Point(701, 19);
-            this.comboBox5.Name = "comboBox5";
-            this.comboBox5.Size = new System.Drawing.Size(28, 23);
-            this.comboBox5.TabIndex = 43;
+            this.btn_Clear.BackColor = System.Drawing.Color.White;
+            this.btn_Clear.BtnBackColor = System.Drawing.Color.White;
+            this.btn_Clear.BtnFont = new System.Drawing.Font("Microsoft YaHei", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btn_Clear.BtnForeColor = System.Drawing.Color.Black;
+            this.btn_Clear.BtnText = "清  除";
+            this.btn_Clear.ConerRadius = 5;
+            this.btn_Clear.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btn_Clear.EnabledMouseEffect = false;
+            this.btn_Clear.FillColor = System.Drawing.Color.Silver;
+            this.btn_Clear.Font = new System.Drawing.Font("Microsoft YaHei", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.btn_Clear.IsRadius = true;
+            this.btn_Clear.IsShowRect = false;
+            this.btn_Clear.IsShowTips = false;
+            this.btn_Clear.Location = new System.Drawing.Point(680, 96);
+            this.btn_Clear.Margin = new System.Windows.Forms.Padding(0);
+            this.btn_Clear.Name = "btn_Clear";
+            this.btn_Clear.RectColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(77)))), ((int)(((byte)(58)))));
+            this.btn_Clear.RectWidth = 1;
+            this.btn_Clear.Size = new System.Drawing.Size(73, 23);
+            this.btn_Clear.TabIndex = 51;
+            this.btn_Clear.TabStop = false;
+            this.btn_Clear.TipsColor = System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(30)))), ((int)(((byte)(99)))));
+            this.btn_Clear.TipsText = "";
+            this.btn_Clear.BtnClick += new System.EventHandler(this.btn_Clear_BtnClick);
             // 
-            // comboBox6
+            // btnAdd
             // 
-            this.comboBox6.FormattingEnabled = true;
-            this.comboBox6.Location = new System.Drawing.Point(645, 19);
-            this.comboBox6.Name = "comboBox6";
-            this.comboBox6.Size = new System.Drawing.Size(28, 23);
-            this.comboBox6.TabIndex = 42;
+            this.btnAdd.BackColor = System.Drawing.Color.White;
+            this.btnAdd.BtnBackColor = System.Drawing.Color.White;
+            this.btnAdd.BtnFont = new System.Drawing.Font("Microsoft YaHei", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnAdd.BtnForeColor = System.Drawing.Color.Black;
+            this.btnAdd.BtnText = "添  加";
+            this.btnAdd.ConerRadius = 5;
+            this.btnAdd.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnAdd.EnabledMouseEffect = false;
+            this.btnAdd.FillColor = System.Drawing.Color.Silver;
+            this.btnAdd.Font = new System.Drawing.Font("Microsoft YaHei", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.btnAdd.IsRadius = true;
+            this.btnAdd.IsShowRect = false;
+            this.btnAdd.IsShowTips = false;
+            this.btnAdd.Location = new System.Drawing.Point(680, 55);
+            this.btnAdd.Margin = new System.Windows.Forms.Padding(0);
+            this.btnAdd.Name = "btnAdd";
+            this.btnAdd.RectColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(77)))), ((int)(((byte)(58)))));
+            this.btnAdd.RectWidth = 1;
+            this.btnAdd.Size = new System.Drawing.Size(73, 23);
+            this.btnAdd.TabIndex = 50;
+            this.btnAdd.TabStop = false;
+            this.btnAdd.TipsColor = System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(30)))), ((int)(((byte)(99)))));
+            this.btnAdd.TipsText = "";
+            this.btnAdd.BtnClick += new System.EventHandler(this.btnAdd_BtnClick);
             // 
-            // label11
+            // pcb_PartImage
             // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(621, 23);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(20, 15);
-            this.label11.TabIndex = 41;
-            this.label11.Text = "时";
+            this.pcb_PartImage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pcb_PartImage.Location = new System.Drawing.Point(421, 55);
+            this.pcb_PartImage.Name = "pcb_PartImage";
+            this.pcb_PartImage.Size = new System.Drawing.Size(253, 253);
+            this.pcb_PartImage.TabIndex = 46;
+            this.pcb_PartImage.TabStop = false;
             // 
-            // label12
+            // lbl_Minute
             // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(565, 23);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(20, 15);
-            this.label12.TabIndex = 40;
-            this.label12.Text = "日";
+            this.lbl_Minute.AutoSize = true;
+            this.lbl_Minute.Location = new System.Drawing.Point(733, 23);
+            this.lbl_Minute.Name = "lbl_Minute";
+            this.lbl_Minute.Size = new System.Drawing.Size(20, 15);
+            this.lbl_Minute.TabIndex = 45;
+            this.lbl_Minute.Text = "分";
             // 
-            // comboBox3
+            // lbl_Hour
             // 
-            this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Location = new System.Drawing.Point(589, 19);
-            this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(28, 23);
-            this.comboBox3.TabIndex = 39;
+            this.lbl_Hour.AutoSize = true;
+            this.lbl_Hour.Location = new System.Drawing.Point(677, 23);
+            this.lbl_Hour.Name = "lbl_Hour";
+            this.lbl_Hour.Size = new System.Drawing.Size(20, 15);
+            this.lbl_Hour.TabIndex = 44;
+            this.lbl_Hour.Text = "时";
             // 
-            // comboBox4
+            // cbx_Minute
             // 
-            this.comboBox4.FormattingEnabled = true;
-            this.comboBox4.Location = new System.Drawing.Point(533, 19);
-            this.comboBox4.Name = "comboBox4";
-            this.comboBox4.Size = new System.Drawing.Size(28, 23);
-            this.comboBox4.TabIndex = 38;
+            this.cbx_Minute.FormattingEnabled = true;
+            this.cbx_Minute.Items.AddRange(new object[] {
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9"});
+            this.cbx_Minute.Location = new System.Drawing.Point(701, 19);
+            this.cbx_Minute.Name = "cbx_Minute";
+            this.cbx_Minute.Size = new System.Drawing.Size(28, 23);
+            this.cbx_Minute.TabIndex = 43;
             // 
-            // label10
+            // cbx_Hour
             // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(509, 23);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(20, 15);
-            this.label10.TabIndex = 37;
-            this.label10.Text = "月";
+            this.cbx_Hour.FormattingEnabled = true;
+            this.cbx_Hour.Items.AddRange(new object[] {
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9"});
+            this.cbx_Hour.Location = new System.Drawing.Point(645, 19);
+            this.cbx_Hour.Name = "cbx_Hour";
+            this.cbx_Hour.Size = new System.Drawing.Size(28, 23);
+            this.cbx_Hour.TabIndex = 42;
             // 
-            // label9
+            // lbl_Day
             // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(453, 23);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(20, 15);
-            this.label9.TabIndex = 36;
-            this.label9.Text = "年";
+            this.lbl_Day.AutoSize = true;
+            this.lbl_Day.Location = new System.Drawing.Point(621, 23);
+            this.lbl_Day.Name = "lbl_Day";
+            this.lbl_Day.Size = new System.Drawing.Size(20, 15);
+            this.lbl_Day.TabIndex = 41;
+            this.lbl_Day.Text = "日";
             // 
-            // comboBox2
+            // lbl_Month
             // 
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(477, 19);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(28, 23);
-            this.comboBox2.TabIndex = 35;
+            this.lbl_Month.AutoSize = true;
+            this.lbl_Month.Location = new System.Drawing.Point(565, 23);
+            this.lbl_Month.Name = "lbl_Month";
+            this.lbl_Month.Size = new System.Drawing.Size(20, 15);
+            this.lbl_Month.TabIndex = 40;
+            this.lbl_Month.Text = "月";
             // 
-            // comboBox1
+            // cbx_Day
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(421, 19);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(28, 23);
-            this.comboBox1.TabIndex = 34;
+            this.cbx_Day.FormattingEnabled = true;
+            this.cbx_Day.Items.AddRange(new object[] {
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9"});
+            this.cbx_Day.Location = new System.Drawing.Point(589, 19);
+            this.cbx_Day.Name = "cbx_Day";
+            this.cbx_Day.Size = new System.Drawing.Size(28, 23);
+            this.cbx_Day.TabIndex = 39;
             // 
-            // label8
+            // cbx_Month
             // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(338, 55);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(59, 15);
-            this.label8.TabIndex = 33;
-            this.label8.Text = "部件图片";
+            this.cbx_Month.FormattingEnabled = true;
+            this.cbx_Month.Items.AddRange(new object[] {
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9"});
+            this.cbx_Month.Location = new System.Drawing.Point(533, 19);
+            this.cbx_Month.Name = "cbx_Month";
+            this.cbx_Month.Size = new System.Drawing.Size(28, 23);
+            this.cbx_Month.TabIndex = 38;
             // 
-            // label7
+            // lbl_Quarter
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(338, 23);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(59, 15);
-            this.label7.TabIndex = 32;
-            this.label7.Text = "保养周期";
+            this.lbl_Quarter.AutoSize = true;
+            this.lbl_Quarter.Location = new System.Drawing.Point(509, 23);
+            this.lbl_Quarter.Name = "lbl_Quarter";
+            this.lbl_Quarter.Size = new System.Drawing.Size(20, 15);
+            this.lbl_Quarter.TabIndex = 37;
+            this.lbl_Quarter.Text = "季";
             // 
-            // textBox6
+            // lbl_Year
             // 
-            this.textBox6.Location = new System.Drawing.Point(109, 314);
-            this.textBox6.Multiline = true;
-            this.textBox6.Name = "textBox6";
-            this.textBox6.Size = new System.Drawing.Size(661, 56);
-            this.textBox6.TabIndex = 31;
+            this.lbl_Year.AutoSize = true;
+            this.lbl_Year.Location = new System.Drawing.Point(453, 23);
+            this.lbl_Year.Name = "lbl_Year";
+            this.lbl_Year.Size = new System.Drawing.Size(20, 15);
+            this.lbl_Year.TabIndex = 36;
+            this.lbl_Year.Text = "年";
             // 
-            // label6
+            // cbx_Quarter
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(15, 318);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(59, 15);
-            this.label6.TabIndex = 30;
-            this.label6.Text = "部件描述";
+            this.cbx_Quarter.FormattingEnabled = true;
+            this.cbx_Quarter.Items.AddRange(new object[] {
+            "1",
+            "2",
+            "3",
+            "4"});
+            this.cbx_Quarter.Location = new System.Drawing.Point(477, 19);
+            this.cbx_Quarter.Name = "cbx_Quarter";
+            this.cbx_Quarter.Size = new System.Drawing.Size(28, 23);
+            this.cbx_Quarter.TabIndex = 35;
             // 
-            // textBox5
+            // cbx_Year
             // 
-            this.textBox5.Location = new System.Drawing.Point(109, 273);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(167, 23);
-            this.textBox5.TabIndex = 29;
+            this.cbx_Year.FormattingEnabled = true;
+            this.cbx_Year.Items.AddRange(new object[] {
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9"});
+            this.cbx_Year.Location = new System.Drawing.Point(421, 19);
+            this.cbx_Year.Name = "cbx_Year";
+            this.cbx_Year.Size = new System.Drawing.Size(28, 23);
+            this.cbx_Year.TabIndex = 34;
             // 
-            // label5
+            // lbl_PartImage
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(15, 277);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(59, 15);
-            this.label5.TabIndex = 28;
-            this.label5.Text = "部件数量";
+            this.lbl_PartImage.AutoSize = true;
+            this.lbl_PartImage.Location = new System.Drawing.Point(338, 55);
+            this.lbl_PartImage.Name = "lbl_PartImage";
+            this.lbl_PartImage.Size = new System.Drawing.Size(59, 15);
+            this.lbl_PartImage.TabIndex = 33;
+            this.lbl_PartImage.Text = "部件图片";
             // 
-            // textBox4
+            // lbl_MaintainCycles
             // 
-            this.textBox4.Location = new System.Drawing.Point(109, 229);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(167, 23);
-            this.textBox4.TabIndex = 27;
+            this.lbl_MaintainCycles.AutoSize = true;
+            this.lbl_MaintainCycles.Location = new System.Drawing.Point(338, 23);
+            this.lbl_MaintainCycles.Name = "lbl_MaintainCycles";
+            this.lbl_MaintainCycles.Size = new System.Drawing.Size(59, 15);
+            this.lbl_MaintainCycles.TabIndex = 32;
+            this.lbl_MaintainCycles.Text = "保养周期";
             // 
-            // label4
+            // tbx_PartDescription
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(15, 233);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(33, 15);
-            this.label4.TabIndex = 26;
-            this.label4.Text = "单位";
+            this.tbx_PartDescription.Location = new System.Drawing.Point(109, 314);
+            this.tbx_PartDescription.Multiline = true;
+            this.tbx_PartDescription.Name = "tbx_PartDescription";
+            this.tbx_PartDescription.Size = new System.Drawing.Size(661, 56);
+            this.tbx_PartDescription.TabIndex = 31;
             // 
-            // textBox3
+            // lbl_PartDescription
             // 
-            this.textBox3.Location = new System.Drawing.Point(109, 185);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(167, 23);
-            this.textBox3.TabIndex = 25;
+            this.lbl_PartDescription.AutoSize = true;
+            this.lbl_PartDescription.Location = new System.Drawing.Point(15, 318);
+            this.lbl_PartDescription.Name = "lbl_PartDescription";
+            this.lbl_PartDescription.Size = new System.Drawing.Size(59, 15);
+            this.lbl_PartDescription.TabIndex = 30;
+            this.lbl_PartDescription.Text = "部件描述";
             // 
-            // label3
+            // tbx_Count
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(15, 189);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(33, 15);
-            this.label3.TabIndex = 24;
-            this.label3.Text = "用量";
+            this.tbx_Count.Location = new System.Drawing.Point(109, 273);
+            this.tbx_Count.Name = "tbx_Count";
+            this.tbx_Count.Size = new System.Drawing.Size(167, 23);
+            this.tbx_Count.TabIndex = 29;
             // 
-            // textBox2
+            // lbl_Count
             // 
-            this.textBox2.Location = new System.Drawing.Point(109, 142);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(167, 23);
-            this.textBox2.TabIndex = 23;
+            this.lbl_Count.AutoSize = true;
+            this.lbl_Count.Location = new System.Drawing.Point(15, 277);
+            this.lbl_Count.Name = "lbl_Count";
+            this.lbl_Count.Size = new System.Drawing.Size(59, 15);
+            this.lbl_Count.TabIndex = 28;
+            this.lbl_Count.Text = "部件数量";
             // 
-            // label2
+            // lbl_Unit
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(15, 146);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(33, 15);
-            this.label2.TabIndex = 22;
-            this.label2.Text = "型号";
+            this.lbl_Unit.AutoSize = true;
+            this.lbl_Unit.Location = new System.Drawing.Point(15, 233);
+            this.lbl_Unit.Name = "lbl_Unit";
+            this.lbl_Unit.Size = new System.Drawing.Size(33, 15);
+            this.lbl_Unit.TabIndex = 26;
+            this.lbl_Unit.Text = "单位";
             // 
-            // textBox1
+            // tbx_Consumption
             // 
-            this.textBox1.Location = new System.Drawing.Point(109, 99);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(167, 23);
-            this.textBox1.TabIndex = 21;
+            this.tbx_Consumption.Location = new System.Drawing.Point(109, 185);
+            this.tbx_Consumption.Name = "tbx_Consumption";
+            this.tbx_Consumption.Size = new System.Drawing.Size(167, 23);
+            this.tbx_Consumption.TabIndex = 25;
             // 
-            // label1
+            // lbl_Consumption
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(15, 103);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(33, 15);
-            this.label1.TabIndex = 20;
-            this.label1.Text = "料号";
+            this.lbl_Consumption.AutoSize = true;
+            this.lbl_Consumption.Location = new System.Drawing.Point(15, 189);
+            this.lbl_Consumption.Name = "lbl_Consumption";
+            this.lbl_Consumption.Size = new System.Drawing.Size(33, 15);
+            this.lbl_Consumption.TabIndex = 24;
+            this.lbl_Consumption.Text = "用量";
+            // 
+            // tbx_ModelNumber
+            // 
+            this.tbx_ModelNumber.Location = new System.Drawing.Point(109, 142);
+            this.tbx_ModelNumber.Name = "tbx_ModelNumber";
+            this.tbx_ModelNumber.Size = new System.Drawing.Size(167, 23);
+            this.tbx_ModelNumber.TabIndex = 23;
+            // 
+            // lbl_ModelNumber
+            // 
+            this.lbl_ModelNumber.AutoSize = true;
+            this.lbl_ModelNumber.Location = new System.Drawing.Point(15, 146);
+            this.lbl_ModelNumber.Name = "lbl_ModelNumber";
+            this.lbl_ModelNumber.Size = new System.Drawing.Size(33, 15);
+            this.lbl_ModelNumber.TabIndex = 22;
+            this.lbl_ModelNumber.Text = "型号";
+            // 
+            // tbx_PartId
+            // 
+            this.tbx_PartId.Location = new System.Drawing.Point(109, 99);
+            this.tbx_PartId.Name = "tbx_PartId";
+            this.tbx_PartId.Size = new System.Drawing.Size(167, 23);
+            this.tbx_PartId.TabIndex = 21;
+            // 
+            // lbl_PartId
+            // 
+            this.lbl_PartId.AutoSize = true;
+            this.lbl_PartId.Location = new System.Drawing.Point(15, 103);
+            this.lbl_PartId.Name = "lbl_PartId";
+            this.lbl_PartId.Size = new System.Drawing.Size(33, 15);
+            this.lbl_PartId.TabIndex = 20;
+            this.lbl_PartId.Text = "料号";
             // 
             // lbl_error
             // 
@@ -434,6 +585,7 @@ namespace AppSettingsHelper.CustomControls
             this.btn_Close.TabStop = false;
             this.btn_Close.TipsColor = System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(30)))), ((int)(((byte)(99)))));
             this.btn_Close.TipsText = "";
+            this.btn_Close.BtnClick += new System.EventHandler(this.btn_Close_BtnClick);
             // 
             // btn_Save
             // 
@@ -460,84 +612,23 @@ namespace AppSettingsHelper.CustomControls
             this.btn_Save.TabStop = false;
             this.btn_Save.TipsColor = System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(30)))), ((int)(((byte)(99)))));
             this.btn_Save.TipsText = "";
+            this.btn_Save.BtnClick += new System.EventHandler(this.btn_Save_BtnClick);
             // 
-            // btnAdd
+            // button1
             // 
-            this.btnAdd.BackColor = System.Drawing.Color.White;
-            this.btnAdd.BtnBackColor = System.Drawing.Color.White;
-            this.btnAdd.BtnFont = new System.Drawing.Font("Microsoft YaHei", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnAdd.BtnForeColor = System.Drawing.Color.Black;
-            this.btnAdd.BtnText = "添  加";
-            this.btnAdd.ConerRadius = 5;
-            this.btnAdd.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnAdd.EnabledMouseEffect = false;
-            this.btnAdd.FillColor = System.Drawing.Color.Silver;
-            this.btnAdd.Font = new System.Drawing.Font("Microsoft YaHei", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.btnAdd.IsRadius = true;
-            this.btnAdd.IsShowRect = false;
-            this.btnAdd.IsShowTips = false;
-            this.btnAdd.Location = new System.Drawing.Point(680, 55);
-            this.btnAdd.Margin = new System.Windows.Forms.Padding(0);
-            this.btnAdd.Name = "btnAdd";
-            this.btnAdd.RectColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(77)))), ((int)(((byte)(58)))));
-            this.btnAdd.RectWidth = 1;
-            this.btnAdd.Size = new System.Drawing.Size(73, 23);
-            this.btnAdd.TabIndex = 50;
-            this.btnAdd.TabStop = false;
-            this.btnAdd.TipsColor = System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(30)))), ((int)(((byte)(99)))));
-            this.btnAdd.TipsText = "";
-            // 
-            // btn_Clear
-            // 
-            this.btn_Clear.BackColor = System.Drawing.Color.White;
-            this.btn_Clear.BtnBackColor = System.Drawing.Color.White;
-            this.btn_Clear.BtnFont = new System.Drawing.Font("Microsoft YaHei", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btn_Clear.BtnForeColor = System.Drawing.Color.Black;
-            this.btn_Clear.BtnText = "清  除";
-            this.btn_Clear.ConerRadius = 5;
-            this.btn_Clear.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btn_Clear.EnabledMouseEffect = false;
-            this.btn_Clear.FillColor = System.Drawing.Color.Silver;
-            this.btn_Clear.Font = new System.Drawing.Font("Microsoft YaHei", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.btn_Clear.IsRadius = true;
-            this.btn_Clear.IsShowRect = false;
-            this.btn_Clear.IsShowTips = false;
-            this.btn_Clear.Location = new System.Drawing.Point(680, 96);
-            this.btn_Clear.Margin = new System.Windows.Forms.Padding(0);
-            this.btn_Clear.Name = "btn_Clear";
-            this.btn_Clear.RectColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(77)))), ((int)(((byte)(58)))));
-            this.btn_Clear.RectWidth = 1;
-            this.btn_Clear.Size = new System.Drawing.Size(73, 23);
-            this.btn_Clear.TabIndex = 51;
-            this.btn_Clear.TabStop = false;
-            this.btn_Clear.TipsColor = System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(30)))), ((int)(((byte)(99)))));
-            this.btn_Clear.TipsText = "";
-            // 
-            // ucBtnExt2
-            // 
-            this.ucBtnExt2.BackColor = System.Drawing.Color.White;
-            this.ucBtnExt2.BtnBackColor = System.Drawing.Color.White;
-            this.ucBtnExt2.BtnFont = new System.Drawing.Font("Microsoft YaHei", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.ucBtnExt2.BtnForeColor = System.Drawing.Color.Black;
-            this.ucBtnExt2.BtnText = "旋  转";
-            this.ucBtnExt2.ConerRadius = 5;
-            this.ucBtnExt2.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.ucBtnExt2.EnabledMouseEffect = false;
-            this.ucBtnExt2.FillColor = System.Drawing.Color.Silver;
-            this.ucBtnExt2.Font = new System.Drawing.Font("Microsoft YaHei", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.ucBtnExt2.IsRadius = true;
-            this.ucBtnExt2.IsShowRect = false;
-            this.ucBtnExt2.IsShowTips = false;
-            this.ucBtnExt2.Location = new System.Drawing.Point(680, 137);
-            this.ucBtnExt2.Margin = new System.Windows.Forms.Padding(0);
-            this.ucBtnExt2.Name = "ucBtnExt2";
-            this.ucBtnExt2.RectColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(77)))), ((int)(((byte)(58)))));
-            this.ucBtnExt2.RectWidth = 1;
-            this.ucBtnExt2.Size = new System.Drawing.Size(73, 23);
-            this.ucBtnExt2.TabIndex = 51;
-            this.ucBtnExt2.TabStop = false;
-            this.ucBtnExt2.TipsColor = System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(30)))), ((int)(((byte)(99)))));
-            this.ucBtnExt2.TipsText = "";
+            this.button1.BackColor = System.Drawing.Color.Brown;
+            this.button1.FlatAppearance.BorderSize = 0;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.button1.ForeColor = System.Drawing.Color.White;
+            this.button1.Location = new System.Drawing.Point(746, 11);
+            this.button1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(32, 32);
+            this.button1.TabIndex = 18;
+            this.button1.Text = "×";
+            this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.btn_Close_BtnClick);
             // 
             // DevicePartEdit
             // 
@@ -545,6 +636,7 @@ namespace AppSettingsHelper.CustomControls
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(800, 494);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.btn_Close);
             this.Controls.Add(this.btn_Save);
             this.Controls.Add(this.lbl_title);
@@ -557,7 +649,7 @@ namespace AppSettingsHelper.CustomControls
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Control_MouseMove);
             this.gbxContainer.ResumeLayout(false);
             this.gbxContainer.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pcb_PartImage)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -574,38 +666,42 @@ namespace AppSettingsHelper.CustomControls
         private System.Windows.Forms.Label lbl_deviceId;
         private System.Windows.Forms.ErrorProvider errorProvider1;
         private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox textBox4;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox textBox6;
-        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label lbl_PartId;
+        private System.Windows.Forms.Label lbl_Unit;
+        private System.Windows.Forms.TextBox tbx_Consumption;
+        private System.Windows.Forms.Label lbl_Consumption;
+        private System.Windows.Forms.TextBox tbx_ModelNumber;
+        private System.Windows.Forms.Label lbl_ModelNumber;
+        private System.Windows.Forms.TextBox tbx_PartDescription;
+        private System.Windows.Forms.Label lbl_PartDescription;
         private System.Windows.Forms.TextBox textBox5;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.ComboBox comboBox5;
-        private System.Windows.Forms.ComboBox comboBox6;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.ComboBox comboBox3;
-        private System.Windows.Forms.ComboBox comboBox4;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.ComboBox comboBox2;
-        private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Label lbl_Count;
+        private System.Windows.Forms.Label lbl_Minute;
+        private System.Windows.Forms.Label lbl_Hour;
+        private System.Windows.Forms.ComboBox cbx_Minute;
+        private System.Windows.Forms.ComboBox cbx_Hour;
+        private System.Windows.Forms.Label lbl_Day;
+        private System.Windows.Forms.Label lbl_Month;
+        private System.Windows.Forms.ComboBox cbx_Day;
+        private System.Windows.Forms.ComboBox cbx_Month;
+        private System.Windows.Forms.Label lbl_Quarter;
+        private System.Windows.Forms.Label lbl_Year;
+        private System.Windows.Forms.ComboBox cbx_Quarter;
+        private System.Windows.Forms.ComboBox cbx_Year;
+        private System.Windows.Forms.Label lbl_PartImage;
+        private System.Windows.Forms.Label lbl_MaintainCycles;
+        private System.Windows.Forms.PictureBox pcb_PartImage;
         private System.Windows.Forms.Label lbl_title;
         private System.Windows.Forms.Label label15;
         private UCBtnExt btn_Close;
         private UCBtnExt btn_Save;
-        private UCBtnExt ucBtnExt2;
+        private UCBtnExt btn_Translate;
         private UCBtnExt btn_Clear;
         private UCBtnExt btnAdd;
+        private System.Windows.Forms.ComboBox cbx_Unit;
+        private System.Windows.Forms.TextBox tbx_PartId;
+        private System.Windows.Forms.TextBox tbx_Count;
+        private System.Windows.Forms.Label lbl_error2;
+        private System.Windows.Forms.Button button1;
     }
 }

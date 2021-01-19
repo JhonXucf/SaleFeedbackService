@@ -262,21 +262,10 @@ namespace AppSettingsHelper
         [Description("查询按钮点击事件"), Category("自定义")]
         public event EventHandler SearchClick;
         /// <summary>
-        /// Occurs when [search click].
+        /// Occurs when [Clear click].
         /// </summary>
-        [Description("新增按钮点击事件"), Category("自定义")]
-        public event EventHandler AddClick;
-        /// <summary>
-        /// Occurs when [search click].
-        /// </summary>
-        [Description("导入按钮点击事件"), Category("自定义")]
-        public event EventHandler ImprotClick;
-        /// <summary>
-        /// Occurs when [search click].
-        /// </summary>
-        [Description("导出按钮点击事件"), Category("自定义")]
-        public event EventHandler ExportClick;
-
+        [Description("清除按钮点击事件"), Category("自定义")]
+        public event EventHandler ClearClick;
         /// <summary>
         /// Occurs when [text changed].
         /// </summary>
@@ -427,6 +416,7 @@ namespace AppSettingsHelper
         {
             txtInput.Clear();
             txtInput.Focus();
+            ClearClick?.Invoke(this, e);
         }
 
         /// <summary>
@@ -436,34 +426,7 @@ namespace AppSettingsHelper
         /// <param name="e">The <see cref="MouseEventArgs" /> instance containing the event data.</param>
         private void btnSearch_MouseDown(object sender, MouseEventArgs e)
         {
-            SearchClick?.Invoke(sender, e);
-        }
-        /// <summary>
-        /// Handles the MouseDown event of the btnAdd control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="MouseEventArgs" /> instance containing the event data.</param>
-        private void btnAdd_MouseDown(object sender, MouseEventArgs e)
-        {
-            AddClick?.Invoke(sender, e);
-        }
-        /// <summary>
-        /// Handles the MouseDown event of the btnImprot control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="MouseEventArgs" /> instance containing the event data.</param>
-        private void btnImprot_MouseDown(object sender, MouseEventArgs e)
-        {
-            ImprotClick?.Invoke(sender, e);
-        }
-        /// <summary>
-        /// Handles the MouseDown event of the btnExport control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="MouseEventArgs" /> instance containing the event data.</param>
-        private void btnExport_MouseDown(object sender, MouseEventArgs e)
-        {
-            ExportClick?.Invoke(sender, e);
+            SearchClick?.Invoke(this, e);
         }
         /// <summary>
         /// The m FRM anchor
@@ -798,7 +761,7 @@ namespace AppSettingsHelper
             {
                 if (SearchClick != null)
                 {
-                    SearchClick(sender, e);
+                    SearchClick(this, e);
                 }
             }
         }

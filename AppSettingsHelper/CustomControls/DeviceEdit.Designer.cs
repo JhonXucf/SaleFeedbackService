@@ -49,6 +49,7 @@ namespace AppSettingsHelper.CustomControls
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.btn_Save = new AppSettingsHelper.UCBtnExt();
             this.btn_Cancle = new AppSettingsHelper.UCBtnExt();
+            this.btn_close = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
@@ -265,12 +266,29 @@ namespace AppSettingsHelper.CustomControls
             this.btn_Cancle.TipsText = "";
             this.btn_Cancle.BtnClick += new System.EventHandler(this.btn_Cancle_Click);
             // 
+            // btn_close
+            // 
+            this.btn_close.BackColor = System.Drawing.Color.Brown;
+            this.btn_close.FlatAppearance.BorderSize = 0;
+            this.btn_close.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_close.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.btn_close.ForeColor = System.Drawing.Color.White;
+            this.btn_close.Location = new System.Drawing.Point(253, 8);
+            this.btn_close.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.btn_close.Name = "btn_close";
+            this.btn_close.Size = new System.Drawing.Size(30, 30);
+            this.btn_close.TabIndex = 53;
+            this.btn_close.Text = "×";
+            this.btn_close.UseVisualStyleBackColor = false;
+            this.btn_close.Click += new System.EventHandler(this.btn_Cancle_Click);
+            // 
             // DeviceEdit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(296, 450);
+            this.Controls.Add(this.btn_close);
             this.Controls.Add(this.btn_Cancle);
             this.Controls.Add(this.btn_Save);
             this.Controls.Add(this.groupBox1);
@@ -309,5 +327,6 @@ namespace AppSettingsHelper.CustomControls
         private System.Windows.Forms.ErrorProvider errorProvider1;
         private UCBtnExt btn_Save;
         private UCBtnExt btn_Cancle;
+        private System.Windows.Forms.Button btn_close;
     }
 }

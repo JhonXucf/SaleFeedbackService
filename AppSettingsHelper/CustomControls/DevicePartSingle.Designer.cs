@@ -39,7 +39,7 @@ namespace AppSettingsHelper.CustomControls
             // 
             // groupBox1
             // 
-            this.groupBox1.BackColor = System.Drawing.Color.White;
+            this.groupBox1.BackColor = System.Drawing.Color.Transparent;
             this.groupBox1.Controls.Add(this.lbl_partName);
             this.groupBox1.Controls.Add(this.lbl_partID);
             this.groupBox1.Controls.Add(this.label2);
@@ -70,7 +70,7 @@ namespace AppSettingsHelper.CustomControls
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(3, 50);
+            this.label2.Location = new System.Drawing.Point(3, 39);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(59, 15);
             this.label2.TabIndex = 1;
