@@ -4,6 +4,7 @@ using System.ComponentModel;
 
 namespace SalesFeedBackInfrasturcture.Infrastructure
 {
+    [Serializable]
     public enum UnitStyle
     {
         [Description("厘米")]

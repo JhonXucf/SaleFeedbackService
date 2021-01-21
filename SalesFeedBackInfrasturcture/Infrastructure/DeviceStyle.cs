@@ -3,6 +3,7 @@ using System.ComponentModel;
 
 namespace SalesFeedBackInfrasturcture.Infrastructure
 {
+    [Serializable]
     public enum DeviceStyle
     {
         [Description("PIS 24-365")]

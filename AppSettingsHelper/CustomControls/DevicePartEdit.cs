@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
 using static AppSettingsHelper.CustomControls.DeviceEdit;
@@ -90,10 +91,33 @@ namespace AppSettingsHelper.CustomControls
                         break;
                 }
             }
-            if (null != devicePart.PartImage)
+            if (null != devicePart.PartImages && devicePart.PartImages.Count > 0)
             {
-                this.pcb_PartImage.SizeMode = PictureBoxSizeMode.StretchImage;
-                this.pcb_PartImage.Image = devicePart.PartImage;
+                if (devicePart.PartImages.Count >= 1)
+                {
+                    this.pcb_PartImage.SizeMode = PictureBoxSizeMode.StretchImage;
+                    this.pcb_PartImage.Image = devicePart.PartImages[0].byteArrayToImage();
+                }
+                if (devicePart.PartImages.Count >= 2)
+                {
+                    this.pcb_PartImage1.SizeMode = PictureBoxSizeMode.StretchImage;
+                    this.pcb_PartImage1.Image = devicePart.PartImages[1].byteArrayToImage();
+                }
+                if (devicePart.PartImages.Count >= 3)
+                {
+                    this.pcb_PartImage2.SizeMode = PictureBoxSizeMode.StretchImage;
+                    this.pcb_PartImage2.Image = devicePart.PartImages[2].byteArrayToImage();
+                }
+                if (devicePart.PartImages.Count >= 4)
+                {
+                    this.pcb_PartImage3.SizeMode = PictureBoxSizeMode.StretchImage;
+                    this.pcb_PartImage3.Image = devicePart.PartImages[3].byteArrayToImage();
+                }
+                if (devicePart.PartImages.Count >= 5)
+                {
+                    this.pcb_PartImage4.SizeMode = PictureBoxSizeMode.StretchImage;
+                    this.pcb_PartImage4.Image = devicePart.PartImages[4].byteArrayToImage();
+                }
             }
         }
         DevicePart GetDevicePart()
@@ -175,16 +199,39 @@ namespace AppSettingsHelper.CustomControls
                 devicePart.MaintainCycles[DeviceMaintainStyle.Year] = temp;
             }
             #endregion
+            devicePart.PartImages = new List<byte[]>();
             if (null != this.pcb_PartImage.Image)
             {
-                devicePart.PartImage = this.pcb_PartImage.Image;
+                devicePart.PartImages.Add(this.pcb_PartImage.Image.ImageToByteArray());
             }
+            if (null != this.pcb_PartImage1.Image)
+            {
+                devicePart.PartImages.Add(this.pcb_PartImage1.Image.ImageToByteArray());
+            }
+            if (null != this.pcb_PartImage2.Image)
+            {
+                devicePart.PartImages.Add(this.pcb_PartImage2.Image.ImageToByteArray());
+            }
+            if (null != this.pcb_PartImage3.Image)
+            {
+                devicePart.PartImages.Add(this.pcb_PartImage3.Image.ImageToByteArray());
+            }
+            if (null != this.pcb_PartImage4.Image)
+            {
+                devicePart.PartImages.Add(this.pcb_PartImage4.Image.ImageToByteArray());
+            }
+            if (_operatorType == SalesFeedBackMain.OperatorType.Add)
+                devicePart.Created = DateTime.UtcNow;
+            else
+                devicePart.Modified = DateTime.UtcNow;
             return devicePart;
         }
+        SalesFeedBackMain.OperatorType _operatorType;
         public DevicePartEdit(SalesFeedBackMain.OperatorType operatorType = SalesFeedBackMain.OperatorType.Add)
         {
             InitializeComponent();
             InitUnitStyles();
+            _operatorType = operatorType;
             switch (operatorType)
             {
                 case SalesFeedBackMain.OperatorType.Add:
@@ -251,17 +298,48 @@ namespace AppSettingsHelper.CustomControls
                   "Portable Network Graphics (*.png)|*.png|" +
                   "Tag Image File Format (*.tif)|*.tif;*.tiff|" +
                   "EMF File (*.emf)|*.emf";
-                pOpenFileDialog.Multiselect = false;
+                pOpenFileDialog.Multiselect = true;//允许多张图片
                 //"打开图片"
                 pOpenFileDialog.Title = "Select Picture";/* GetString("OpenFileDialog_img");*/
                 if (!string.IsNullOrWhiteSpace(pathImg))
                     pOpenFileDialog.InitialDirectory = pathImg;
                 if (pOpenFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    pathImg = pOpenFileDialog.FileName;
-                    this.pcb_PartImage.SizeMode = PictureBoxSizeMode.StretchImage;
-                    this.pcb_PartImage.Image = Image.FromFile(pOpenFileDialog.FileName);
-
+                    if (pOpenFileDialog.FileNames.Length > 1)
+                    {
+                        pathImg = pOpenFileDialog.FileNames[0];
+                        if (pOpenFileDialog.FileNames.Length >= 1)
+                        {
+                            this.pcb_PartImage.SizeMode = PictureBoxSizeMode.StretchImage;
+                            this.pcb_PartImage.Image = Image.FromFile(pOpenFileDialog.FileNames[0]);
+                        }
+                        if (pOpenFileDialog.FileNames.Length >= 2)
+                        {
+                            this.pcb_PartImage1.SizeMode = PictureBoxSizeMode.StretchImage;
+                            this.pcb_PartImage1.Image = Image.FromFile(pOpenFileDialog.FileNames[1]);
+                        }
+                        if (pOpenFileDialog.FileNames.Length >= 3)
+                        {
+                            this.pcb_PartImage2.SizeMode = PictureBoxSizeMode.StretchImage;
+                            this.pcb_PartImage2.Image = Image.FromFile(pOpenFileDialog.FileNames[2]);
+                        }
+                        if (pOpenFileDialog.FileNames.Length >= 4)
+                        {
+                            this.pcb_PartImage3.SizeMode = PictureBoxSizeMode.StretchImage;
+                            this.pcb_PartImage3.Image = Image.FromFile(pOpenFileDialog.FileNames[3]);
+                        }
+                        if (pOpenFileDialog.FileNames.Length >= 5)
+                        {
+                            this.pcb_PartImage4.SizeMode = PictureBoxSizeMode.StretchImage;
+                            this.pcb_PartImage4.Image = Image.FromFile(pOpenFileDialog.FileNames[4]);
+                        }
+                    }
+                    else
+                    {
+                        pathImg = pOpenFileDialog.FileName;
+                        this.pcb_PartImage.SizeMode = PictureBoxSizeMode.StretchImage;
+                        this.pcb_PartImage.Image = Image.FromFile(pOpenFileDialog.FileName);
+                    } 
                 }
             }
             catch (Exception ex)
@@ -272,7 +350,14 @@ namespace AppSettingsHelper.CustomControls
 
         private void btn_Clear_BtnClick(object sender, EventArgs e)
         {
-            this.pcb_PartImage.Image = null;
+            if (MessageBox.Show("确定清除图片吗?", "提示", MessageBoxButtons.OKCancel) == DialogResult.OK)
+            {
+                this.pcb_PartImage.Image = null;
+                this.pcb_PartImage1.Image = null;
+                this.pcb_PartImage2.Image = null;
+                this.pcb_PartImage3.Image = null;
+                this.pcb_PartImage4.Image = null;
+            } 
         }
 
         private void btn_Translate_BtnClick(object sender, EventArgs e)
@@ -285,6 +370,17 @@ namespace AppSettingsHelper.CustomControls
             }
             catch
             {
+            }
+        }
+
+        private void pcb_PartImage1_Click(object sender, EventArgs e)
+        {
+            var pic = sender as PictureBox;
+            if (pic.Image!=null)
+            {
+                Image bitmap = (Image)pic.Image.Clone();
+                pic.Image = this.pcb_PartImage.Image;
+                this.pcb_PartImage.Image = bitmap;
             }
         }
     }

@@ -29,15 +29,14 @@ namespace AppSettingsHelper.CustomControls
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.lbl_title = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.gbxContainer1 = new System.Windows.Forms.GroupBox();
+            this.lbl_error = new System.Windows.Forms.Label();
             this.tbx_maintainId = new System.Windows.Forms.TextBox();
             this.lbl_maintainId = new System.Windows.Forms.Label();
-            this.btnPathSelect = new AppSettingsHelper.UCBtnExt();
             this.dtime_maintainTime = new System.Windows.Forms.DateTimePicker();
-            this.txt_maintainImagePath = new System.Windows.Forms.TextBox();
-            this.lbl_maintainImagePath = new System.Windows.Forms.Label();
             this.txt_maintainDescription = new System.Windows.Forms.TextBox();
             this.lbl_maintainDescription = new System.Windows.Forms.Label();
             this.lbl_maintainTime = new System.Windows.Forms.Label();
@@ -49,9 +48,26 @@ namespace AppSettingsHelper.CustomControls
             this.btn_Save = new AppSettingsHelper.UCBtnExt();
             this.btn_Cancel = new AppSettingsHelper.UCBtnExt();
             this.button1 = new System.Windows.Forms.Button();
+            this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.pcb_PartImage4 = new System.Windows.Forms.PictureBox();
+            this.pcb_PartImage2 = new System.Windows.Forms.PictureBox();
+            this.pcb_PartImage3 = new System.Windows.Forms.PictureBox();
+            this.pcb_PartImage1 = new System.Windows.Forms.PictureBox();
+            this.btn_Translate = new AppSettingsHelper.UCBtnExt();
+            this.btn_Clear = new AppSettingsHelper.UCBtnExt();
+            this.btnAdd = new AppSettingsHelper.UCBtnExt();
+            this.pcb_PartImage = new System.Windows.Forms.PictureBox();
+            this.lbl_PartImage = new System.Windows.Forms.Label();
             this.gbxContainer1.SuspendLayout();
             this.groupBoxMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pcb_PartImage4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pcb_PartImage2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pcb_PartImage3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pcb_PartImage1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pcb_PartImage)).BeginInit();
             this.SuspendLayout();
             // 
             // lbl_title
@@ -74,12 +90,19 @@ namespace AppSettingsHelper.CustomControls
             // 
             // gbxContainer1
             // 
+            this.gbxContainer1.Controls.Add(this.pcb_PartImage4);
+            this.gbxContainer1.Controls.Add(this.pcb_PartImage2);
+            this.gbxContainer1.Controls.Add(this.pcb_PartImage3);
+            this.gbxContainer1.Controls.Add(this.pcb_PartImage1);
+            this.gbxContainer1.Controls.Add(this.btn_Translate);
+            this.gbxContainer1.Controls.Add(this.btn_Clear);
+            this.gbxContainer1.Controls.Add(this.btnAdd);
+            this.gbxContainer1.Controls.Add(this.pcb_PartImage);
+            this.gbxContainer1.Controls.Add(this.lbl_PartImage);
+            this.gbxContainer1.Controls.Add(this.lbl_error);
             this.gbxContainer1.Controls.Add(this.tbx_maintainId);
             this.gbxContainer1.Controls.Add(this.lbl_maintainId);
-            this.gbxContainer1.Controls.Add(this.btnPathSelect);
             this.gbxContainer1.Controls.Add(this.dtime_maintainTime);
-            this.gbxContainer1.Controls.Add(this.txt_maintainImagePath);
-            this.gbxContainer1.Controls.Add(this.lbl_maintainImagePath);
             this.gbxContainer1.Controls.Add(this.txt_maintainDescription);
             this.gbxContainer1.Controls.Add(this.lbl_maintainDescription);
             this.gbxContainer1.Controls.Add(this.lbl_maintainTime);
@@ -87,91 +110,57 @@ namespace AppSettingsHelper.CustomControls
             this.gbxContainer1.Controls.Add(this.lbl_maintainOperator);
             this.gbxContainer1.Location = new System.Drawing.Point(7, 265);
             this.gbxContainer1.Name = "gbxContainer1";
-            this.gbxContainer1.Size = new System.Drawing.Size(868, 129);
+            this.gbxContainer1.Size = new System.Drawing.Size(868, 241);
             this.gbxContainer1.TabIndex = 15;
             this.gbxContainer1.TabStop = false;
             // 
+            // lbl_error
+            // 
+            this.lbl_error.AutoSize = true;
+            this.lbl_error.ForeColor = System.Drawing.Color.Red;
+            this.lbl_error.Location = new System.Drawing.Point(93, 9);
+            this.lbl_error.Name = "lbl_error";
+            this.lbl_error.Size = new System.Drawing.Size(12, 15);
+            this.lbl_error.TabIndex = 19;
+            this.lbl_error.Text = "*";
+            // 
             // tbx_maintainId
             // 
-            this.tbx_maintainId.Location = new System.Drawing.Point(110, 15);
+            this.tbx_maintainId.Location = new System.Drawing.Point(110, 5);
             this.tbx_maintainId.Name = "tbx_maintainId";
-            this.tbx_maintainId.Size = new System.Drawing.Size(107, 23);
+            this.tbx_maintainId.Size = new System.Drawing.Size(257, 23);
             this.tbx_maintainId.TabIndex = 18;
-            this.tbx_maintainId.Text = "阿斯蒂";
             // 
             // lbl_maintainId
             // 
             this.lbl_maintainId.AutoSize = true;
-            this.lbl_maintainId.Location = new System.Drawing.Point(49, 19);
+            this.lbl_maintainId.Location = new System.Drawing.Point(49, 9);
             this.lbl_maintainId.Name = "lbl_maintainId";
             this.lbl_maintainId.Size = new System.Drawing.Size(44, 15);
             this.lbl_maintainId.TabIndex = 17;
             this.lbl_maintainId.Text = "保养ID";
             // 
-            // btnPathSelect
-            // 
-            this.btnPathSelect.BackColor = System.Drawing.Color.White;
-            this.btnPathSelect.BtnBackColor = System.Drawing.Color.White;
-            this.btnPathSelect.BtnFont = new System.Drawing.Font("Microsoft YaHei", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnPathSelect.BtnForeColor = System.Drawing.Color.Black;
-            this.btnPathSelect.BtnText = "选 择";
-            this.btnPathSelect.ConerRadius = 5;
-            this.btnPathSelect.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnPathSelect.EnabledMouseEffect = false;
-            this.btnPathSelect.FillColor = System.Drawing.Color.Silver;
-            this.btnPathSelect.Font = new System.Drawing.Font("Microsoft YaHei", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.btnPathSelect.IsRadius = true;
-            this.btnPathSelect.IsShowRect = false;
-            this.btnPathSelect.IsShowTips = false;
-            this.btnPathSelect.Location = new System.Drawing.Point(796, 44);
-            this.btnPathSelect.Margin = new System.Windows.Forms.Padding(0);
-            this.btnPathSelect.Name = "btnPathSelect";
-            this.btnPathSelect.RectColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(77)))), ((int)(((byte)(58)))));
-            this.btnPathSelect.RectWidth = 1;
-            this.btnPathSelect.Size = new System.Drawing.Size(59, 23);
-            this.btnPathSelect.TabIndex = 16;
-            this.btnPathSelect.TabStop = false;
-            this.btnPathSelect.TipsColor = System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(30)))), ((int)(((byte)(99)))));
-            this.btnPathSelect.TipsText = "";
-            this.btnPathSelect.Click += new System.EventHandler(this.btnPathSelect_BtnClick);
-            // 
             // dtime_maintainTime
             // 
             this.dtime_maintainTime.CustomFormat = "yyyy-MM-dd HH:mm:ss";
             this.dtime_maintainTime.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtime_maintainTime.Location = new System.Drawing.Point(510, 15);
+            this.dtime_maintainTime.Location = new System.Drawing.Point(110, 77);
             this.dtime_maintainTime.Name = "dtime_maintainTime";
-            this.dtime_maintainTime.Size = new System.Drawing.Size(144, 23);
+            this.dtime_maintainTime.Size = new System.Drawing.Size(257, 23);
             this.dtime_maintainTime.TabIndex = 8;
-            // 
-            // txt_maintainImagePath
-            // 
-            this.txt_maintainImagePath.Location = new System.Drawing.Point(101, 44);
-            this.txt_maintainImagePath.Name = "txt_maintainImagePath";
-            this.txt_maintainImagePath.Size = new System.Drawing.Size(683, 23);
-            this.txt_maintainImagePath.TabIndex = 7;
-            // 
-            // lbl_maintainImagePath
-            // 
-            this.lbl_maintainImagePath.AutoSize = true;
-            this.lbl_maintainImagePath.Location = new System.Drawing.Point(8, 48);
-            this.lbl_maintainImagePath.Name = "lbl_maintainImagePath";
-            this.lbl_maintainImagePath.Size = new System.Drawing.Size(85, 15);
-            this.lbl_maintainImagePath.TabIndex = 6;
-            this.lbl_maintainImagePath.Text = "保养照片路径";
             // 
             // txt_maintainDescription
             // 
-            this.txt_maintainDescription.Location = new System.Drawing.Point(101, 75);
+            this.txt_maintainDescription.Location = new System.Drawing.Point(110, 117);
             this.txt_maintainDescription.Multiline = true;
             this.txt_maintainDescription.Name = "txt_maintainDescription";
-            this.txt_maintainDescription.Size = new System.Drawing.Size(683, 47);
+            this.txt_maintainDescription.Size = new System.Drawing.Size(257, 108);
             this.txt_maintainDescription.TabIndex = 5;
             // 
             // lbl_maintainDescription
             // 
             this.lbl_maintainDescription.AutoSize = true;
-            this.lbl_maintainDescription.Location = new System.Drawing.Point(8, 78);
+            this.lbl_maintainDescription.Location = new System.Drawing.Point(8, 117);
             this.lbl_maintainDescription.Name = "lbl_maintainDescription";
             this.lbl_maintainDescription.Size = new System.Drawing.Size(85, 15);
             this.lbl_maintainDescription.TabIndex = 4;
@@ -180,7 +169,7 @@ namespace AppSettingsHelper.CustomControls
             // lbl_maintainTime
             // 
             this.lbl_maintainTime.AutoSize = true;
-            this.lbl_maintainTime.Location = new System.Drawing.Point(434, 19);
+            this.lbl_maintainTime.Location = new System.Drawing.Point(34, 81);
             this.lbl_maintainTime.Name = "lbl_maintainTime";
             this.lbl_maintainTime.Size = new System.Drawing.Size(59, 15);
             this.lbl_maintainTime.TabIndex = 2;
@@ -188,16 +177,15 @@ namespace AppSettingsHelper.CustomControls
             // 
             // txt_maintainOperator
             // 
-            this.txt_maintainOperator.Location = new System.Drawing.Point(310, 15);
+            this.txt_maintainOperator.Location = new System.Drawing.Point(110, 41);
             this.txt_maintainOperator.Name = "txt_maintainOperator";
-            this.txt_maintainOperator.Size = new System.Drawing.Size(107, 23);
+            this.txt_maintainOperator.Size = new System.Drawing.Size(257, 23);
             this.txt_maintainOperator.TabIndex = 1;
-            this.txt_maintainOperator.Text = "阿斯蒂";
             // 
             // lbl_maintainOperator
             // 
             this.lbl_maintainOperator.AutoSize = true;
-            this.lbl_maintainOperator.Location = new System.Drawing.Point(234, 19);
+            this.lbl_maintainOperator.Location = new System.Drawing.Point(34, 45);
             this.lbl_maintainOperator.Name = "lbl_maintainOperator";
             this.lbl_maintainOperator.Size = new System.Drawing.Size(59, 15);
             this.lbl_maintainOperator.TabIndex = 0;
@@ -223,6 +211,7 @@ namespace AppSettingsHelper.CustomControls
             this.dataGridView1.RowTemplate.Height = 25;
             this.dataGridView1.Size = new System.Drawing.Size(862, 195);
             this.dataGridView1.TabIndex = 0;
+            this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
             // 
             // btn_Close
             // 
@@ -239,7 +228,7 @@ namespace AppSettingsHelper.CustomControls
             this.btn_Close.IsRadius = true;
             this.btn_Close.IsShowRect = false;
             this.btn_Close.IsShowTips = false;
-            this.btn_Close.Location = new System.Drawing.Point(398, 404);
+            this.btn_Close.Location = new System.Drawing.Point(398, 519);
             this.btn_Close.Margin = new System.Windows.Forms.Padding(0);
             this.btn_Close.Name = "btn_Close";
             this.btn_Close.RectColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(77)))), ((int)(((byte)(58)))));
@@ -249,6 +238,7 @@ namespace AppSettingsHelper.CustomControls
             this.btn_Close.TabStop = false;
             this.btn_Close.TipsColor = System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(30)))), ((int)(((byte)(99)))));
             this.btn_Close.TipsText = "";
+            this.toolTip1.SetToolTip(this.btn_Close, "关闭窗口，保存数据到文件");
             this.btn_Close.BtnClick += new System.EventHandler(this.btn_Close_BtnClick);
             // 
             // btn_Save
@@ -266,7 +256,7 @@ namespace AppSettingsHelper.CustomControls
             this.btn_Save.IsRadius = true;
             this.btn_Save.IsShowRect = false;
             this.btn_Save.IsShowTips = false;
-            this.btn_Save.Location = new System.Drawing.Point(252, 404);
+            this.btn_Save.Location = new System.Drawing.Point(252, 519);
             this.btn_Save.Margin = new System.Windows.Forms.Padding(0);
             this.btn_Save.Name = "btn_Save";
             this.btn_Save.RectColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(77)))), ((int)(((byte)(58)))));
@@ -276,6 +266,7 @@ namespace AppSettingsHelper.CustomControls
             this.btn_Save.TabStop = false;
             this.btn_Save.TipsColor = System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(30)))), ((int)(((byte)(99)))));
             this.btn_Save.TipsText = "";
+            this.toolTip1.SetToolTip(this.btn_Save, "保存后可继续添加或修改，此操作不保存到文件");
             this.btn_Save.BtnClick += new System.EventHandler(this.btn_Save_BtnClick);
             // 
             // btn_Cancel
@@ -293,7 +284,7 @@ namespace AppSettingsHelper.CustomControls
             this.btn_Cancel.IsRadius = true;
             this.btn_Cancel.IsShowRect = false;
             this.btn_Cancel.IsShowTips = false;
-            this.btn_Cancel.Location = new System.Drawing.Point(543, 404);
+            this.btn_Cancel.Location = new System.Drawing.Point(543, 519);
             this.btn_Cancel.Margin = new System.Windows.Forms.Padding(0);
             this.btn_Cancel.Name = "btn_Cancel";
             this.btn_Cancel.RectColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(77)))), ((int)(((byte)(58)))));
@@ -303,6 +294,7 @@ namespace AppSettingsHelper.CustomControls
             this.btn_Cancel.TabStop = false;
             this.btn_Cancel.TipsColor = System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(30)))), ((int)(((byte)(99)))));
             this.btn_Cancel.TipsText = "";
+            this.toolTip1.SetToolTip(this.btn_Cancel, "关闭窗口，丢弃修改的数据");
             this.btn_Cancel.BtnClick += new System.EventHandler(this.btn_Cancel_BtnClick);
             // 
             // button1
@@ -321,12 +313,155 @@ namespace AppSettingsHelper.CustomControls
             this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.btn_Cancel_BtnClick);
             // 
+            // errorProvider1
+            // 
+            this.errorProvider1.ContainerControl = this;
+            // 
+            // pcb_PartImage4
+            // 
+            this.pcb_PartImage4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pcb_PartImage4.Location = new System.Drawing.Point(702, 188);
+            this.pcb_PartImage4.Name = "pcb_PartImage4";
+            this.pcb_PartImage4.Size = new System.Drawing.Size(57, 50);
+            this.pcb_PartImage4.TabIndex = 66;
+            this.pcb_PartImage4.TabStop = false;
+            this.pcb_PartImage4.Click += new System.EventHandler(this.pcb_PartImage1_Click);
+            // 
+            // pcb_PartImage2
+            // 
+            this.pcb_PartImage2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pcb_PartImage2.Location = new System.Drawing.Point(572, 188);
+            this.pcb_PartImage2.Name = "pcb_PartImage2";
+            this.pcb_PartImage2.Size = new System.Drawing.Size(57, 50);
+            this.pcb_PartImage2.TabIndex = 65;
+            this.pcb_PartImage2.TabStop = false;
+            this.pcb_PartImage2.Click += new System.EventHandler(this.pcb_PartImage1_Click);
+            // 
+            // pcb_PartImage3
+            // 
+            this.pcb_PartImage3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pcb_PartImage3.Location = new System.Drawing.Point(637, 188);
+            this.pcb_PartImage3.Name = "pcb_PartImage3";
+            this.pcb_PartImage3.Size = new System.Drawing.Size(57, 50);
+            this.pcb_PartImage3.TabIndex = 64;
+            this.pcb_PartImage3.TabStop = false;
+            this.pcb_PartImage3.Click += new System.EventHandler(this.pcb_PartImage1_Click);
+            // 
+            // pcb_PartImage1
+            // 
+            this.pcb_PartImage1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pcb_PartImage1.Location = new System.Drawing.Point(507, 188);
+            this.pcb_PartImage1.Name = "pcb_PartImage1";
+            this.pcb_PartImage1.Size = new System.Drawing.Size(57, 50);
+            this.pcb_PartImage1.TabIndex = 63;
+            this.pcb_PartImage1.TabStop = false;
+            this.pcb_PartImage1.Click += new System.EventHandler(this.pcb_PartImage1_Click);
+            // 
+            // btn_Translate
+            // 
+            this.btn_Translate.BackColor = System.Drawing.Color.White;
+            this.btn_Translate.BtnBackColor = System.Drawing.Color.White;
+            this.btn_Translate.BtnFont = new System.Drawing.Font("Microsoft YaHei", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btn_Translate.BtnForeColor = System.Drawing.Color.Black;
+            this.btn_Translate.BtnText = "旋  转";
+            this.btn_Translate.ConerRadius = 5;
+            this.btn_Translate.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btn_Translate.EnabledMouseEffect = false;
+            this.btn_Translate.FillColor = System.Drawing.Color.Silver;
+            this.btn_Translate.Font = new System.Drawing.Font("Microsoft YaHei", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.btn_Translate.IsRadius = true;
+            this.btn_Translate.IsShowRect = false;
+            this.btn_Translate.IsShowTips = false;
+            this.btn_Translate.Location = new System.Drawing.Point(772, 87);
+            this.btn_Translate.Margin = new System.Windows.Forms.Padding(0);
+            this.btn_Translate.Name = "btn_Translate";
+            this.btn_Translate.RectColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(77)))), ((int)(((byte)(58)))));
+            this.btn_Translate.RectWidth = 1;
+            this.btn_Translate.Size = new System.Drawing.Size(73, 23);
+            this.btn_Translate.TabIndex = 61;
+            this.btn_Translate.TabStop = false;
+            this.btn_Translate.TipsColor = System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(30)))), ((int)(((byte)(99)))));
+            this.btn_Translate.TipsText = "";
+            this.btn_Translate.BtnClick += new System.EventHandler(this.btn_Translate_BtnClick);
+            // 
+            // btn_Clear
+            // 
+            this.btn_Clear.BackColor = System.Drawing.Color.White;
+            this.btn_Clear.BtnBackColor = System.Drawing.Color.White;
+            this.btn_Clear.BtnFont = new System.Drawing.Font("Microsoft YaHei", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btn_Clear.BtnForeColor = System.Drawing.Color.Black;
+            this.btn_Clear.BtnText = "清  除";
+            this.btn_Clear.ConerRadius = 5;
+            this.btn_Clear.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btn_Clear.EnabledMouseEffect = false;
+            this.btn_Clear.FillColor = System.Drawing.Color.Silver;
+            this.btn_Clear.Font = new System.Drawing.Font("Microsoft YaHei", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.btn_Clear.IsRadius = true;
+            this.btn_Clear.IsShowRect = false;
+            this.btn_Clear.IsShowTips = false;
+            this.btn_Clear.Location = new System.Drawing.Point(772, 46);
+            this.btn_Clear.Margin = new System.Windows.Forms.Padding(0);
+            this.btn_Clear.Name = "btn_Clear";
+            this.btn_Clear.RectColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(77)))), ((int)(((byte)(58)))));
+            this.btn_Clear.RectWidth = 1;
+            this.btn_Clear.Size = new System.Drawing.Size(73, 23);
+            this.btn_Clear.TabIndex = 62;
+            this.btn_Clear.TabStop = false;
+            this.btn_Clear.TipsColor = System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(30)))), ((int)(((byte)(99)))));
+            this.btn_Clear.TipsText = "";
+            this.btn_Clear.BtnClick += new System.EventHandler(this.btn_Clear_BtnClick);
+            // 
+            // btnAdd
+            // 
+            this.btnAdd.BackColor = System.Drawing.Color.White;
+            this.btnAdd.BtnBackColor = System.Drawing.Color.White;
+            this.btnAdd.BtnFont = new System.Drawing.Font("Microsoft YaHei", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnAdd.BtnForeColor = System.Drawing.Color.Black;
+            this.btnAdd.BtnText = "添  加";
+            this.btnAdd.ConerRadius = 5;
+            this.btnAdd.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnAdd.EnabledMouseEffect = false;
+            this.btnAdd.FillColor = System.Drawing.Color.Silver;
+            this.btnAdd.Font = new System.Drawing.Font("Microsoft YaHei", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.btnAdd.IsRadius = true;
+            this.btnAdd.IsShowRect = false;
+            this.btnAdd.IsShowTips = false;
+            this.btnAdd.Location = new System.Drawing.Point(772, 5);
+            this.btnAdd.Margin = new System.Windows.Forms.Padding(0);
+            this.btnAdd.Name = "btnAdd";
+            this.btnAdd.RectColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(77)))), ((int)(((byte)(58)))));
+            this.btnAdd.RectWidth = 1;
+            this.btnAdd.Size = new System.Drawing.Size(73, 23);
+            this.btnAdd.TabIndex = 60;
+            this.btnAdd.TabStop = false;
+            this.btnAdd.TipsColor = System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(30)))), ((int)(((byte)(99)))));
+            this.btnAdd.TipsText = "";
+            this.btnAdd.BtnClick += new System.EventHandler(this.btnPathSelect_BtnClick);
+            // 
+            // pcb_PartImage
+            // 
+            this.pcb_PartImage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pcb_PartImage.Location = new System.Drawing.Point(507, 5);
+            this.pcb_PartImage.Name = "pcb_PartImage";
+            this.pcb_PartImage.Size = new System.Drawing.Size(253, 175);
+            this.pcb_PartImage.TabIndex = 59;
+            this.pcb_PartImage.TabStop = false;
+            // 
+            // lbl_PartImage
+            // 
+            this.lbl_PartImage.AutoSize = true;
+            this.lbl_PartImage.Location = new System.Drawing.Point(424, 5);
+            this.lbl_PartImage.Name = "lbl_PartImage";
+            this.lbl_PartImage.Size = new System.Drawing.Size(59, 15);
+            this.lbl_PartImage.TabIndex = 58;
+            this.lbl_PartImage.Text = "保养图片";
+            // 
             // DeviceMainTainAndRepairEdit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(881, 450);
+            this.BackColor = System.Drawing.Color.Gainsboro;
+            this.ClientSize = new System.Drawing.Size(881, 564);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.btn_Cancel);
             this.Controls.Add(this.btn_Close);
@@ -344,6 +479,12 @@ namespace AppSettingsHelper.CustomControls
             this.gbxContainer1.PerformLayout();
             this.groupBoxMain.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pcb_PartImage4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pcb_PartImage2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pcb_PartImage3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pcb_PartImage1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pcb_PartImage)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -354,10 +495,7 @@ namespace AppSettingsHelper.CustomControls
         private System.Windows.Forms.Label lbl_title;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.GroupBox gbxContainer1;
-        private UCBtnExt btnPathSelect;
         private System.Windows.Forms.DateTimePicker dtime_maintainTime;
-        private System.Windows.Forms.TextBox txt_maintainImagePath;
-        private System.Windows.Forms.Label lbl_maintainImagePath;
         private System.Windows.Forms.TextBox txt_maintainDescription;
         private System.Windows.Forms.Label lbl_maintainDescription;
         private System.Windows.Forms.Label lbl_maintainTime;
@@ -371,5 +509,17 @@ namespace AppSettingsHelper.CustomControls
         private System.Windows.Forms.Label lbl_maintainId;
         private UCBtnExt btn_Cancel;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Label lbl_error;
+        private System.Windows.Forms.ErrorProvider errorProvider1;
+        private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.PictureBox pcb_PartImage4;
+        private System.Windows.Forms.PictureBox pcb_PartImage2;
+        private System.Windows.Forms.PictureBox pcb_PartImage3;
+        private System.Windows.Forms.PictureBox pcb_PartImage1;
+        private UCBtnExt btn_Translate;
+        private UCBtnExt btn_Clear;
+        private UCBtnExt btnAdd;
+        private System.Windows.Forms.PictureBox pcb_PartImage;
+        private System.Windows.Forms.Label lbl_PartImage;
     }
 }

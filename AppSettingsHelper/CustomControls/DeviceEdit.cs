@@ -7,6 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using SalesFeedBackInfrasturcture.Infrastructure;
 using System.Drawing;
+using System.Threading.Tasks;
 
 namespace AppSettingsHelper.CustomControls
 {
@@ -81,12 +82,22 @@ namespace AppSettingsHelper.CustomControls
             device.ProductedTime = this.dtp_productTime.Value;
             device.ProductScrapTime = this.dtp_ScrapTime.Value;
             device.DeviceDescription = this.tbx_description.Text;
+            if (null != _device && _device.DeviceParts.Count > 0)
+            {
+                device.DeviceParts = _device.DeviceParts;
+            }
+            if (_operatorType == SalesFeedBackMain.OperatorType.Add)
+                device.Created = DateTime.UtcNow;
+            else
+                device.Modified = DateTime.UtcNow;
             return device;
         }
+        SalesFeedBackMain.OperatorType _operatorType;
         public DeviceEdit(SalesFeedBackMain.OperatorType operatorType)
         {
             InitializeComponent();
             InitDeviceStyles();
+            _operatorType = operatorType;
             switch (operatorType)
             {
                 case SalesFeedBackMain.OperatorType.Add:
@@ -94,6 +105,7 @@ namespace AppSettingsHelper.CustomControls
                     break;
                 case SalesFeedBackMain.OperatorType.Modify:
                     this.lbl_title.Text = "设备修改";
+                    this.tbx_deviceId.Enabled = false;
                     break;
                 case SalesFeedBackMain.OperatorType.Delete:
                     break;
@@ -130,6 +142,12 @@ namespace AppSettingsHelper.CustomControls
         private void btn_Save_Click(object sender, EventArgs e)
         {
             if (null == (this._Device = GetDevice())) return;
+            Task.Run(() =>
+            {
+                var jb = AppCommondHelper.JsonSerilize.JsonHelper.GetSerilization(this._device);
+                AppCommondHelper.JsonSerilize.JsonHelper.WriteToFile(SalesFeedBackMain.DeviceJsonPath,
+                    SalesFeedBackMain.DeviceFileName + this._device.ID + ".json", jb);
+            });
             this.DialogResult = DialogResult.OK;
             this.Close();
         }

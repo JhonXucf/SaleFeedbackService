@@ -34,19 +34,23 @@ namespace AppSettingsHelper.CustomControls
             this.lbl_partID = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.lbl_MaintainCount = new System.Windows.Forms.Label();
+            this.lbl_Count = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.Color.Transparent;
+            this.groupBox1.Controls.Add(this.lbl_Count);
+            this.groupBox1.Controls.Add(this.lbl_MaintainCount);
             this.groupBox1.Controls.Add(this.lbl_partName);
             this.groupBox1.Controls.Add(this.lbl_partID);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Location = new System.Drawing.Point(4, 1);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(181, 80);
+            this.groupBox1.Size = new System.Drawing.Size(181, 99);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             // 
@@ -85,13 +89,31 @@ namespace AppSettingsHelper.CustomControls
             this.label1.TabIndex = 0;
             this.label1.Text = "部件ID";
             // 
+            // lbl_MaintainCount
+            // 
+            this.lbl_MaintainCount.AutoSize = true;
+            this.lbl_MaintainCount.Location = new System.Drawing.Point(3, 81);
+            this.lbl_MaintainCount.Name = "lbl_MaintainCount";
+            this.lbl_MaintainCount.Size = new System.Drawing.Size(59, 15);
+            this.lbl_MaintainCount.TabIndex = 4;
+            this.lbl_MaintainCount.Text = "保养次数";
+            // 
+            // lbl_Count
+            // 
+            this.lbl_Count.AutoSize = true;
+            this.lbl_Count.Location = new System.Drawing.Point(70, 81);
+            this.lbl_Count.Name = "lbl_Count";
+            this.lbl_Count.Size = new System.Drawing.Size(13, 15);
+            this.lbl_Count.TabIndex = 5;
+            this.lbl_Count.Text = "0";
+            // 
             // DevicePartSingle
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.groupBox1);
             this.Name = "DevicePartSingle";
-            this.Size = new System.Drawing.Size(190, 86);
+            this.Size = new System.Drawing.Size(190, 104);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
@@ -105,5 +127,7 @@ namespace AppSettingsHelper.CustomControls
         private System.Windows.Forms.Label lbl_partID;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lbl_Count;
+        private System.Windows.Forms.Label lbl_MaintainCount;
     }
 }

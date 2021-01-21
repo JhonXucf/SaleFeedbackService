@@ -3,6 +3,7 @@ using System.ComponentModel;
 
 namespace SalesFeedBackInfrasturcture.Infrastructure
 {
+    [Serializable]
     public enum DeviceOperatorStyle
     {
         [Description("设备保养")]

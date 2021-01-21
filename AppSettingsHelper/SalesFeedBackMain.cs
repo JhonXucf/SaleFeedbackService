@@ -16,20 +16,26 @@ using System.Diagnostics;
 using SalesFeedBackInfrasturcture.Infrastructure;
 using AppCommondHelper;
 using AppSettingsHelper.CustomControls;
+using Newtonsoft.Json;
 
 namespace AppSettingsHelper
 {
     public partial class SalesFeedBackMain : Form
     {
 
-        public SalesFeedBackMain()
+        public SalesFeedBackMain(Dictionary<String, Device> device = null)
         {
             InitializeComponent();
+
             _clock = new Clock();
             _clock.Size = new Size(this.pnl_title.Height - 5, this.pnl_title.Height - 5);
             _clock.Location = new Point(this.pnl_title.Width - this.pnl_minimizeAndClose.Width - this._clock.Width, 5);
             this.pnl_title.Controls.Add(_clock);
             InitBorder();
+            if (null != device)
+            {
+                this._Devices = device;
+            }
         }
         #region 私有成员
 
@@ -47,8 +53,12 @@ namespace AppSettingsHelper
         /// </summary>
         string FilePath = System.AppDomain.CurrentDomain.BaseDirectory;
         DeviceSingleFrm deviceSingleFrm;
+        Dictionary<String, Device> _Devices = new Dictionary<string, Device>();
         #endregion
-
+        #region 静态成员
+        public static String DeviceJsonPath = AppDomain.CurrentDomain.BaseDirectory + "DevicesInfo\\";
+        public static String DeviceFileName = "Device_";
+        #endregion
         #region 边框鼠标拖动及关闭
         /// <summary>
         /// 初始化窗体边框,（Form1设置无边框，需要自定义边框）
@@ -248,6 +258,7 @@ namespace AppSettingsHelper
                 this.StartPosition = FormStartPosition.CenterScreen;
                 //初始化设备菜单管理按钮
                 InitDeviceManagerMenu();
+                InitDeviceFromJsonFile();
             }
             catch (Exception ex)
             {
@@ -273,7 +284,22 @@ namespace AppSettingsHelper
                 this.contextMenuDevice.Items.Add(toolStripMenuItem);
             }
         }
-
+        void InitDeviceFromJsonFile()
+        {
+            if (_Devices.Count > 0)
+            {
+                foreach (var item in _Devices)
+                {
+                    var deviceSingle = new DeviceSingleFrm();
+                    deviceSingle._Device = item.Value;
+                    deviceSingle.ModifyEventClicked += deviceSingle_ModifyEventClicked;
+                    deviceSingle.DeleteEventClicked += deviceSingle_DeleteEventClicked;
+                    this.tpg_deviceManager.Controls.Add(deviceSingle);
+                }
+            }
+            if (this.tpg_deviceManager.Controls.Count > 0)
+                this.tpg_deviceManager.UpdateControlLocation(_StartX, _StartY, _Offset);
+        }
         public enum DeviceMenuStyle
         {
             [Description("新增设备")]
@@ -311,7 +337,7 @@ namespace AppSettingsHelper
         }
         private void deviceSingle_DeleteEventClicked(object sender, EventArgs e)
         {
-            if (MessageBox.Show("确定删除" + ((DeviceSingleFrm)sender)._Device.DeviceName + "设备吗?", "提示", MessageBoxButtons.OKCancel) == DialogResult.OK)
+            if (MessageBox.Show("确定删除[" + ((DeviceSingleFrm)sender)._Device.DeviceName + "]设备吗?", "提示", MessageBoxButtons.OKCancel) == DialogResult.OK)
             {
                 this.tpg_deviceManager.Controls.Remove((DeviceSingleFrm)sender);
                 if (this.tpg_deviceManager.Controls.Count > 0)

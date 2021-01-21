@@ -3,29 +3,20 @@ using System.ComponentModel;
 
 namespace SalesFeedBackInfrasturcture.Infrastructure
 {
+    [Serializable]
     public enum DeviceMaintainStyle
     {
-        [Description("分钟"), SortOrder(0)]
+        [Description("分钟")]
         Minute = 0x01,
-        [Description("小时"), SortOrder(1)]
+        [Description("小时")]
         Hour = 0x02,
-        [Description("天"), SortOrder(2)]
+        [Description("天")]
         Day = 0x04,
-        [Description("月"), SortOrder(3)]
+        [Description("月")]
         Month = 0x8,
-        [Description("季度"), SortOrder(4)]
+        [Description("季度")]
         Quarter = 0x16,
-        [Description("年"), SortOrder(5)]
+        [Description("年")]
         Year = 0x32,
-    }
-    [AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = false)]
-    public class SortOrderAttribute : Attribute
-    {
-        private readonly Int32 _order = 0;
-        public SortOrderAttribute(Int32 order)
-        {
-            this._order = order;
-        }
-        public Int32 Order => _order;
     }
 }

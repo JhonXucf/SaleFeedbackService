@@ -22,6 +22,7 @@ namespace AppSettingsHelper.CustomControls
         /// <param name="e"></param>
         private void Control_MouseDown(object sender, MouseEventArgs e)
         {
+            if (e.X < this.Height / 2) return;
             this._mousePoint.X = e.X;
             this._mousePoint.Y = e.Y;
         }
@@ -32,8 +33,7 @@ namespace AppSettingsHelper.CustomControls
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Control_MouseMove(object sender, MouseEventArgs e)
-        {
-
+        { 
             if (e.Button == MouseButtons.Left)
             {
                 this.Top = Control.MousePosition.Y - _mousePoint.Y;
@@ -113,23 +113,19 @@ namespace AppSettingsHelper.CustomControls
         {
             //调起维护界面
             Int16 count = 0;
-            DevicePartSingle devicePartSingle;
-            DevicePart devicePart = null;
+            DevicePartSingle devicePartSingle = sender as DevicePartSingle;
+            DevicePart devicePart = devicePartSingle._DevicePart;
             foreach (Control item in this.gbxContainer.Controls)
             {
                 if (item is DevicePartSingle)
                 {
-                    devicePartSingle = item as DevicePartSingle;
-                    if (devicePartSingle.IsSelected)
-                        count++;
+                    DevicePartSingle tempSingle = item as DevicePartSingle;
+                    if (!tempSingle.IsSelected) continue;
+                    count++;
                     if (count > 1)
                     {
                         devicePart = null;
                         break;
-                    }
-                    else
-                    {
-                        devicePart = devicePartSingle._DevicePart;
                     }
                 }
             }
@@ -137,7 +133,51 @@ namespace AppSettingsHelper.CustomControls
             mainAndRepair.StartPosition = FormStartPosition.CenterParent;
             if (mainAndRepair.ShowDialog() == DialogResult.OK)
             {
+                if (count > 1)
+                {
+                    foreach (Control item in this.gbxContainer.Controls)
+                    {
+                        if (item is DevicePartSingle)
+                        {
+                            devicePartSingle = item as DevicePartSingle;
+                            if (devicePartSingle.IsSelected)
+                            {
 
+                                if (this._deviceOperator == DeviceOperatorStyle.Maintain)
+                                {
+                                    foreach (var maintain in mainAndRepair._DevicePart.MaintainDetails)
+                                    {
+                                        if (devicePartSingle._DevicePart.MaintainDetails.ContainsKey(maintain.Key))
+                                        {
+                                            devicePartSingle._DevicePart.MaintainDetails[maintain.Key] = maintain.Value;
+                                            continue;
+                                        }
+                                        devicePartSingle._DevicePart.MaintainDetails[maintain.Key] = maintain.Value;
+                                    }
+                                    devicePartSingle.MaintainCount = devicePartSingle._DevicePart.MaintainDetails.Count;
+                                }
+                                else
+                                {
+                                    foreach (var maintain in mainAndRepair._DevicePart.RepairDetails)
+                                    { 
+                                        if (devicePartSingle._DevicePart.RepairDetails.ContainsKey(maintain.Key))
+                                        {
+                                            devicePartSingle._DevicePart.RepairDetails[maintain.Key] = maintain.Value;
+                                            continue;
+                                        }
+                                        devicePartSingle._DevicePart.RepairDetails[maintain.Key] = maintain.Value;
+                                    }
+                                    devicePartSingle.MaintainCount = devicePartSingle._DevicePart.RepairDetails.Count;
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    devicePartSingle.MaintainCount = this._deviceOperator == DeviceOperatorStyle.Maintain ? devicePart.MaintainDetails.Count
+                    : devicePart.RepairDetails.Count;
+                }
             }
         }
 

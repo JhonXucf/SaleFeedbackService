@@ -23,12 +23,21 @@ namespace AppSettingsHelper.CustomControls
                 _devicePart = value;
             }
         }
+        public Int32 MaintainCount
+        {
+            set 
+            {
+                this.lbl_Count.Text = value.ToString();
+            }
+        }
         public DevicePartSingle(DevicePart devicePart, DeviceOperatorStyle deviceOperatorStyle)
         {
             InitializeComponent();
             _devicePart = devicePart;
             this.lbl_partID.Text = devicePart.ID;
             this.lbl_partName.Text = devicePart.PartName;
+            this.lbl_MaintainCount.Text = deviceOperatorStyle == DeviceOperatorStyle.Maintain ? "保养次数" : "维修次数";
+            this.lbl_Count.Text = deviceOperatorStyle == DeviceOperatorStyle.Maintain ? devicePart.MaintainDetails.Count.ToString() : devicePart.RepairDetails.Count.ToString();
             this.Click += Item_Click;
             ContextMenuStrip contextMenuStrip = new ContextMenuStrip();
             var toolStripMenuItemAdd = new ToolStripMenuItem
@@ -42,7 +51,7 @@ namespace AppSettingsHelper.CustomControls
             var toolStripMenuItem = new ToolStripMenuItem
             {
                 Name = "toolStripMenuModify",
-                Text = "修改",
+                Text = "部件修改",
                 Image = "fa-pencil-square-o".GetBitmap(),
             };
             toolStripMenuItem.Click += ToolStripMenuItemModify_Click;
@@ -50,7 +59,7 @@ namespace AppSettingsHelper.CustomControls
             var toolStripMenuItem1 = new ToolStripMenuItem
             {
                 Name = "toolStripMenuDelete",
-                Text = "删除",
+                Text = "部件删除",
                 Image = "fa-times".GetBitmap(),
             };
             toolStripMenuItem1.Click += ToolStripMenuItemDelete_Click;
@@ -87,7 +96,7 @@ namespace AppSettingsHelper.CustomControls
 
         private void ToolStripMenuItemDelete_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("确定删除" + this._devicePart.PartName + "部件吗?", "提示", MessageBoxButtons.OKCancel) == DialogResult.OK)
+            if (MessageBox.Show("确定删除[" + this._devicePart.PartName + "]部件吗?", "提示", MessageBoxButtons.OKCancel) == DialogResult.OK)
             {
                 DeletedHandle?.Invoke(this, e);
             }

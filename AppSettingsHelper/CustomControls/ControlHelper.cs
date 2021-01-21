@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -15,6 +16,27 @@ namespace AppSettingsHelper.CustomControls
 {
     public static class ControlHelper
     {
+        /// <summary>
+        /// 字节数组生成图片
+        /// </summary>
+        /// <param name="Bytes">字节数组</param>
+        /// <returns>图片</returns>
+        public static Image byteArrayToImage(this Byte[] Bytes)
+        {
+            using (MemoryStream ms = new MemoryStream(Bytes))
+            {
+                Image outputImg = Image.FromStream(ms);
+                return outputImg;
+            }
+        }
+        public static Byte[] ImageToByteArray(this Image image)
+        {
+            using (MemoryStream ms = new MemoryStream())
+            {
+                image.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+                return ms.GetBuffer();
+            } 
+        }
         public static String GetEnumDescription<T>(this Enum deviceStyle)
         {
             var deviceOprs = typeof(T).GetFields();

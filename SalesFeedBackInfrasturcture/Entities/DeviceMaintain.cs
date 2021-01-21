@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using SalesFeedBackInfrasturcture.Shared;
@@ -27,6 +28,6 @@ namespace SalesFeedBackInfrasturcture.Entities
         /// <summary>
         /// 保养照片
         /// </summary>
-        public String MaintainImagePath { get; set; } = String.Empty;
+        public List<Byte[]> MaintainImages { get; set; } = null;
     }
 }

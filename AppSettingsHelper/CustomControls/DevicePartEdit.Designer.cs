@@ -31,6 +31,8 @@ namespace AppSettingsHelper.CustomControls
         {
             this.components = new System.ComponentModel.Container();
             this.gbxContainer = new System.Windows.Forms.GroupBox();
+            this.pcb_PartImage3 = new System.Windows.Forms.PictureBox();
+            this.pcb_PartImage1 = new System.Windows.Forms.PictureBox();
             this.lbl_error2 = new System.Windows.Forms.Label();
             this.cbx_Unit = new System.Windows.Forms.ComboBox();
             this.btn_Translate = new AppSettingsHelper.UCBtnExt();
@@ -73,13 +75,23 @@ namespace AppSettingsHelper.CustomControls
             this.btn_Close = new AppSettingsHelper.UCBtnExt();
             this.btn_Save = new AppSettingsHelper.UCBtnExt();
             this.button1 = new System.Windows.Forms.Button();
+            this.pcb_PartImage2 = new System.Windows.Forms.PictureBox();
+            this.pcb_PartImage4 = new System.Windows.Forms.PictureBox();
             this.gbxContainer.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pcb_PartImage3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pcb_PartImage1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pcb_PartImage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pcb_PartImage2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pcb_PartImage4)).BeginInit();
             this.SuspendLayout();
             // 
             // gbxContainer
             // 
+            this.gbxContainer.Controls.Add(this.pcb_PartImage4);
+            this.gbxContainer.Controls.Add(this.pcb_PartImage2);
+            this.gbxContainer.Controls.Add(this.pcb_PartImage3);
+            this.gbxContainer.Controls.Add(this.pcb_PartImage1);
             this.gbxContainer.Controls.Add(this.lbl_error2);
             this.gbxContainer.Controls.Add(this.cbx_Unit);
             this.gbxContainer.Controls.Add(this.btn_Translate);
@@ -122,6 +134,26 @@ namespace AppSettingsHelper.CustomControls
             this.gbxContainer.TabIndex = 0;
             this.gbxContainer.TabStop = false;
             // 
+            // pcb_PartImage3
+            // 
+            this.pcb_PartImage3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pcb_PartImage3.Location = new System.Drawing.Point(551, 258);
+            this.pcb_PartImage3.Name = "pcb_PartImage3";
+            this.pcb_PartImage3.Size = new System.Drawing.Size(57, 50);
+            this.pcb_PartImage3.TabIndex = 55;
+            this.pcb_PartImage3.TabStop = false;
+            this.pcb_PartImage3.Click += new System.EventHandler(this.pcb_PartImage1_Click);
+            // 
+            // pcb_PartImage1
+            // 
+            this.pcb_PartImage1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pcb_PartImage1.Location = new System.Drawing.Point(421, 258);
+            this.pcb_PartImage1.Name = "pcb_PartImage1";
+            this.pcb_PartImage1.Size = new System.Drawing.Size(57, 50);
+            this.pcb_PartImage1.TabIndex = 54;
+            this.pcb_PartImage1.TabStop = false;
+            this.pcb_PartImage1.Click += new System.EventHandler(this.pcb_PartImage1_Click);
+            // 
             // lbl_error2
             // 
             this.lbl_error2.AutoSize = true;
@@ -156,7 +188,7 @@ namespace AppSettingsHelper.CustomControls
             this.btn_Translate.IsRadius = true;
             this.btn_Translate.IsShowRect = false;
             this.btn_Translate.IsShowTips = false;
-            this.btn_Translate.Location = new System.Drawing.Point(680, 137);
+            this.btn_Translate.Location = new System.Drawing.Point(686, 137);
             this.btn_Translate.Margin = new System.Windows.Forms.Padding(0);
             this.btn_Translate.Name = "btn_Translate";
             this.btn_Translate.RectColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(77)))), ((int)(((byte)(58)))));
@@ -183,7 +215,7 @@ namespace AppSettingsHelper.CustomControls
             this.btn_Clear.IsRadius = true;
             this.btn_Clear.IsShowRect = false;
             this.btn_Clear.IsShowTips = false;
-            this.btn_Clear.Location = new System.Drawing.Point(680, 96);
+            this.btn_Clear.Location = new System.Drawing.Point(686, 96);
             this.btn_Clear.Margin = new System.Windows.Forms.Padding(0);
             this.btn_Clear.Name = "btn_Clear";
             this.btn_Clear.RectColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(77)))), ((int)(((byte)(58)))));
@@ -210,7 +242,7 @@ namespace AppSettingsHelper.CustomControls
             this.btnAdd.IsRadius = true;
             this.btnAdd.IsShowRect = false;
             this.btnAdd.IsShowTips = false;
-            this.btnAdd.Location = new System.Drawing.Point(680, 55);
+            this.btnAdd.Location = new System.Drawing.Point(686, 55);
             this.btnAdd.Margin = new System.Windows.Forms.Padding(0);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.RectColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(77)))), ((int)(((byte)(58)))));
@@ -227,14 +259,14 @@ namespace AppSettingsHelper.CustomControls
             this.pcb_PartImage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pcb_PartImage.Location = new System.Drawing.Point(421, 55);
             this.pcb_PartImage.Name = "pcb_PartImage";
-            this.pcb_PartImage.Size = new System.Drawing.Size(253, 253);
+            this.pcb_PartImage.Size = new System.Drawing.Size(253, 197);
             this.pcb_PartImage.TabIndex = 46;
             this.pcb_PartImage.TabStop = false;
             // 
             // lbl_Minute
             // 
             this.lbl_Minute.AutoSize = true;
-            this.lbl_Minute.Location = new System.Drawing.Point(733, 23);
+            this.lbl_Minute.Location = new System.Drawing.Point(743, 23);
             this.lbl_Minute.Name = "lbl_Minute";
             this.lbl_Minute.Size = new System.Drawing.Size(20, 15);
             this.lbl_Minute.TabIndex = 45;
@@ -243,7 +275,7 @@ namespace AppSettingsHelper.CustomControls
             // lbl_Hour
             // 
             this.lbl_Hour.AutoSize = true;
-            this.lbl_Hour.Location = new System.Drawing.Point(677, 23);
+            this.lbl_Hour.Location = new System.Drawing.Point(686, 23);
             this.lbl_Hour.Name = "lbl_Hour";
             this.lbl_Hour.Size = new System.Drawing.Size(20, 15);
             this.lbl_Hour.TabIndex = 44;
@@ -262,9 +294,9 @@ namespace AppSettingsHelper.CustomControls
             "7",
             "8",
             "9"});
-            this.cbx_Minute.Location = new System.Drawing.Point(701, 19);
+            this.cbx_Minute.Location = new System.Drawing.Point(706, 19);
             this.cbx_Minute.Name = "cbx_Minute";
-            this.cbx_Minute.Size = new System.Drawing.Size(28, 23);
+            this.cbx_Minute.Size = new System.Drawing.Size(37, 23);
             this.cbx_Minute.TabIndex = 43;
             // 
             // cbx_Hour
@@ -280,15 +312,15 @@ namespace AppSettingsHelper.CustomControls
             "7",
             "8",
             "9"});
-            this.cbx_Hour.Location = new System.Drawing.Point(645, 19);
+            this.cbx_Hour.Location = new System.Drawing.Point(649, 19);
             this.cbx_Hour.Name = "cbx_Hour";
-            this.cbx_Hour.Size = new System.Drawing.Size(28, 23);
+            this.cbx_Hour.Size = new System.Drawing.Size(37, 23);
             this.cbx_Hour.TabIndex = 42;
             // 
             // lbl_Day
             // 
             this.lbl_Day.AutoSize = true;
-            this.lbl_Day.Location = new System.Drawing.Point(621, 23);
+            this.lbl_Day.Location = new System.Drawing.Point(629, 23);
             this.lbl_Day.Name = "lbl_Day";
             this.lbl_Day.Size = new System.Drawing.Size(20, 15);
             this.lbl_Day.TabIndex = 41;
@@ -297,7 +329,7 @@ namespace AppSettingsHelper.CustomControls
             // lbl_Month
             // 
             this.lbl_Month.AutoSize = true;
-            this.lbl_Month.Location = new System.Drawing.Point(565, 23);
+            this.lbl_Month.Location = new System.Drawing.Point(572, 23);
             this.lbl_Month.Name = "lbl_Month";
             this.lbl_Month.Size = new System.Drawing.Size(20, 15);
             this.lbl_Month.TabIndex = 40;
@@ -316,9 +348,9 @@ namespace AppSettingsHelper.CustomControls
             "7",
             "8",
             "9"});
-            this.cbx_Day.Location = new System.Drawing.Point(589, 19);
+            this.cbx_Day.Location = new System.Drawing.Point(592, 19);
             this.cbx_Day.Name = "cbx_Day";
-            this.cbx_Day.Size = new System.Drawing.Size(28, 23);
+            this.cbx_Day.Size = new System.Drawing.Size(37, 23);
             this.cbx_Day.TabIndex = 39;
             // 
             // cbx_Month
@@ -334,15 +366,15 @@ namespace AppSettingsHelper.CustomControls
             "7",
             "8",
             "9"});
-            this.cbx_Month.Location = new System.Drawing.Point(533, 19);
+            this.cbx_Month.Location = new System.Drawing.Point(535, 19);
             this.cbx_Month.Name = "cbx_Month";
-            this.cbx_Month.Size = new System.Drawing.Size(28, 23);
+            this.cbx_Month.Size = new System.Drawing.Size(37, 23);
             this.cbx_Month.TabIndex = 38;
             // 
             // lbl_Quarter
             // 
             this.lbl_Quarter.AutoSize = true;
-            this.lbl_Quarter.Location = new System.Drawing.Point(509, 23);
+            this.lbl_Quarter.Location = new System.Drawing.Point(515, 23);
             this.lbl_Quarter.Name = "lbl_Quarter";
             this.lbl_Quarter.Size = new System.Drawing.Size(20, 15);
             this.lbl_Quarter.TabIndex = 37;
@@ -351,7 +383,7 @@ namespace AppSettingsHelper.CustomControls
             // lbl_Year
             // 
             this.lbl_Year.AutoSize = true;
-            this.lbl_Year.Location = new System.Drawing.Point(453, 23);
+            this.lbl_Year.Location = new System.Drawing.Point(458, 23);
             this.lbl_Year.Name = "lbl_Year";
             this.lbl_Year.Size = new System.Drawing.Size(20, 15);
             this.lbl_Year.TabIndex = 36;
@@ -365,9 +397,9 @@ namespace AppSettingsHelper.CustomControls
             "2",
             "3",
             "4"});
-            this.cbx_Quarter.Location = new System.Drawing.Point(477, 19);
+            this.cbx_Quarter.Location = new System.Drawing.Point(478, 19);
             this.cbx_Quarter.Name = "cbx_Quarter";
-            this.cbx_Quarter.Size = new System.Drawing.Size(28, 23);
+            this.cbx_Quarter.Size = new System.Drawing.Size(37, 23);
             this.cbx_Quarter.TabIndex = 35;
             // 
             // cbx_Year
@@ -385,7 +417,7 @@ namespace AppSettingsHelper.CustomControls
             "9"});
             this.cbx_Year.Location = new System.Drawing.Point(421, 19);
             this.cbx_Year.Name = "cbx_Year";
-            this.cbx_Year.Size = new System.Drawing.Size(28, 23);
+            this.cbx_Year.Size = new System.Drawing.Size(37, 23);
             this.cbx_Year.TabIndex = 34;
             // 
             // lbl_PartImage
@@ -630,6 +662,26 @@ namespace AppSettingsHelper.CustomControls
             this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.btn_Close_BtnClick);
             // 
+            // pcb_PartImage2
+            // 
+            this.pcb_PartImage2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pcb_PartImage2.Location = new System.Drawing.Point(486, 258);
+            this.pcb_PartImage2.Name = "pcb_PartImage2";
+            this.pcb_PartImage2.Size = new System.Drawing.Size(57, 50);
+            this.pcb_PartImage2.TabIndex = 56;
+            this.pcb_PartImage2.TabStop = false;
+            this.pcb_PartImage2.Click += new System.EventHandler(this.pcb_PartImage1_Click);
+            // 
+            // pcb_PartImage4
+            // 
+            this.pcb_PartImage4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pcb_PartImage4.Location = new System.Drawing.Point(616, 258);
+            this.pcb_PartImage4.Name = "pcb_PartImage4";
+            this.pcb_PartImage4.Size = new System.Drawing.Size(57, 50);
+            this.pcb_PartImage4.TabIndex = 57;
+            this.pcb_PartImage4.TabStop = false;
+            this.pcb_PartImage4.Click += new System.EventHandler(this.pcb_PartImage1_Click);
+            // 
             // DevicePartEdit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -649,8 +701,12 @@ namespace AppSettingsHelper.CustomControls
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Control_MouseMove);
             this.gbxContainer.ResumeLayout(false);
             this.gbxContainer.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pcb_PartImage3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pcb_PartImage1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pcb_PartImage)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pcb_PartImage2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pcb_PartImage4)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -703,5 +759,9 @@ namespace AppSettingsHelper.CustomControls
         private System.Windows.Forms.TextBox tbx_Count;
         private System.Windows.Forms.Label lbl_error2;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.PictureBox pcb_PartImage1;
+        private System.Windows.Forms.PictureBox pcb_PartImage3;
+        private System.Windows.Forms.PictureBox pcb_PartImage4;
+        private System.Windows.Forms.PictureBox pcb_PartImage2;
     }
 }

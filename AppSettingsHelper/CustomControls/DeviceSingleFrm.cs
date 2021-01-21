@@ -111,6 +111,12 @@ namespace AppSettingsHelper.CustomControls
                     {
                         this._device.DeviceParts = deviceMaintain._deviceParts;
                         this.lbl_devicePartNum.Text = _device.DeviceParts.Count.ToString();
+                        System.Threading.Tasks.Task.Run(() =>
+                        {
+                            var jb = AppCommondHelper.JsonSerilize.JsonHelper.GetSerilization(this._device);
+                            AppCommondHelper.JsonSerilize.JsonHelper.WriteToFile(SalesFeedBackMain.DeviceJsonPath,
+                                SalesFeedBackMain.DeviceFileName + this._device.ID + ".json", jb);
+                        });
                     }
                     break;
                 case "ModifyDevice":
@@ -131,6 +137,12 @@ namespace AppSettingsHelper.CustomControls
                     {
                         this._device.DeviceParts = deviceRepair._deviceParts;
                         this.lbl_devicePartNum.Text = _device.DeviceParts.Count.ToString();
+                        System.Threading.Tasks.Task.Run(() =>
+                        {
+                            var jb = AppCommondHelper.JsonSerilize.JsonHelper.GetSerilization(this._device);
+                            AppCommondHelper.JsonSerilize.JsonHelper.WriteToFile(SalesFeedBackMain.DeviceJsonPath,
+                                SalesFeedBackMain.DeviceFileName + this._device.ID + ".json", jb);
+                        });
                     }
                     break;
                 case "DevicePart":
@@ -140,6 +152,12 @@ namespace AppSettingsHelper.CustomControls
                     {
                         this._device.DeviceParts[devicePartEdit._DevicePart.ID] = devicePartEdit._DevicePart;
                         this.lbl_devicePartNum.Text = _device.DeviceParts.Count.ToString();
+                        System.Threading.Tasks.Task.Run(() =>
+                        {
+                            var jb = AppCommondHelper.JsonSerilize.JsonHelper.GetSerilization(this._device);
+                            AppCommondHelper.JsonSerilize.JsonHelper.WriteToFile(SalesFeedBackMain.DeviceJsonPath,
+                                SalesFeedBackMain.DeviceFileName + this._device.ID + ".json", jb);
+                        });                   
                     }
                     break;
                 default:

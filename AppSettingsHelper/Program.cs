@@ -9,9 +9,6 @@ namespace AppSettingsHelper
 {
     static class Program
     {
-        #region 全局静态成员
-
-        #endregion
         /// <summary>
         ///  The main entry point for the application.
         /// </summary>
@@ -24,7 +21,11 @@ namespace AppSettingsHelper
             //var logPath = SerilogLogger.GetLogPath();
             //SerilogLogger.InitSerilog(logPath);
             //SerilogLogger.Logger.Information("This is AppSetting app");
-            Application.Run(new SalesFeedBackMain());
+            var pageLoad = new LoadPage();
+            if (pageLoad.ShowDialog() == DialogResult.OK)
+            {
+                Application.Run(new SalesFeedBackMain(pageLoad._Devices));
+            }
         }
     }
 }

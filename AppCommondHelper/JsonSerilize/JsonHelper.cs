@@ -47,20 +47,28 @@ namespace AppCommondHelper.JsonSerilize
             String strJson = JsonConvert.SerializeObject(obj, Formatting.Indented);
             return strJson;
         }
+        public static T ReadTFromJsonFile<T>(String path)
+        {
+            String json = AppCommondHelper.JsonSerilize.JsonHelper.ReadFromFile(path);
+            return (T)JsonConvert.DeserializeObject(json, typeof(T));
+        }
         public static T GetDeSerilization<T>(string obj)
         {
             if (obj is null) throw new Exception("Json string is null");
             T res = JsonConvert.DeserializeObject<T>(obj);
             return res;
         }
-        public static void WriteToFile(String path, String json)
+        public static void WriteToFile(String path, String fileName, String json)
         {
-            File.WriteAllText(path, json);
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+
+            File.WriteAllText(path + fileName, json);
         }
         public static String ReadFromFile(String path)
         {
             return File.ReadAllText(path);
-        }
+        } 
         public static T GetT<T>(string path, string key = null)
         {
             try

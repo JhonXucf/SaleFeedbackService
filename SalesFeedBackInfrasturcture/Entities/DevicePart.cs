@@ -45,7 +45,7 @@ namespace SalesFeedBackInfrasturcture.Entities
         /// <summary>
         /// 部件照片
         /// </summary>
-        public Image PartImage { get; set; } = null;
+        public List<Byte[]> PartImages { get; set; } = null;
         [Description("部件描述")]
         /// <summary>
         /// 部件描述
