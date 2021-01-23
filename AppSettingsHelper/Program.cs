@@ -18,13 +18,13 @@ namespace AppSettingsHelper
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            //var logPath = SerilogLogger.GetLogPath();
-            //SerilogLogger.InitSerilog(logPath);
-            //SerilogLogger.Logger.Information("This is AppSetting app");
+            SerilogLogger.InitSerilog(GlobalSet.m_AppOption.LoggerPath);
+            SerilogLogger.Logger.Information($"This is {GlobalSet.m_AppOption.AppName} app Started.");
             var pageLoad = new LoadPage();
             if (pageLoad.ShowDialog() == DialogResult.OK)
             {
-                Application.Run(new SalesFeedBackMain(pageLoad._Devices));
+                var devices = pageLoad._Devices;
+                Application.Run(new SalesFeedBackMain(devices));
             }
         }
     }

@@ -7,6 +7,8 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using SalesFeedBackInfrasturcture.Entities;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace AppSettingsHelper.CustomControls
 {
@@ -44,14 +46,16 @@ namespace AppSettingsHelper.CustomControls
         DeviceMaintain _deviceMaintian;
         DeviceRepair _deviceRepair;
         DevicePart _devicePart;
-        DataTable dt;
+        DataTable _dt;
+        String _deviceId;
         public DevicePart _DevicePart => _devicePart;
-        public DeviceMainTainAndRepairEdit(DeviceOperatorStyle deviceOperator, DevicePart devicePart = null)
+        public DeviceMainTainAndRepairEdit(DeviceOperatorStyle deviceOperator, String deviceId, DevicePart devicePart = null)
         {
             InitializeComponent();
             this.Load += DeviceMainTainAndRepairEdit_Load;
             _deviceOperator = deviceOperator;
             _devicePart = devicePart;
+            _deviceId = deviceId;
             ContextMenuStrip contextMenuStrip = new ContextMenuStrip();
             var toolStripMenuItemDelete = new ToolStripMenuItem
             {
@@ -109,11 +113,19 @@ namespace AppSettingsHelper.CustomControls
                 {
                     if (_deviceOperator == DeviceOperatorStyle.Maintain)
                     {
+                        Parallel.ForEach(_devicePart.MaintainDetails, maintain =>
+                         {
+                             GlobalSet.WriteDevicePartMainTainOrRepaitToFile(_deviceId, _devicePart, _deviceOperator, SalesFeedBackMain.OperatorType.Delete, maintain.Value);
+                         });
 
                         _devicePart.MaintainDetails.Clear();
                     }
                     else
                     {
+                        Parallel.ForEach(_devicePart.RepairDetails, repair =>
+                        {
+                            GlobalSet.WriteDevicePartMainTainOrRepaitToFile(_deviceId, _devicePart, _deviceOperator, SalesFeedBackMain.OperatorType.Delete, null, repair.Value);
+                        });
                         _devicePart.RepairDetails.Clear();
                     }
                     dataGridView1.Rows.Clear();
@@ -127,13 +139,20 @@ namespace AppSettingsHelper.CustomControls
                 if (_deviceOperator == DeviceOperatorStyle.Maintain)
                 {
                     if (_devicePart.MaintainDetails.ContainsKey(Id))
+                    {
+                        GlobalSet.WriteDevicePartMainTainOrRepaitToFile(_deviceId, _devicePart, _deviceOperator, SalesFeedBackMain.OperatorType.Delete, _devicePart.MaintainDetails[Id]);
                         _devicePart.MaintainDetails.Remove(Id);
+                    }
                     dataGridView1.Rows.RemoveAt(rowIndex);
                 }
                 else
                 {
                     if (_devicePart.RepairDetails.ContainsKey(Id))
+                    {
+                        GlobalSet.WriteDevicePartMainTainOrRepaitToFile(_deviceId, _devicePart, _deviceOperator, SalesFeedBackMain.OperatorType.Delete, null, _devicePart.RepairDetails[Id]);
                         _devicePart.RepairDetails.Remove(Id);
+
+                    }
                     dataGridView1.Rows.RemoveAt(rowIndex);
                 }
             }
@@ -152,13 +171,13 @@ namespace AppSettingsHelper.CustomControls
                         Int32 index = 0;
                         foreach (var item in _devicePart.MaintainDetails)
                         {
-                            DataRow dr = dt.NewRow();
+                            DataRow dr = _dt.NewRow();
                             dr[0] = index++;
                             dr[1] = item.Value.ID.ToString();
                             dr[2] = item.Value.MaintainMan.ToString();
                             dr[3] = item.Value.MaintainTime.ToLocalTime().ToString();
                             dr[4] = item.Value.MaintainBody.ToString();
-                            dt.Rows.Add(dr);
+                            _dt.Rows.Add(dr);
                         }
                     }
                     break;
@@ -176,27 +195,27 @@ namespace AppSettingsHelper.CustomControls
                         Int32 index = 0;
                         foreach (var item in _devicePart.RepairDetails)
                         {
-                            DataRow dr = dt.NewRow();
+                            DataRow dr = _dt.NewRow();
                             dr[0] = index++;
                             dr[1] = item.Value.ID.ToString();
                             dr[2] = item.Value.RepairMan.ToString();
                             dr[3] = item.Value.RepairTime.ToLocalTime().ToString();
                             dr[4] = item.Value.RepairBody.ToString();
-                            dt.Rows.Add(dr);
+                            _dt.Rows.Add(dr);
                         }
                     }
                     break;
                 default:
                     break;
             }
-            this.dataGridView1.DataSource = dt;
+            this.dataGridView1.DataSource = _dt;
             this.dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
 
         void InitDataGridview(String title)
         {
-            dt = new DataTable();
-            dt.Columns.AddRange(new DataColumn[] {
+            _dt = new DataTable();
+            _dt.Columns.AddRange(new DataColumn[] {
                 new DataColumn("序号",typeof(String)),
                 new DataColumn(title +"ID",typeof(String)),
                 new DataColumn(title + "人员",typeof(String)),
@@ -316,13 +335,13 @@ namespace AppSettingsHelper.CustomControls
                 this._devicePart.MaintainDetails[this.tbx_maintainId.Text] = _deviceMaintian;
 
                 Int32 index = this._devicePart.MaintainDetails.Count - 1;
-                DataRow dr = dt.NewRow();
+                DataRow dr = _dt.NewRow();
                 dr[0] = index++;
                 dr[1] = _deviceMaintian.ID.ToString();
                 dr[2] = _deviceMaintian.MaintainMan.ToString();
                 dr[3] = _deviceMaintian.MaintainTime.ToLocalTime().ToString();
                 dr[4] = _deviceMaintian.MaintainBody.ToString();
-                dt.Rows.Add(dr);
+                _dt.Rows.Add(dr);
             }
             else
             {
@@ -368,13 +387,13 @@ namespace AppSettingsHelper.CustomControls
 
                 this._devicePart.RepairDetails[this.tbx_maintainId.Text] = _deviceRepair;
                 Int32 index = this._devicePart.RepairDetails.Count - 1;
-                DataRow dr = dt.NewRow();
+                DataRow dr = _dt.NewRow();
                 dr[0] = index++;
                 dr[1] = _deviceRepair.ID.ToString();
                 dr[2] = _deviceRepair.RepairMan.ToString();
                 dr[3] = _deviceRepair.RepairTime.ToLocalTime().ToString();
                 dr[4] = _deviceRepair.RepairBody.ToString();
-                dt.Rows.Add(dr);
+                _dt.Rows.Add(dr);
             }
         }
 
@@ -440,7 +459,7 @@ namespace AppSettingsHelper.CustomControls
                     this.pcb_PartImage4.SizeMode = PictureBoxSizeMode.StretchImage;
                     this.pcb_PartImage4.Image = images[4];
                 }
-            }         
+            }
         }
 
         private void btn_Clear_BtnClick(object sender, EventArgs e)

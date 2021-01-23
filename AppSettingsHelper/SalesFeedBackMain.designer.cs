@@ -33,24 +33,33 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tpg_deviceManager = new System.Windows.Forms.TabPage();
             this.contextMenuDevice = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.tabPage4 = new System.Windows.Forms.TabPage();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.txt_serach = new AppSettingsHelper.UCTextBoxEx();
+            this.lbl_medium = new System.Windows.Forms.Label();
+            this.dtp_EndTime = new System.Windows.Forms.DateTimePicker();
+            this.lbl_EndTime = new System.Windows.Forms.Label();
+            this.lbl_StartTime = new System.Windows.Forms.Label();
+            this.dtp_StartTime = new System.Windows.Forms.DateTimePicker();
             this.tabControl2 = new System.Windows.Forms.TabControl();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.tabPage_Information = new System.Windows.Forms.TabPage();
+            this.richTextBox_information = new System.Windows.Forms.RichTextBox();
             this.contextMenuLog = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.刷新ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.清空日志ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tabPage5 = new System.Windows.Forms.TabPage();
-            this.tabPage6 = new System.Windows.Forms.TabPage();
-            this.tabPage10 = new System.Windows.Forms.TabPage();
+            this.tabPage_Warning = new System.Windows.Forms.TabPage();
+            this.richTextBox_warning = new System.Windows.Forms.RichTextBox();
+            this.tabPage_eroor = new System.Windows.Forms.TabPage();
+            this.richTextBox_error = new System.Windows.Forms.RichTextBox();
+            this.tabPage_Fatal = new System.Windows.Forms.TabPage();
+            this.richTextBox_Fatal = new System.Windows.Forms.RichTextBox();
             this.tabPage9 = new System.Windows.Forms.TabPage();
             this.lbMessage = new System.Windows.Forms.Label();
-            this.lbDw800state = new System.Windows.Forms.Label();
-            this.btnDw800Uninstall = new System.Windows.Forms.Button();
-            this.btnDw800Stop = new System.Windows.Forms.Button();
-            this.btnDw800Start = new System.Windows.Forms.Button();
-            this.btnDw800Install = new System.Windows.Forms.Button();
+            this.lbServicestate = new System.Windows.Forms.Label();
+            this.btnServiceUninstall = new System.Windows.Forms.Button();
+            this.btnServiceStop = new System.Windows.Forms.Button();
+            this.btnServiceStart = new System.Windows.Forms.Button();
+            this.btnServiceInstall = new System.Windows.Forms.Button();
             this.pnl_header = new System.Windows.Forms.Panel();
             this.pnl_minimizeAndClose = new System.Windows.Forms.Panel();
             this.btn_close = new System.Windows.Forms.Button();
@@ -58,12 +67,18 @@
             this.pnl_title = new System.Windows.Forms.Panel();
             this.lbl_title = new System.Windows.Forms.Label();
             this.pb_icon = new System.Windows.Forms.PictureBox();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.tabControl1.SuspendLayout();
             this.tabPage3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
             this.tabControl2.SuspendLayout();
-            this.tabPage2.SuspendLayout();
+            this.tabPage_Information.SuspendLayout();
             this.contextMenuLog.SuspendLayout();
+            this.tabPage_Warning.SuspendLayout();
+            this.tabPage_eroor.SuspendLayout();
+            this.tabPage_Fatal.SuspendLayout();
             this.tabPage9.SuspendLayout();
             this.pnl_header.SuspendLayout();
             this.pnl_minimizeAndClose.SuspendLayout();
@@ -74,7 +89,6 @@
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tpg_deviceManager);
-            this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Controls.Add(this.tabPage9);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -86,87 +100,186 @@
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.Padding = new System.Drawing.Point(0, 0);
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1493, 676);
+            this.tabControl1.Size = new System.Drawing.Size(1300, 655);
             this.tabControl1.TabIndex = 1;
-            this.toolTip1.SetToolTip(this.tabControl1, "Tip:更改后需要手动重启服务");
-            this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
             // tpg_deviceManager
             // 
+            this.tpg_deviceManager.AutoScroll = true;
             this.tpg_deviceManager.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(166)))), ((int)(((byte)(171)))));
             this.tpg_deviceManager.ContextMenuStrip = this.contextMenuDevice;
             this.tpg_deviceManager.Location = new System.Drawing.Point(4, 34);
             this.tpg_deviceManager.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.tpg_deviceManager.Name = "tpg_deviceManager";
             this.tpg_deviceManager.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.tpg_deviceManager.Size = new System.Drawing.Size(1485, 638);
+            this.tpg_deviceManager.Size = new System.Drawing.Size(1292, 617);
             this.tpg_deviceManager.TabIndex = 0;
             this.tpg_deviceManager.Text = "设备管理";
+            this.tpg_deviceManager.SizeChanged += new System.EventHandler(this.tpg_deviceManager_SizeChanged);
             // 
             // contextMenuDevice
             // 
             this.contextMenuDevice.Name = "contextMenuDevice";
             this.contextMenuDevice.Size = new System.Drawing.Size(61, 4);
             // 
-            // tabPage4
-            // 
-            this.tabPage4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(166)))), ((int)(((byte)(171)))));
-            this.tabPage4.Location = new System.Drawing.Point(4, 34);
-            this.tabPage4.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.tabPage4.Size = new System.Drawing.Size(1485, 638);
-            this.tabPage4.TabIndex = 3;
-            this.tabPage4.Text = "配置导出报表数据";
-            // 
             // tabPage3
             // 
             this.tabPage3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(166)))), ((int)(((byte)(171)))));
-            this.tabPage3.Controls.Add(this.tabControl2);
+            this.tabPage3.Controls.Add(this.splitContainer1);
             this.tabPage3.Location = new System.Drawing.Point(4, 34);
             this.tabPage3.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.tabPage3.Size = new System.Drawing.Size(1485, 638);
+            this.tabPage3.Size = new System.Drawing.Size(1292, 617);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "查看log";
             // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.Location = new System.Drawing.Point(4, 3);
+            this.splitContainer1.Name = "splitContainer1";
+            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.txt_serach);
+            this.splitContainer1.Panel1.Controls.Add(this.lbl_medium);
+            this.splitContainer1.Panel1.Controls.Add(this.dtp_EndTime);
+            this.splitContainer1.Panel1.Controls.Add(this.lbl_EndTime);
+            this.splitContainer1.Panel1.Controls.Add(this.lbl_StartTime);
+            this.splitContainer1.Panel1.Controls.Add(this.dtp_StartTime);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.tabControl2);
+            this.splitContainer1.Size = new System.Drawing.Size(1284, 611);
+            this.splitContainer1.SplitterDistance = 39;
+            this.splitContainer1.TabIndex = 1;
+            // 
+            // txt_serach
+            // 
+            this.txt_serach.BackColor = System.Drawing.Color.Transparent;
+            this.txt_serach.ConerRadius = 5;
+            this.txt_serach.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txt_serach.DecLength = 2;
+            this.txt_serach.Dock = System.Windows.Forms.DockStyle.Right;
+            this.txt_serach.FillColor = System.Drawing.Color.Empty;
+            this.txt_serach.FocusBorderColor = System.Drawing.SystemColors.ActiveCaption;
+            this.txt_serach.Font = new System.Drawing.Font("Microsoft YaHei", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.txt_serach.InputText = "";
+            this.txt_serach.InputType = AppSettingsHelper.TextInputType.NotControl;
+            this.txt_serach.IsFocusColor = true;
+            this.txt_serach.IsRadius = true;
+            this.txt_serach.IsShowClearBtn = true;
+            this.txt_serach.IsShowKeyboard = false;
+            this.txt_serach.IsShowRect = true;
+            this.txt_serach.IsShowSearchBtn = true;
+            this.txt_serach.KeyBoardType = AppSettingsHelper.KeyBoardType.UCKeyBorderAll_EN;
+            this.txt_serach.Location = new System.Drawing.Point(466, 0);
+            this.txt_serach.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txt_serach.MaxValue = new decimal(new int[] {
+            1000000,
+            0,
+            0,
+            0});
+            this.txt_serach.MinValue = new decimal(new int[] {
+            1000000,
+            0,
+            0,
+            -2147483648});
+            this.txt_serach.Name = "txt_serach";
+            this.txt_serach.Padding = new System.Windows.Forms.Padding(5);
+            this.txt_serach.PromptColor = System.Drawing.Color.Gray;
+            this.txt_serach.PromptFont = new System.Drawing.Font("Microsoft YaHei", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.txt_serach.PromptText = "日志默认展示一天信息，请在这里输入要查询的日志信息";
+            this.txt_serach.RectColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.txt_serach.RectWidth = 1;
+            this.txt_serach.RegexPattern = "";
+            this.txt_serach.Size = new System.Drawing.Size(818, 39);
+            this.txt_serach.TabIndex = 5;
+            // 
+            // lbl_medium
+            // 
+            this.lbl_medium.AutoSize = true;
+            this.lbl_medium.Location = new System.Drawing.Point(214, 10);
+            this.lbl_medium.Name = "lbl_medium";
+            this.lbl_medium.Size = new System.Drawing.Size(38, 18);
+            this.lbl_medium.TabIndex = 4;
+            this.lbl_medium.Text = "------";
+            // 
+            // dtp_EndTime
+            // 
+            this.dtp_EndTime.CustomFormat = "yyyy-MM-dd";
+            this.dtp_EndTime.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtp_EndTime.Location = new System.Drawing.Point(336, 7);
+            this.dtp_EndTime.Name = "dtp_EndTime";
+            this.dtp_EndTime.Size = new System.Drawing.Size(123, 24);
+            this.dtp_EndTime.TabIndex = 3;
+            // 
+            // lbl_EndTime
+            // 
+            this.lbl_EndTime.AutoSize = true;
+            this.lbl_EndTime.Location = new System.Drawing.Point(260, 10);
+            this.lbl_EndTime.Name = "lbl_EndTime";
+            this.lbl_EndTime.Size = new System.Drawing.Size(68, 18);
+            this.lbl_EndTime.TabIndex = 2;
+            this.lbl_EndTime.Text = "结束日期";
+            // 
+            // lbl_StartTime
+            // 
+            this.lbl_StartTime.AutoSize = true;
+            this.lbl_StartTime.Location = new System.Drawing.Point(7, 10);
+            this.lbl_StartTime.Name = "lbl_StartTime";
+            this.lbl_StartTime.Size = new System.Drawing.Size(68, 18);
+            this.lbl_StartTime.TabIndex = 1;
+            this.lbl_StartTime.Text = "开始日期";
+            // 
+            // dtp_StartTime
+            // 
+            this.dtp_StartTime.CustomFormat = "yyyy-MM-dd";
+            this.dtp_StartTime.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtp_StartTime.Location = new System.Drawing.Point(83, 7);
+            this.dtp_StartTime.Name = "dtp_StartTime";
+            this.dtp_StartTime.Size = new System.Drawing.Size(123, 24);
+            this.dtp_StartTime.TabIndex = 0;
+            // 
             // tabControl2
             // 
-            this.tabControl2.Controls.Add(this.tabPage2);
-            this.tabControl2.Controls.Add(this.tabPage5);
-            this.tabControl2.Controls.Add(this.tabPage6);
-            this.tabControl2.Controls.Add(this.tabPage10);
+            this.tabControl2.Controls.Add(this.tabPage_Information);
+            this.tabControl2.Controls.Add(this.tabPage_Warning);
+            this.tabControl2.Controls.Add(this.tabPage_eroor);
+            this.tabControl2.Controls.Add(this.tabPage_Fatal);
             this.tabControl2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl2.Location = new System.Drawing.Point(4, 3);
+            this.tabControl2.Location = new System.Drawing.Point(0, 0);
             this.tabControl2.Name = "tabControl2";
             this.tabControl2.SelectedIndex = 0;
-            this.tabControl2.Size = new System.Drawing.Size(1477, 632);
+            this.tabControl2.Size = new System.Drawing.Size(1284, 568);
             this.tabControl2.TabIndex = 0;
             // 
-            // tabPage2
+            // tabPage_Information
             // 
-            this.tabPage2.Controls.Add(this.richTextBox1);
-            this.tabPage2.Location = new System.Drawing.Point(4, 27);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(1469, 601);
-            this.tabPage2.TabIndex = 0;
-            this.tabPage2.Text = "信息";
-            this.tabPage2.UseVisualStyleBackColor = true;
+            this.tabPage_Information.Controls.Add(this.richTextBox_information);
+            this.tabPage_Information.Location = new System.Drawing.Point(4, 27);
+            this.tabPage_Information.Name = "tabPage_Information";
+            this.tabPage_Information.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage_Information.Size = new System.Drawing.Size(1276, 537);
+            this.tabPage_Information.TabIndex = 0;
+            this.tabPage_Information.Text = "信息";
+            this.tabPage_Information.UseVisualStyleBackColor = true;
             // 
-            // richTextBox1
+            // richTextBox_information
             // 
-            this.richTextBox1.BackColor = System.Drawing.Color.White;
-            this.richTextBox1.ContextMenuStrip = this.contextMenuLog;
-            this.richTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.richTextBox1.ForeColor = System.Drawing.Color.Black;
-            this.richTextBox1.Location = new System.Drawing.Point(3, 3);
-            this.richTextBox1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(1463, 595);
-            this.richTextBox1.TabIndex = 1;
-            this.richTextBox1.Text = "";
+            this.richTextBox_information.BackColor = System.Drawing.Color.White;
+            this.richTextBox_information.ContextMenuStrip = this.contextMenuLog;
+            this.richTextBox_information.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.richTextBox_information.ForeColor = System.Drawing.Color.Black;
+            this.richTextBox_information.Location = new System.Drawing.Point(3, 3);
+            this.richTextBox_information.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.richTextBox_information.Name = "richTextBox_information";
+            this.richTextBox_information.Size = new System.Drawing.Size(1270, 531);
+            this.richTextBox_information.TabIndex = 1;
+            this.richTextBox_information.Text = "";
             // 
             // contextMenuLog
             // 
@@ -190,50 +303,92 @@
             this.清空日志ToolStripMenuItem.Text = "清空日志";
             this.清空日志ToolStripMenuItem.Click += new System.EventHandler(this.清空日志ToolStripMenuItem_Click);
             // 
-            // tabPage5
+            // tabPage_Warning
             // 
-            this.tabPage5.Location = new System.Drawing.Point(4, 27);
-            this.tabPage5.Name = "tabPage5";
-            this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage5.Size = new System.Drawing.Size(1469, 601);
-            this.tabPage5.TabIndex = 1;
-            this.tabPage5.Text = "警告";
-            this.tabPage5.UseVisualStyleBackColor = true;
+            this.tabPage_Warning.Controls.Add(this.richTextBox_warning);
+            this.tabPage_Warning.Location = new System.Drawing.Point(4, 27);
+            this.tabPage_Warning.Name = "tabPage_Warning";
+            this.tabPage_Warning.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage_Warning.Size = new System.Drawing.Size(1276, 537);
+            this.tabPage_Warning.TabIndex = 1;
+            this.tabPage_Warning.Text = "警告";
+            this.tabPage_Warning.UseVisualStyleBackColor = true;
             // 
-            // tabPage6
+            // richTextBox_warning
             // 
-            this.tabPage6.Location = new System.Drawing.Point(4, 27);
-            this.tabPage6.Name = "tabPage6";
-            this.tabPage6.Size = new System.Drawing.Size(1469, 601);
-            this.tabPage6.TabIndex = 2;
-            this.tabPage6.Text = "错误";
-            this.tabPage6.UseVisualStyleBackColor = true;
+            this.richTextBox_warning.BackColor = System.Drawing.Color.White;
+            this.richTextBox_warning.ContextMenuStrip = this.contextMenuLog;
+            this.richTextBox_warning.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.richTextBox_warning.ForeColor = System.Drawing.Color.Black;
+            this.richTextBox_warning.Location = new System.Drawing.Point(3, 3);
+            this.richTextBox_warning.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.richTextBox_warning.Name = "richTextBox_warning";
+            this.richTextBox_warning.Size = new System.Drawing.Size(1270, 531);
+            this.richTextBox_warning.TabIndex = 2;
+            this.richTextBox_warning.Text = "";
             // 
-            // tabPage10
+            // tabPage_eroor
             // 
-            this.tabPage10.Location = new System.Drawing.Point(4, 27);
-            this.tabPage10.Name = "tabPage10";
-            this.tabPage10.Size = new System.Drawing.Size(1469, 601);
-            this.tabPage10.TabIndex = 3;
-            this.tabPage10.Text = "严重错误";
-            this.tabPage10.UseVisualStyleBackColor = true;
+            this.tabPage_eroor.Controls.Add(this.richTextBox_error);
+            this.tabPage_eroor.Location = new System.Drawing.Point(4, 27);
+            this.tabPage_eroor.Name = "tabPage_eroor";
+            this.tabPage_eroor.Size = new System.Drawing.Size(1276, 537);
+            this.tabPage_eroor.TabIndex = 2;
+            this.tabPage_eroor.Text = "错误";
+            this.tabPage_eroor.UseVisualStyleBackColor = true;
+            // 
+            // richTextBox_error
+            // 
+            this.richTextBox_error.BackColor = System.Drawing.Color.White;
+            this.richTextBox_error.ContextMenuStrip = this.contextMenuLog;
+            this.richTextBox_error.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.richTextBox_error.ForeColor = System.Drawing.Color.Black;
+            this.richTextBox_error.Location = new System.Drawing.Point(0, 0);
+            this.richTextBox_error.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.richTextBox_error.Name = "richTextBox_error";
+            this.richTextBox_error.Size = new System.Drawing.Size(1276, 537);
+            this.richTextBox_error.TabIndex = 2;
+            this.richTextBox_error.Text = "";
+            // 
+            // tabPage_Fatal
+            // 
+            this.tabPage_Fatal.Controls.Add(this.richTextBox_Fatal);
+            this.tabPage_Fatal.Location = new System.Drawing.Point(4, 27);
+            this.tabPage_Fatal.Name = "tabPage_Fatal";
+            this.tabPage_Fatal.Size = new System.Drawing.Size(1276, 537);
+            this.tabPage_Fatal.TabIndex = 3;
+            this.tabPage_Fatal.Text = "严重错误";
+            this.tabPage_Fatal.UseVisualStyleBackColor = true;
+            // 
+            // richTextBox_Fatal
+            // 
+            this.richTextBox_Fatal.BackColor = System.Drawing.Color.White;
+            this.richTextBox_Fatal.ContextMenuStrip = this.contextMenuLog;
+            this.richTextBox_Fatal.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.richTextBox_Fatal.ForeColor = System.Drawing.Color.Black;
+            this.richTextBox_Fatal.Location = new System.Drawing.Point(0, 0);
+            this.richTextBox_Fatal.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.richTextBox_Fatal.Name = "richTextBox_Fatal";
+            this.richTextBox_Fatal.Size = new System.Drawing.Size(1276, 537);
+            this.richTextBox_Fatal.TabIndex = 2;
+            this.richTextBox_Fatal.Text = "";
             // 
             // tabPage9
             // 
             this.tabPage9.BackColor = System.Drawing.Color.White;
             this.tabPage9.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.tabPage9.Controls.Add(this.lbMessage);
-            this.tabPage9.Controls.Add(this.lbDw800state);
-            this.tabPage9.Controls.Add(this.btnDw800Uninstall);
-            this.tabPage9.Controls.Add(this.btnDw800Stop);
-            this.tabPage9.Controls.Add(this.btnDw800Start);
-            this.tabPage9.Controls.Add(this.btnDw800Install);
+            this.tabPage9.Controls.Add(this.lbServicestate);
+            this.tabPage9.Controls.Add(this.btnServiceUninstall);
+            this.tabPage9.Controls.Add(this.btnServiceStop);
+            this.tabPage9.Controls.Add(this.btnServiceStart);
+            this.tabPage9.Controls.Add(this.btnServiceInstall);
             this.tabPage9.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.tabPage9.Location = new System.Drawing.Point(4, 34);
             this.tabPage9.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.tabPage9.Name = "tabPage9";
             this.tabPage9.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.tabPage9.Size = new System.Drawing.Size(1485, 638);
+            this.tabPage9.Size = new System.Drawing.Size(1292, 617);
             this.tabPage9.TabIndex = 4;
             this.tabPage9.Text = "windows服务管理";
             // 
@@ -243,7 +398,7 @@
             this.lbMessage.AutoSize = true;
             this.lbMessage.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.lbMessage.ForeColor = System.Drawing.Color.Blue;
-            this.lbMessage.Location = new System.Drawing.Point(9, 580);
+            this.lbMessage.Location = new System.Drawing.Point(9, 559);
             this.lbMessage.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbMessage.Name = "lbMessage";
             this.lbMessage.Size = new System.Drawing.Size(322, 31);
@@ -251,78 +406,78 @@
             this.lbMessage.Text = "服务已安装，正在运行。";
             this.lbMessage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // lbDw800state
+            // lbServicestate
             // 
-            this.lbDw800state.AutoSize = true;
-            this.lbDw800state.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lbDw800state.ForeColor = System.Drawing.Color.Red;
-            this.lbDw800state.Location = new System.Drawing.Point(477, 263);
-            this.lbDw800state.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lbDw800state.Name = "lbDw800state";
-            this.lbDw800state.Size = new System.Drawing.Size(179, 25);
-            this.lbDw800state.TabIndex = 6;
-            this.lbDw800state.Text = "服务正在运行.....";
+            this.lbServicestate.AutoSize = true;
+            this.lbServicestate.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.lbServicestate.ForeColor = System.Drawing.Color.Red;
+            this.lbServicestate.Location = new System.Drawing.Point(477, 263);
+            this.lbServicestate.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lbServicestate.Name = "lbServicestate";
+            this.lbServicestate.Size = new System.Drawing.Size(179, 25);
+            this.lbServicestate.TabIndex = 6;
+            this.lbServicestate.Text = "服务正在运行.....";
             // 
-            // btnDw800Uninstall
+            // btnServiceUninstall
             // 
-            this.btnDw800Uninstall.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(166)))), ((int)(((byte)(171)))));
-            this.btnDw800Uninstall.FlatAppearance.BorderSize = 0;
-            this.btnDw800Uninstall.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnDw800Uninstall.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.btnDw800Uninstall.ForeColor = System.Drawing.Color.White;
-            this.btnDw800Uninstall.Location = new System.Drawing.Point(286, 105);
-            this.btnDw800Uninstall.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.btnDw800Uninstall.Name = "btnDw800Uninstall";
-            this.btnDw800Uninstall.Size = new System.Drawing.Size(140, 75);
-            this.btnDw800Uninstall.TabIndex = 1;
-            this.btnDw800Uninstall.Text = "卸载服务";
-            this.btnDw800Uninstall.UseVisualStyleBackColor = false;
+            this.btnServiceUninstall.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(166)))), ((int)(((byte)(171)))));
+            this.btnServiceUninstall.FlatAppearance.BorderSize = 0;
+            this.btnServiceUninstall.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnServiceUninstall.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.btnServiceUninstall.ForeColor = System.Drawing.Color.White;
+            this.btnServiceUninstall.Location = new System.Drawing.Point(286, 105);
+            this.btnServiceUninstall.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.btnServiceUninstall.Name = "btnServiceUninstall";
+            this.btnServiceUninstall.Size = new System.Drawing.Size(140, 75);
+            this.btnServiceUninstall.TabIndex = 1;
+            this.btnServiceUninstall.Text = "卸载服务";
+            this.btnServiceUninstall.UseVisualStyleBackColor = false;
             // 
-            // btnDw800Stop
+            // btnServiceStop
             // 
-            this.btnDw800Stop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(166)))), ((int)(((byte)(171)))));
-            this.btnDw800Stop.FlatAppearance.BorderSize = 0;
-            this.btnDw800Stop.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnDw800Stop.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.btnDw800Stop.ForeColor = System.Drawing.Color.White;
-            this.btnDw800Stop.Location = new System.Drawing.Point(286, 241);
-            this.btnDw800Stop.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.btnDw800Stop.Name = "btnDw800Stop";
-            this.btnDw800Stop.Size = new System.Drawing.Size(140, 75);
-            this.btnDw800Stop.TabIndex = 3;
-            this.btnDw800Stop.Text = "停止服务";
-            this.btnDw800Stop.UseVisualStyleBackColor = false;
+            this.btnServiceStop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(166)))), ((int)(((byte)(171)))));
+            this.btnServiceStop.FlatAppearance.BorderSize = 0;
+            this.btnServiceStop.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnServiceStop.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.btnServiceStop.ForeColor = System.Drawing.Color.White;
+            this.btnServiceStop.Location = new System.Drawing.Point(286, 241);
+            this.btnServiceStop.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.btnServiceStop.Name = "btnServiceStop";
+            this.btnServiceStop.Size = new System.Drawing.Size(140, 75);
+            this.btnServiceStop.TabIndex = 3;
+            this.btnServiceStop.Text = "停止服务";
+            this.btnServiceStop.UseVisualStyleBackColor = false;
             // 
-            // btnDw800Start
+            // btnServiceStart
             // 
-            this.btnDw800Start.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(166)))), ((int)(((byte)(171)))));
-            this.btnDw800Start.FlatAppearance.BorderSize = 0;
-            this.btnDw800Start.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnDw800Start.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.btnDw800Start.ForeColor = System.Drawing.Color.White;
-            this.btnDw800Start.Location = new System.Drawing.Point(83, 241);
-            this.btnDw800Start.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.btnDw800Start.Name = "btnDw800Start";
-            this.btnDw800Start.Size = new System.Drawing.Size(140, 75);
-            this.btnDw800Start.TabIndex = 2;
-            this.btnDw800Start.Text = "启动服务";
-            this.btnDw800Start.UseVisualStyleBackColor = false;
+            this.btnServiceStart.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(166)))), ((int)(((byte)(171)))));
+            this.btnServiceStart.FlatAppearance.BorderSize = 0;
+            this.btnServiceStart.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnServiceStart.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.btnServiceStart.ForeColor = System.Drawing.Color.White;
+            this.btnServiceStart.Location = new System.Drawing.Point(83, 241);
+            this.btnServiceStart.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.btnServiceStart.Name = "btnServiceStart";
+            this.btnServiceStart.Size = new System.Drawing.Size(140, 75);
+            this.btnServiceStart.TabIndex = 2;
+            this.btnServiceStart.Text = "启动服务";
+            this.btnServiceStart.UseVisualStyleBackColor = false;
             // 
-            // btnDw800Install
+            // btnServiceInstall
             // 
-            this.btnDw800Install.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(166)))), ((int)(((byte)(171)))));
-            this.btnDw800Install.FlatAppearance.BorderSize = 0;
-            this.btnDw800Install.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnDw800Install.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.btnDw800Install.ForeColor = System.Drawing.Color.White;
-            this.btnDw800Install.Location = new System.Drawing.Point(83, 105);
-            this.btnDw800Install.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.btnDw800Install.Name = "btnDw800Install";
-            this.btnDw800Install.Size = new System.Drawing.Size(140, 75);
-            this.btnDw800Install.TabIndex = 0;
-            this.btnDw800Install.Text = "安装服务";
-            this.btnDw800Install.UseVisualStyleBackColor = false;
-            this.btnDw800Install.Click += new System.EventHandler(this.btnDwInstall_Click);
+            this.btnServiceInstall.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(166)))), ((int)(((byte)(171)))));
+            this.btnServiceInstall.FlatAppearance.BorderSize = 0;
+            this.btnServiceInstall.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnServiceInstall.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.btnServiceInstall.ForeColor = System.Drawing.Color.White;
+            this.btnServiceInstall.Location = new System.Drawing.Point(83, 105);
+            this.btnServiceInstall.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.btnServiceInstall.Name = "btnServiceInstall";
+            this.btnServiceInstall.Size = new System.Drawing.Size(140, 75);
+            this.btnServiceInstall.TabIndex = 0;
+            this.btnServiceInstall.Text = "安装服务";
+            this.btnServiceInstall.UseVisualStyleBackColor = false;
+            this.btnServiceInstall.Click += new System.EventHandler(this.btnDwInstall_Click);
             // 
             // pnl_header
             // 
@@ -333,7 +488,7 @@
             this.pnl_header.Location = new System.Drawing.Point(0, 0);
             this.pnl_header.Margin = new System.Windows.Forms.Padding(0);
             this.pnl_header.Name = "pnl_header";
-            this.pnl_header.Size = new System.Drawing.Size(1493, 113);
+            this.pnl_header.Size = new System.Drawing.Size(1300, 113);
             this.pnl_header.TabIndex = 2;
             // 
             // pnl_minimizeAndClose
@@ -342,7 +497,7 @@
             this.pnl_minimizeAndClose.Controls.Add(this.btn_close);
             this.pnl_minimizeAndClose.Controls.Add(this.btn_minimize);
             this.pnl_minimizeAndClose.Dock = System.Windows.Forms.DockStyle.Right;
-            this.pnl_minimizeAndClose.Location = new System.Drawing.Point(1368, 0);
+            this.pnl_minimizeAndClose.Location = new System.Drawing.Point(1175, 0);
             this.pnl_minimizeAndClose.Margin = new System.Windows.Forms.Padding(0, 3, 4, 0);
             this.pnl_minimizeAndClose.Name = "pnl_minimizeAndClose";
             this.pnl_minimizeAndClose.Size = new System.Drawing.Size(125, 113);
@@ -389,7 +544,7 @@
             this.pnl_title.Location = new System.Drawing.Point(0, 0);
             this.pnl_title.Margin = new System.Windows.Forms.Padding(4, 3, 0, 0);
             this.pnl_title.Name = "pnl_title";
-            this.pnl_title.Size = new System.Drawing.Size(1493, 113);
+            this.pnl_title.Size = new System.Drawing.Size(1300, 113);
             this.pnl_title.TabIndex = 0;
             this.pnl_title.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pnl_titile_MouseDown);
             this.pnl_title.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pnl_titile_MouseMove);
@@ -424,7 +579,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(166)))), ((int)(((byte)(171)))));
-            this.ClientSize = new System.Drawing.Size(1493, 789);
+            this.ClientSize = new System.Drawing.Size(1300, 768);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.pnl_header);
             this.ForeColor = System.Drawing.Color.Black;
@@ -438,9 +593,17 @@
             this.Load += new System.EventHandler(this.Form1_Load);
             this.tabControl1.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel1.PerformLayout();
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
             this.tabControl2.ResumeLayout(false);
-            this.tabPage2.ResumeLayout(false);
+            this.tabPage_Information.ResumeLayout(false);
             this.contextMenuLog.ResumeLayout(false);
+            this.tabPage_Warning.ResumeLayout(false);
+            this.tabPage_eroor.ResumeLayout(false);
+            this.tabPage_Fatal.ResumeLayout(false);
             this.tabPage9.ResumeLayout(false);
             this.tabPage9.PerformLayout();
             this.pnl_header.ResumeLayout(false);
@@ -456,14 +619,13 @@
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tpg_deviceManager;
         private System.Windows.Forms.TabPage tabPage3;
-        private System.Windows.Forms.TabPage tabPage4;
         private System.Windows.Forms.ContextMenuStrip contextMenuLog;
         private System.Windows.Forms.ToolStripMenuItem 刷新ToolStripMenuItem;
         private System.Windows.Forms.TabPage tabPage9;
-        private System.Windows.Forms.Button btnDw800Uninstall;
-        private System.Windows.Forms.Button btnDw800Stop;
-        private System.Windows.Forms.Button btnDw800Start;
-        private System.Windows.Forms.Button btnDw800Install;
+        private System.Windows.Forms.Button btnServiceUninstall;
+        private System.Windows.Forms.Button btnServiceStop;
+        private System.Windows.Forms.Button btnServiceStart;
+        private System.Windows.Forms.Button btnServiceInstall;
         private System.Windows.Forms.Panel pnl_header;
         private System.Windows.Forms.Panel pnl_minimizeAndClose;
         private System.Windows.Forms.Panel pnl_title;
@@ -473,15 +635,24 @@
         private System.Windows.Forms.Button btn_minimize;
         private System.Windows.Forms.ToolStripMenuItem 清空日志ToolStripMenuItem;
         private System.Windows.Forms.Label lbMessage;
-        private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.ContextMenuStrip contextMenuDevice;
         private System.Windows.Forms.TabControl tabControl2;
-        private System.Windows.Forms.TabPage tabPage2;
-        private System.Windows.Forms.RichTextBox richTextBox1;
-        private System.Windows.Forms.TabPage tabPage5;
-        private System.Windows.Forms.TabPage tabPage6;
-        private System.Windows.Forms.TabPage tabPage10;
-        private System.Windows.Forms.Label lbDw800state;
+        private System.Windows.Forms.TabPage tabPage_Information;
+        private System.Windows.Forms.RichTextBox richTextBox_information;
+        private System.Windows.Forms.TabPage tabPage_Warning;
+        private System.Windows.Forms.TabPage tabPage_eroor;
+        private System.Windows.Forms.TabPage tabPage_Fatal;
+        private System.Windows.Forms.Label lbServicestate;
+        private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.Label lbl_medium;
+        private System.Windows.Forms.DateTimePicker dtp_EndTime;
+        private System.Windows.Forms.Label lbl_EndTime;
+        private System.Windows.Forms.Label lbl_StartTime;
+        private System.Windows.Forms.DateTimePicker dtp_StartTime;
+        private UCTextBoxEx txt_serach;
+        private System.Windows.Forms.RichTextBox richTextBox_warning;
+        private System.Windows.Forms.RichTextBox richTextBox_error;
+        private System.Windows.Forms.RichTextBox richTextBox_Fatal;
     }
 }
 

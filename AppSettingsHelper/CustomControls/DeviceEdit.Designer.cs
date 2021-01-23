@@ -68,7 +68,8 @@ namespace AppSettingsHelper.CustomControls
             this.tbx_deviceId.Location = new System.Drawing.Point(84, 24);
             this.tbx_deviceId.Name = "tbx_deviceId";
             this.tbx_deviceId.Size = new System.Drawing.Size(167, 23);
-            this.tbx_deviceId.TabIndex = 3;
+            this.tbx_deviceId.TabIndex = 0;
+            this.tbx_deviceId.Leave += new System.EventHandler(this.tbx_deviceId_Leave);
             // 
             // label2
             // 
@@ -127,7 +128,7 @@ namespace AppSettingsHelper.CustomControls
             this.tbx_description.Multiline = true;
             this.tbx_description.Name = "tbx_description";
             this.tbx_description.Size = new System.Drawing.Size(167, 114);
-            this.tbx_description.TabIndex = 13;
+            this.tbx_description.TabIndex = 5;
             // 
             // dtp_ScrapTime
             // 
@@ -136,7 +137,7 @@ namespace AppSettingsHelper.CustomControls
             this.dtp_ScrapTime.Location = new System.Drawing.Point(84, 184);
             this.dtp_ScrapTime.Name = "dtp_ScrapTime";
             this.dtp_ScrapTime.Size = new System.Drawing.Size(167, 23);
-            this.dtp_ScrapTime.TabIndex = 12;
+            this.dtp_ScrapTime.TabIndex = 4;
             // 
             // dtp_productTime
             // 
@@ -145,7 +146,7 @@ namespace AppSettingsHelper.CustomControls
             this.dtp_productTime.Location = new System.Drawing.Point(84, 144);
             this.dtp_productTime.Name = "dtp_productTime";
             this.dtp_productTime.Size = new System.Drawing.Size(167, 23);
-            this.dtp_productTime.TabIndex = 11;
+            this.dtp_productTime.TabIndex = 3;
             // 
             // lbl_description
             // 
@@ -181,7 +182,7 @@ namespace AppSettingsHelper.CustomControls
             this.cbx_deviceType.Location = new System.Drawing.Point(84, 104);
             this.cbx_deviceType.Name = "cbx_deviceType";
             this.cbx_deviceType.Size = new System.Drawing.Size(167, 23);
-            this.cbx_deviceType.TabIndex = 7;
+            this.cbx_deviceType.TabIndex = 2;
             // 
             // lbl_deviceType
             // 
@@ -197,7 +198,7 @@ namespace AppSettingsHelper.CustomControls
             this.tbx_deviceName.Location = new System.Drawing.Point(84, 64);
             this.tbx_deviceName.Name = "tbx_deviceName";
             this.tbx_deviceName.Size = new System.Drawing.Size(167, 23);
-            this.tbx_deviceName.TabIndex = 5;
+            this.tbx_deviceName.TabIndex = 1;
             // 
             // lbl_deviceName
             // 
@@ -221,7 +222,7 @@ namespace AppSettingsHelper.CustomControls
             this.btn_Save.BtnText = "保  存";
             this.btn_Save.ConerRadius = 5;
             this.btn_Save.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btn_Save.EnabledMouseEffect = false;
+            this.btn_Save.EnabledMouseEffect = true;
             this.btn_Save.FillColor = System.Drawing.Color.Silver;
             this.btn_Save.Font = new System.Drawing.Font("Microsoft YaHei", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.btn_Save.IsRadius = true;
@@ -233,7 +234,7 @@ namespace AppSettingsHelper.CustomControls
             this.btn_Save.RectColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(77)))), ((int)(((byte)(58)))));
             this.btn_Save.RectWidth = 1;
             this.btn_Save.Size = new System.Drawing.Size(73, 25);
-            this.btn_Save.TabIndex = 51;
+            this.btn_Save.TabIndex = 6;
             this.btn_Save.TabStop = false;
             this.btn_Save.TipsColor = System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(30)))), ((int)(((byte)(99)))));
             this.btn_Save.TipsText = "";
@@ -248,7 +249,7 @@ namespace AppSettingsHelper.CustomControls
             this.btn_Cancle.BtnText = "取消";
             this.btn_Cancle.ConerRadius = 5;
             this.btn_Cancle.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btn_Cancle.EnabledMouseEffect = false;
+            this.btn_Cancle.EnabledMouseEffect = true;
             this.btn_Cancle.FillColor = System.Drawing.Color.Silver;
             this.btn_Cancle.Font = new System.Drawing.Font("Microsoft YaHei", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.btn_Cancle.IsRadius = true;
@@ -260,7 +261,7 @@ namespace AppSettingsHelper.CustomControls
             this.btn_Cancle.RectColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(77)))), ((int)(((byte)(58)))));
             this.btn_Cancle.RectWidth = 1;
             this.btn_Cancle.Size = new System.Drawing.Size(73, 25);
-            this.btn_Cancle.TabIndex = 52;
+            this.btn_Cancle.TabIndex = 7;
             this.btn_Cancle.TabStop = false;
             this.btn_Cancle.TipsColor = System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(30)))), ((int)(((byte)(99)))));
             this.btn_Cancle.TipsText = "";
@@ -277,7 +278,7 @@ namespace AppSettingsHelper.CustomControls
             this.btn_close.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btn_close.Name = "btn_close";
             this.btn_close.Size = new System.Drawing.Size(30, 30);
-            this.btn_close.TabIndex = 53;
+            this.btn_close.TabIndex = 8;
             this.btn_close.Text = "×";
             this.btn_close.UseVisualStyleBackColor = false;
             this.btn_close.Click += new System.EventHandler(this.btn_Cancle_Click);

@@ -93,11 +93,13 @@ namespace AppSettingsHelper.CustomControls
             return device;
         }
         SalesFeedBackMain.OperatorType _operatorType;
-        public DeviceEdit(SalesFeedBackMain.OperatorType operatorType)
+        String[] _Ids;
+        public DeviceEdit(SalesFeedBackMain.OperatorType operatorType, String[] Ids = null)
         {
             InitializeComponent();
             InitDeviceStyles();
             _operatorType = operatorType;
+            _Ids = Ids;
             switch (operatorType)
             {
                 case SalesFeedBackMain.OperatorType.Add:
@@ -141,13 +143,7 @@ namespace AppSettingsHelper.CustomControls
         }
         private void btn_Save_Click(object sender, EventArgs e)
         {
-            if (null == (this._Device = GetDevice())) return;
-            Task.Run(() =>
-            {
-                var jb = AppCommondHelper.JsonSerilize.JsonHelper.GetSerilization(this._device);
-                AppCommondHelper.JsonSerilize.JsonHelper.WriteToFile(SalesFeedBackMain.DeviceJsonPath,
-                    SalesFeedBackMain.DeviceFileName + this._device.ID + ".json", jb);
-            });
+            if (null == (this._device = GetDevice())) return; 
             this.DialogResult = DialogResult.OK;
             this.Close();
         }
@@ -156,6 +152,21 @@ namespace AppSettingsHelper.CustomControls
         {
             this.DialogResult = DialogResult.None;
             this.Close();
+        }
+
+        private void tbx_deviceId_Leave(object sender, EventArgs e)
+        {
+            if (String.IsNullOrWhiteSpace(tbx_deviceId.Text)) return;
+
+            foreach (var item in _Ids)
+            {
+                if (item.Contains(tbx_deviceId.Text))
+                {
+                    this.errorProvider1.SetError(this.lbl_error, "设备ID已存在！");
+                    return;
+                }
+            }
+            this.errorProvider1.Clear();
         }
     }
 }

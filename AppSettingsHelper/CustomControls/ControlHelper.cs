@@ -1183,8 +1183,6 @@ namespace AppSettingsHelper.CustomControls
         #region 滚动条    English:scroll bar
         static uint SB_HORZ = 0x0;
         static uint SB_VERT = 0x1;
-        static uint SB_CTL = 0x2;
-        static uint SB_BOTH = 0x3;
         [DllImport("user32.dll", SetLastError = true, EntryPoint = "GetScrollInfo")]
         private static extern int GetScrollInfo(IntPtr hWnd, uint idObject, ref SCROLLINFO psbi);
 

@@ -17,13 +17,17 @@ using SalesFeedBackInfrasturcture.Infrastructure;
 using AppCommondHelper;
 using AppSettingsHelper.CustomControls;
 using Newtonsoft.Json;
+using System.Collections.Concurrent;
+using System.Threading.Tasks;
+using System.Threading;
+using Serilog.Events;
 
 namespace AppSettingsHelper
 {
     public partial class SalesFeedBackMain : Form
     {
 
-        public SalesFeedBackMain(Dictionary<String, Device> device = null)
+        public SalesFeedBackMain(ConcurrentDictionary<String, Device> device = null)
         {
             InitializeComponent();
 
@@ -38,27 +42,22 @@ namespace AppSettingsHelper
             }
         }
         #region 私有成员
-
+        private Boolean IsShowed = false;
         private Clock _clock = null;
         private Point _mousePoint = new Point();     //鼠标所在位置（top,left）
         System.Windows.Forms.Label[] _labels = new System.Windows.Forms.Label[4];    //上下左右边框集合
-        private int _lastWidth = 0;                  //上次窗体宽度（改变窗体大小时使用）
-        private int _lastHeight = 0;                   //上次窗体高度（改变窗体大小时使用）
+        private Int32 _lastWidth = 0;                  //上次窗体宽度（改变窗体大小时使用）
+        private Int32 _lastHeight = 0;                   //上次窗体高度（改变窗体大小时使用） 
+        CancellationTokenSource _cts;
+        DeviceSingleFrm _deviceSingleFrm;
+        ConcurrentDictionary<String, Device> _Devices = new ConcurrentDictionary<string, Device>();
         /// <summary>
-        /// 判断是否登陆
+        /// 是否匹配到项目
         /// </summary>
-        bool IsLogin = false;
-        /// <summary>
-        /// 获取本地bin路径
-        /// </summary>
-        string FilePath = System.AppDomain.CurrentDomain.BaseDirectory;
-        DeviceSingleFrm deviceSingleFrm;
-        Dictionary<String, Device> _Devices = new Dictionary<string, Device>();
+        Boolean _IsPatterned = false;
+        String _searchPattern = String.Empty;
         #endregion
-        #region 静态成员
-        public static String DeviceJsonPath = AppDomain.CurrentDomain.BaseDirectory + "DevicesInfo\\";
-        public static String DeviceFileName = "Device_";
-        #endregion
+
         #region 边框鼠标拖动及关闭
         /// <summary>
         /// 初始化窗体边框,（Form1设置无边框，需要自定义边框）
@@ -259,11 +258,52 @@ namespace AppSettingsHelper
                 //初始化设备菜单管理按钮
                 InitDeviceManagerMenu();
                 InitDeviceFromJsonFile();
+                InitSearchText();
+                IsShowed = true;
+                _cts = new CancellationTokenSource();
             }
             catch (Exception ex)
             {
             }
         }
+        void InitSearchText()
+        {
+            this.dtp_StartTime.Value = DateTime.Today;
+            this.dtp_EndTime.Value = DateTime.Today;
+            this.txt_serach.SearchClick += Txt_serach_SearchClick;
+            this.txt_serach.ClearClick += Txt_serach_ClearClick;
+            this.txt_serach.TextChanged += Txt_serach_TextChanged;
+        }
+        private void Txt_serach_TextChanged(object sender, EventArgs e)
+        {
+            var textbox = sender as TextBoxEx;
+            if (string.IsNullOrWhiteSpace(textbox.Text))
+            {
+                if (_IsPatterned)
+                {
+
+                }
+            }
+        }
+
+        private void Txt_serach_ClearClick(object sender, EventArgs e)
+        {
+            if (_IsPatterned)
+            {
+
+            }
+        }
+
+        private void Txt_serach_SearchClick(object sender, EventArgs e)
+        {
+            var textbox = sender as UCTextBoxEx;
+            var inputText = textbox.InputText;
+            if (string.IsNullOrWhiteSpace(inputText))
+            {
+                return;
+            }
+        }
+
         void InitDeviceManagerMenu()
         {
             this.contextMenuDevice.Items.Clear();
@@ -288,10 +328,10 @@ namespace AppSettingsHelper
         {
             if (_Devices.Count > 0)
             {
-                foreach (var item in _Devices)
+                foreach (var device in _Devices)
                 {
                     var deviceSingle = new DeviceSingleFrm();
-                    deviceSingle._Device = item.Value;
+                    deviceSingle._Device = device.Value;
                     deviceSingle.ModifyEventClicked += deviceSingle_ModifyEventClicked;
                     deviceSingle.DeleteEventClicked += deviceSingle_DeleteEventClicked;
                     this.tpg_deviceManager.Controls.Add(deviceSingle);
@@ -304,7 +344,7 @@ namespace AppSettingsHelper
         {
             [Description("新增设备")]
             NewDevice = 0x01,
-            [Description("导出设备信息到文件")]
+            [Description("导出设备信息")]
             Export = 0x02,
         }
         public enum OperatorType
@@ -313,43 +353,52 @@ namespace AppSettingsHelper
             Modify = 2,
             Delete = 3,
         }
-        int _StartX = 10, _StartY = 10, _Offset = 10;
+        int _StartX = 10, _StartY = 10, _Offset = 5;
         private void ShowAutoItem(OperatorType operatorType, Device device = null)
         {
-            var deviceEdit = new DeviceEdit(operatorType);
+            var deviceEdit = new DeviceEdit(operatorType, this._Devices.Keys.ToArray());
             if (null != device) deviceEdit._Device = device;
             deviceEdit.StartPosition = FormStartPosition.CenterParent;
             deviceEdit.ShowDialog();
             if (deviceEdit.DialogResult == DialogResult.OK && operatorType == OperatorType.Add)
             {
                 var deviceSingle = new DeviceSingleFrm();
-                if (null != deviceEdit._Device) deviceSingle._Device = deviceEdit._Device;
+                deviceSingle._Device = deviceEdit._Device;
                 deviceSingle.ModifyEventClicked += deviceSingle_ModifyEventClicked;
                 deviceSingle.DeleteEventClicked += deviceSingle_DeleteEventClicked;
                 this.tpg_deviceManager.Controls.Add(deviceSingle);
                 if (this.tpg_deviceManager.Controls.Count > 0)
                     this.tpg_deviceManager.UpdateControlLocation(_StartX, _StartY, _Offset);
+                GlobalSet.WriteDeviceToFile(deviceEdit._Device, SalesFeedBackMain.OperatorType.Add);
             }
             else if (deviceEdit.DialogResult == DialogResult.OK && operatorType == OperatorType.Modify)
             {
-                deviceSingleFrm._Device = deviceEdit._Device;
+                _deviceSingleFrm._Device = deviceEdit._Device;
+                GlobalSet.WriteDeviceToFile(deviceEdit._Device, SalesFeedBackMain.OperatorType.Modify);
             }
         }
         private void deviceSingle_DeleteEventClicked(object sender, EventArgs e)
         {
-            if (MessageBox.Show("确定删除[" + ((DeviceSingleFrm)sender)._Device.DeviceName + "]设备吗?", "提示", MessageBoxButtons.OKCancel) == DialogResult.OK)
+            var single = (DeviceSingleFrm)sender;
+            if (MessageBox.Show("确定删除[" + single._Device.DeviceName + "]设备吗?", "提示", MessageBoxButtons.OKCancel) == DialogResult.OK)
             {
-                this.tpg_deviceManager.Controls.Remove((DeviceSingleFrm)sender);
-                if (this.tpg_deviceManager.Controls.Count > 0)
-                    this.tpg_deviceManager.UpdateControlLocation(_StartX, _StartY, _Offset);
+                var device = new Device();
+                if (this._Devices.Remove(single._Device.ID, out device))
+                {
+                    GlobalSet.WriteDeviceToFile(device, OperatorType.Delete);
+                    this.tpg_deviceManager.Controls.Remove(single);
+                    if (this.tpg_deviceManager.Controls.Count > 0)
+                        this.tpg_deviceManager.UpdateControlLocation(_StartX, _StartY, _Offset);
+                }
             }
         }
 
         private void deviceSingle_ModifyEventClicked(object sender, EventArgs e)
         {
-            deviceSingleFrm = (DeviceSingleFrm)sender;
-            ShowAutoItem(OperatorType.Modify, deviceSingleFrm._Device);
+            _deviceSingleFrm = (DeviceSingleFrm)sender;
+            ShowAutoItem(OperatorType.Modify, _deviceSingleFrm._Device);
         }
+        String _BrowserExportPath;
         private void ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var toolMenu = (ToolStripMenuItem)sender;
@@ -359,7 +408,30 @@ namespace AppSettingsHelper
             }
             else
             {
-                MessageBox.Show("导出设备信息到文件");
+                if (this._Devices.Count == 0)
+                {
+                    MessageBox.Show("无设备信息");
+                    return;
+                }
+                FolderBrowserDialog browserDialog = new FolderBrowserDialog();
+                browserDialog.Description = "导出路径选择";
+                browserDialog.RootFolder = Environment.SpecialFolder.MyDocuments;
+                browserDialog.ShowNewFolderButton = true;
+                if (browserDialog.ShowDialog() == DialogResult.OK)
+                {
+                    _BrowserExportPath = browserDialog.SelectedPath;
+                    var files = Directory.GetFiles(GlobalSet.m_deviceJsonPath);
+                    Parallel.ForEach(files, file =>
+                     {
+                         String filePath = _BrowserExportPath + "\\" + Path.GetFileName(file);
+                         if (File.Exists(filePath))//如果存在同名文件，选择删除再拷贝
+                         {
+                             File.Delete(filePath);
+                         }
+                         File.Copy(file, _BrowserExportPath + "\\" + Path.GetFileName(file));
+                     });
+                    MessageBox.Show("导出完成！");
+                }
             }
         }
         #endregion
@@ -402,50 +474,115 @@ namespace AppSettingsHelper
             this.lbMessage.Text = "正在安装服务，请稍后...";
 
         }
-
-        /// <summary>
-        /// 切换选项卡
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        // 事件：切换选项卡
-        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
+        public sealed class ReadLogOption
         {
-            try
-            {
-
-            }
-            catch (Exception ex)
-            {
-
-            }
+            public LogEventLevel logEventLevel { get; set; }
+            public DateTime StartTime { get; set; }
+            public DateTime EndTime { get; set; }
+            public String SearchPattern { get; set; }
         }
 
-
-
+        void ReadLogAsync(String searchPattern = null)
+        {
+            var readLogOption = new ReadLogOption();
+            readLogOption.StartTime = this.dtp_StartTime.Value;
+            readLogOption.EndTime = this.dtp_EndTime.Value;
+            readLogOption.SearchPattern = searchPattern;
+            switch (tabControl2.SelectedIndex)
+            {
+                case 0:
+                    readLogOption.logEventLevel = LogEventLevel.Information;
+                    break;
+                case 1:
+                    readLogOption.logEventLevel = LogEventLevel.Warning;
+                    break;
+                case 2:
+                    readLogOption.logEventLevel = LogEventLevel.Error;
+                    break;
+                case 3:
+                    readLogOption.logEventLevel = LogEventLevel.Fatal;
+                    break;
+                default:
+                    break;
+            }
+            var ct = _cts.Token;
+            switch (readLogOption.logEventLevel)
+            {
+                case LogEventLevel.Verbose:
+                    break;
+                case LogEventLevel.Debug:
+                    break;
+                case LogEventLevel.Information:
+                    this.richTextBox_information.Text = "";
+                    break;
+                case LogEventLevel.Warning:
+                    break;
+                case LogEventLevel.Error:
+                    break;
+                case LogEventLevel.Fatal:
+                    break;
+                default:
+                    break;
+            }
+        }
         /// <summary>
         /// 方法：读取Txt文件，（日志文件）
         /// </summary>
         /// <param name="path"></param>
-        public void Read()
+        public String Read(ReadLogOption op, CancellationToken ct)
         {
-            string path = FilePath + "LOGFile.txt";
-            if (this.richTextBox1.InvokeRequired)
+            var pop = new ParallelOptions();
+            pop.CancellationToken = ct;
+            var path = GlobalSet.m_AppOption.LoggerPath + "logs\\";
+            switch (op.logEventLevel)
             {
-                Action Deleread = new Action(Read);
-                this.Invoke(Deleread);
+                case LogEventLevel.Verbose:
+                    break;
+                case LogEventLevel.Debug:
+                    break;
+                case LogEventLevel.Information:
+                    path += "Info\\";
+                    break;
+                case LogEventLevel.Warning:
+                    path += "Warning\\";
+                    break;
+                case LogEventLevel.Error:
+                    path += "Error\\";
+                    break;
+                case LogEventLevel.Fatal:
+                    path += "Fatal\\";
+                    break;
+                default:
+                    break;
             }
-            else
+            var files = Directory.GetFiles(path);
+            var searchFiles = new List<String>();
+            // var searchFiles = new ConcurrentQueue<String>();
+            //String searchFile = String.Empty;
+            String stringFileNameWithOutExtension = String.Empty;
+            var stringDate = String.Empty;
+            var dateTime = DateTime.Now;
+            foreach (var item in files)
+            {
+                stringFileNameWithOutExtension = Path.GetFileNameWithoutExtension(item);
+                stringDate = stringFileNameWithOutExtension.Substring(7);
+                dateTime = Convert.ToDateTime(stringDate);
+                if (dateTime.CompareTo(op.StartTime) < 0 || dateTime.CompareTo(op.EndTime) < 0)
+                {
+                    searchFiles.Add(item);
+                }
+            }
+            foreach (var item in searchFiles)
             {
                 //使用指定的路径、创建模式和读 / 写权限初始化 System.IO.FileStream 类的新实例。
-                FileStream fs = new FileStream(path, FileMode.Open, FileAccess.ReadWrite);
+                FileStream fs = new FileStream(item, FileMode.Open, FileAccess.Read);
 
                 //用指定的字符编码为指定的流初始化 System.IO.StreamReader 类的一个新实例。
                 StreamReader sr = new StreamReader(fs, Encoding.UTF8);
 
-                string line = "";
-                richTextBox1.Text = "";
-                List<string> loglist = new List<string>();
+                String line = "";
+                richTextBox_information.Text = "";
+                List<String> loglist = new List<String>();
                 while ((line = sr.ReadLine()) != null)
                 {
                     //将对象添加到List<>的结尾处
@@ -461,14 +598,14 @@ namespace AppSettingsHelper
                 {
                     for (int i = loglist.Count - 1; i >= loglist.Count - 300; i--)
                     {
-                        richTextBox1.Text += loglist[i].ToString();
+                        richTextBox_information.Text += loglist[i].ToString();
                     }
                 }
                 //当泛型loglist元素数小于等于300时，将元素显示在控件richTextBox1上（倒序）。
                 else
                     for (int i = loglist.Count - 1; i >= 0; i--)
                     {
-                        richTextBox1.Text += loglist[i].ToString();
+                        richTextBox_information.Text += loglist[i].ToString();
                     }
                 //关闭、释放资源
                 fs.Close();
@@ -476,40 +613,54 @@ namespace AppSettingsHelper
                 sr.Close();
                 sr.Dispose();
             }
+            //ParallelLoopResult loopResult = Parallel.ForEach<String[], String>(
+            //    files,
+            //    pop,
+            //    () => { return null; },
+            //    (loopState, index, local) =>
+            //    {
+            //        String stringFileNameWithOutExtension = Path.GetFileNameWithoutExtension(files[index]);
+            //        var stringDate = stringFileNameWithOutExtension.Substring(7);
+            //        var dateTime = Convert.ToDateTime(stringDate);
+            //        if (dateTime.CompareTo(op.StartTime) < 0 || dateTime.CompareTo(op.EndTime) < 0)
+            //        {
+            //            searchFile = files[index];
+            //        }
+            //        return searchFile;
+            //    },
+            //    localFinally =>
+            //    {
+            //        searchFiles.Enqueue(searchFile);
+            //    }); 
+            return "";
         }
-        private void button2_Click(object sender, EventArgs e)
+        private void tpg_deviceManager_SizeChanged(object sender, EventArgs e)
         {
-            try
+            if (IsShowed)
             {
-                FolderBrowserDialog openFileDialog = new FolderBrowserDialog();
-
-                openFileDialog.Description = "请选择文件路径";
-                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                _clock.Location = new Point(this.pnl_title.Width - this.pnl_minimizeAndClose.Width - this._clock.Width, 5);
+                if (this.tpg_deviceManager.Controls.Count > 0)
                 {
-
+                    this.tpg_deviceManager.UpdateControlLocation(_StartX, _StartY, _Offset);
                 }
             }
-            catch (Exception ex)
-            {
-            }
         }
-
         private void 刷新ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             System.Threading.Tasks.Task.Factory.StartNew(() =>
             {
-                Read();
+                ReadLogAsync();
             });
         }
         private void 清空日志ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string path = FilePath + "LOGFile.txt";
+            string path = "LOGFile.txt";
             //指定标识符  来指示   对话框中  的  返回值
             DialogResult dr = MessageBox.Show("确定清空所有日志吗?数据无法恢复！", "Warning", MessageBoxButtons.OKCancel);
             if (dr == DialogResult.OK)
             {
                 //将richTextBox页面内容清空
-                richTextBox1.Text = "";
+                richTextBox_information.Text = "";
 
                 //实例化一个  FileStream  对象（对文件进行读写操作）
                 FileStream fs;

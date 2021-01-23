@@ -31,6 +31,8 @@ namespace AppSettingsHelper.CustomControls
         {
             this.components = new System.ComponentModel.Container();
             this.gbxContainer = new System.Windows.Forms.GroupBox();
+            this.pcb_PartImage4 = new System.Windows.Forms.PictureBox();
+            this.pcb_PartImage2 = new System.Windows.Forms.PictureBox();
             this.pcb_PartImage3 = new System.Windows.Forms.PictureBox();
             this.pcb_PartImage1 = new System.Windows.Forms.PictureBox();
             this.lbl_error2 = new System.Windows.Forms.Label();
@@ -75,15 +77,13 @@ namespace AppSettingsHelper.CustomControls
             this.btn_Close = new AppSettingsHelper.UCBtnExt();
             this.btn_Save = new AppSettingsHelper.UCBtnExt();
             this.button1 = new System.Windows.Forms.Button();
-            this.pcb_PartImage2 = new System.Windows.Forms.PictureBox();
-            this.pcb_PartImage4 = new System.Windows.Forms.PictureBox();
             this.gbxContainer.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pcb_PartImage4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pcb_PartImage2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pcb_PartImage3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pcb_PartImage1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pcb_PartImage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pcb_PartImage2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pcb_PartImage4)).BeginInit();
             this.SuspendLayout();
             // 
             // gbxContainer
@@ -134,6 +134,26 @@ namespace AppSettingsHelper.CustomControls
             this.gbxContainer.TabIndex = 0;
             this.gbxContainer.TabStop = false;
             // 
+            // pcb_PartImage4
+            // 
+            this.pcb_PartImage4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pcb_PartImage4.Location = new System.Drawing.Point(616, 258);
+            this.pcb_PartImage4.Name = "pcb_PartImage4";
+            this.pcb_PartImage4.Size = new System.Drawing.Size(57, 50);
+            this.pcb_PartImage4.TabIndex = 57;
+            this.pcb_PartImage4.TabStop = false;
+            this.pcb_PartImage4.Click += new System.EventHandler(this.pcb_PartImage1_Click);
+            // 
+            // pcb_PartImage2
+            // 
+            this.pcb_PartImage2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pcb_PartImage2.Location = new System.Drawing.Point(486, 258);
+            this.pcb_PartImage2.Name = "pcb_PartImage2";
+            this.pcb_PartImage2.Size = new System.Drawing.Size(57, 50);
+            this.pcb_PartImage2.TabIndex = 56;
+            this.pcb_PartImage2.TabStop = false;
+            this.pcb_PartImage2.Click += new System.EventHandler(this.pcb_PartImage1_Click);
+            // 
             // pcb_PartImage3
             // 
             this.pcb_PartImage3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -171,7 +191,7 @@ namespace AppSettingsHelper.CustomControls
             this.cbx_Unit.Location = new System.Drawing.Point(109, 229);
             this.cbx_Unit.Name = "cbx_Unit";
             this.cbx_Unit.Size = new System.Drawing.Size(167, 23);
-            this.cbx_Unit.TabIndex = 52;
+            this.cbx_Unit.TabIndex = 5;
             // 
             // btn_Translate
             // 
@@ -182,7 +202,7 @@ namespace AppSettingsHelper.CustomControls
             this.btn_Translate.BtnText = "旋  转";
             this.btn_Translate.ConerRadius = 5;
             this.btn_Translate.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btn_Translate.EnabledMouseEffect = false;
+            this.btn_Translate.EnabledMouseEffect = true;
             this.btn_Translate.FillColor = System.Drawing.Color.Silver;
             this.btn_Translate.Font = new System.Drawing.Font("Microsoft YaHei", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.btn_Translate.IsRadius = true;
@@ -194,7 +214,7 @@ namespace AppSettingsHelper.CustomControls
             this.btn_Translate.RectColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(77)))), ((int)(((byte)(58)))));
             this.btn_Translate.RectWidth = 1;
             this.btn_Translate.Size = new System.Drawing.Size(73, 23);
-            this.btn_Translate.TabIndex = 51;
+            this.btn_Translate.TabIndex = 16;
             this.btn_Translate.TabStop = false;
             this.btn_Translate.TipsColor = System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(30)))), ((int)(((byte)(99)))));
             this.btn_Translate.TipsText = "";
@@ -209,7 +229,7 @@ namespace AppSettingsHelper.CustomControls
             this.btn_Clear.BtnText = "清  除";
             this.btn_Clear.ConerRadius = 5;
             this.btn_Clear.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btn_Clear.EnabledMouseEffect = false;
+            this.btn_Clear.EnabledMouseEffect = true;
             this.btn_Clear.FillColor = System.Drawing.Color.Silver;
             this.btn_Clear.Font = new System.Drawing.Font("Microsoft YaHei", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.btn_Clear.IsRadius = true;
@@ -221,7 +241,7 @@ namespace AppSettingsHelper.CustomControls
             this.btn_Clear.RectColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(77)))), ((int)(((byte)(58)))));
             this.btn_Clear.RectWidth = 1;
             this.btn_Clear.Size = new System.Drawing.Size(73, 23);
-            this.btn_Clear.TabIndex = 51;
+            this.btn_Clear.TabIndex = 15;
             this.btn_Clear.TabStop = false;
             this.btn_Clear.TipsColor = System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(30)))), ((int)(((byte)(99)))));
             this.btn_Clear.TipsText = "";
@@ -236,7 +256,7 @@ namespace AppSettingsHelper.CustomControls
             this.btnAdd.BtnText = "添  加";
             this.btnAdd.ConerRadius = 5;
             this.btnAdd.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnAdd.EnabledMouseEffect = false;
+            this.btnAdd.EnabledMouseEffect = true;
             this.btnAdd.FillColor = System.Drawing.Color.Silver;
             this.btnAdd.Font = new System.Drawing.Font("Microsoft YaHei", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.btnAdd.IsRadius = true;
@@ -248,7 +268,7 @@ namespace AppSettingsHelper.CustomControls
             this.btnAdd.RectColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(77)))), ((int)(((byte)(58)))));
             this.btnAdd.RectWidth = 1;
             this.btnAdd.Size = new System.Drawing.Size(73, 23);
-            this.btnAdd.TabIndex = 50;
+            this.btnAdd.TabIndex = 14;
             this.btnAdd.TabStop = false;
             this.btnAdd.TipsColor = System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(30)))), ((int)(((byte)(99)))));
             this.btnAdd.TipsText = "";
@@ -297,7 +317,7 @@ namespace AppSettingsHelper.CustomControls
             this.cbx_Minute.Location = new System.Drawing.Point(706, 19);
             this.cbx_Minute.Name = "cbx_Minute";
             this.cbx_Minute.Size = new System.Drawing.Size(37, 23);
-            this.cbx_Minute.TabIndex = 43;
+            this.cbx_Minute.TabIndex = 13;
             // 
             // cbx_Hour
             // 
@@ -315,7 +335,7 @@ namespace AppSettingsHelper.CustomControls
             this.cbx_Hour.Location = new System.Drawing.Point(649, 19);
             this.cbx_Hour.Name = "cbx_Hour";
             this.cbx_Hour.Size = new System.Drawing.Size(37, 23);
-            this.cbx_Hour.TabIndex = 42;
+            this.cbx_Hour.TabIndex = 12;
             // 
             // lbl_Day
             // 
@@ -351,7 +371,7 @@ namespace AppSettingsHelper.CustomControls
             this.cbx_Day.Location = new System.Drawing.Point(592, 19);
             this.cbx_Day.Name = "cbx_Day";
             this.cbx_Day.Size = new System.Drawing.Size(37, 23);
-            this.cbx_Day.TabIndex = 39;
+            this.cbx_Day.TabIndex = 11;
             // 
             // cbx_Month
             // 
@@ -369,7 +389,7 @@ namespace AppSettingsHelper.CustomControls
             this.cbx_Month.Location = new System.Drawing.Point(535, 19);
             this.cbx_Month.Name = "cbx_Month";
             this.cbx_Month.Size = new System.Drawing.Size(37, 23);
-            this.cbx_Month.TabIndex = 38;
+            this.cbx_Month.TabIndex = 10;
             // 
             // lbl_Quarter
             // 
@@ -400,7 +420,7 @@ namespace AppSettingsHelper.CustomControls
             this.cbx_Quarter.Location = new System.Drawing.Point(478, 19);
             this.cbx_Quarter.Name = "cbx_Quarter";
             this.cbx_Quarter.Size = new System.Drawing.Size(37, 23);
-            this.cbx_Quarter.TabIndex = 35;
+            this.cbx_Quarter.TabIndex = 9;
             // 
             // cbx_Year
             // 
@@ -418,7 +438,7 @@ namespace AppSettingsHelper.CustomControls
             this.cbx_Year.Location = new System.Drawing.Point(421, 19);
             this.cbx_Year.Name = "cbx_Year";
             this.cbx_Year.Size = new System.Drawing.Size(37, 23);
-            this.cbx_Year.TabIndex = 34;
+            this.cbx_Year.TabIndex = 8;
             // 
             // lbl_PartImage
             // 
@@ -444,7 +464,7 @@ namespace AppSettingsHelper.CustomControls
             this.tbx_PartDescription.Multiline = true;
             this.tbx_PartDescription.Name = "tbx_PartDescription";
             this.tbx_PartDescription.Size = new System.Drawing.Size(661, 56);
-            this.tbx_PartDescription.TabIndex = 31;
+            this.tbx_PartDescription.TabIndex = 7;
             // 
             // lbl_PartDescription
             // 
@@ -460,7 +480,7 @@ namespace AppSettingsHelper.CustomControls
             this.tbx_Count.Location = new System.Drawing.Point(109, 273);
             this.tbx_Count.Name = "tbx_Count";
             this.tbx_Count.Size = new System.Drawing.Size(167, 23);
-            this.tbx_Count.TabIndex = 29;
+            this.tbx_Count.TabIndex = 6;
             // 
             // lbl_Count
             // 
@@ -485,7 +505,7 @@ namespace AppSettingsHelper.CustomControls
             this.tbx_Consumption.Location = new System.Drawing.Point(109, 185);
             this.tbx_Consumption.Name = "tbx_Consumption";
             this.tbx_Consumption.Size = new System.Drawing.Size(167, 23);
-            this.tbx_Consumption.TabIndex = 25;
+            this.tbx_Consumption.TabIndex = 4;
             // 
             // lbl_Consumption
             // 
@@ -501,7 +521,7 @@ namespace AppSettingsHelper.CustomControls
             this.tbx_ModelNumber.Location = new System.Drawing.Point(109, 142);
             this.tbx_ModelNumber.Name = "tbx_ModelNumber";
             this.tbx_ModelNumber.Size = new System.Drawing.Size(167, 23);
-            this.tbx_ModelNumber.TabIndex = 23;
+            this.tbx_ModelNumber.TabIndex = 3;
             // 
             // lbl_ModelNumber
             // 
@@ -517,7 +537,7 @@ namespace AppSettingsHelper.CustomControls
             this.tbx_PartId.Location = new System.Drawing.Point(109, 99);
             this.tbx_PartId.Name = "tbx_PartId";
             this.tbx_PartId.Size = new System.Drawing.Size(167, 23);
-            this.tbx_PartId.TabIndex = 21;
+            this.tbx_PartId.TabIndex = 2;
             // 
             // lbl_PartId
             // 
@@ -543,7 +563,7 @@ namespace AppSettingsHelper.CustomControls
             this.tbx_deviceName.Location = new System.Drawing.Point(109, 55);
             this.tbx_deviceName.Name = "tbx_deviceName";
             this.tbx_deviceName.Size = new System.Drawing.Size(167, 23);
-            this.tbx_deviceName.TabIndex = 18;
+            this.tbx_deviceName.TabIndex = 1;
             // 
             // lbl_deviceName
             // 
@@ -559,7 +579,8 @@ namespace AppSettingsHelper.CustomControls
             this.tbx_deviceId.Location = new System.Drawing.Point(109, 15);
             this.tbx_deviceId.Name = "tbx_deviceId";
             this.tbx_deviceId.Size = new System.Drawing.Size(167, 23);
-            this.tbx_deviceId.TabIndex = 16;
+            this.tbx_deviceId.TabIndex = 0;
+            this.tbx_deviceId.Leave += new System.EventHandler(this.tbx_deviceId_Leave);
             // 
             // lbl_deviceId
             // 
@@ -601,7 +622,7 @@ namespace AppSettingsHelper.CustomControls
             this.btn_Close.BtnText = "取   消";
             this.btn_Close.ConerRadius = 5;
             this.btn_Close.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btn_Close.EnabledMouseEffect = false;
+            this.btn_Close.EnabledMouseEffect = true;
             this.btn_Close.FillColor = System.Drawing.Color.Silver;
             this.btn_Close.Font = new System.Drawing.Font("Microsoft YaHei", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.btn_Close.IsRadius = true;
@@ -613,7 +634,7 @@ namespace AppSettingsHelper.CustomControls
             this.btn_Close.RectColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(77)))), ((int)(((byte)(58)))));
             this.btn_Close.RectWidth = 1;
             this.btn_Close.Size = new System.Drawing.Size(102, 33);
-            this.btn_Close.TabIndex = 17;
+            this.btn_Close.TabIndex = 18;
             this.btn_Close.TabStop = false;
             this.btn_Close.TipsColor = System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(30)))), ((int)(((byte)(99)))));
             this.btn_Close.TipsText = "";
@@ -628,7 +649,7 @@ namespace AppSettingsHelper.CustomControls
             this.btn_Save.BtnText = "保   存";
             this.btn_Save.ConerRadius = 5;
             this.btn_Save.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btn_Save.EnabledMouseEffect = false;
+            this.btn_Save.EnabledMouseEffect = true;
             this.btn_Save.FillColor = System.Drawing.Color.Silver;
             this.btn_Save.Font = new System.Drawing.Font("Microsoft YaHei", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.btn_Save.IsRadius = true;
@@ -640,7 +661,7 @@ namespace AppSettingsHelper.CustomControls
             this.btn_Save.RectColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(77)))), ((int)(((byte)(58)))));
             this.btn_Save.RectWidth = 1;
             this.btn_Save.Size = new System.Drawing.Size(102, 33);
-            this.btn_Save.TabIndex = 16;
+            this.btn_Save.TabIndex = 17;
             this.btn_Save.TabStop = false;
             this.btn_Save.TipsColor = System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(30)))), ((int)(((byte)(99)))));
             this.btn_Save.TipsText = "";
@@ -662,26 +683,6 @@ namespace AppSettingsHelper.CustomControls
             this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.btn_Close_BtnClick);
             // 
-            // pcb_PartImage2
-            // 
-            this.pcb_PartImage2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pcb_PartImage2.Location = new System.Drawing.Point(486, 258);
-            this.pcb_PartImage2.Name = "pcb_PartImage2";
-            this.pcb_PartImage2.Size = new System.Drawing.Size(57, 50);
-            this.pcb_PartImage2.TabIndex = 56;
-            this.pcb_PartImage2.TabStop = false;
-            this.pcb_PartImage2.Click += new System.EventHandler(this.pcb_PartImage1_Click);
-            // 
-            // pcb_PartImage4
-            // 
-            this.pcb_PartImage4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pcb_PartImage4.Location = new System.Drawing.Point(616, 258);
-            this.pcb_PartImage4.Name = "pcb_PartImage4";
-            this.pcb_PartImage4.Size = new System.Drawing.Size(57, 50);
-            this.pcb_PartImage4.TabIndex = 57;
-            this.pcb_PartImage4.TabStop = false;
-            this.pcb_PartImage4.Click += new System.EventHandler(this.pcb_PartImage1_Click);
-            // 
             // DevicePartEdit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -701,12 +702,12 @@ namespace AppSettingsHelper.CustomControls
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Control_MouseMove);
             this.gbxContainer.ResumeLayout(false);
             this.gbxContainer.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pcb_PartImage4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pcb_PartImage2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pcb_PartImage3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pcb_PartImage1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pcb_PartImage)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pcb_PartImage2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pcb_PartImage4)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -721,7 +722,6 @@ namespace AppSettingsHelper.CustomControls
         private System.Windows.Forms.TextBox tbx_deviceId;
         private System.Windows.Forms.Label lbl_deviceId;
         private System.Windows.Forms.ErrorProvider errorProvider1;
-        private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label lbl_PartId;
         private System.Windows.Forms.Label lbl_Unit;
         private System.Windows.Forms.TextBox tbx_Consumption;
@@ -730,7 +730,6 @@ namespace AppSettingsHelper.CustomControls
         private System.Windows.Forms.Label lbl_ModelNumber;
         private System.Windows.Forms.TextBox tbx_PartDescription;
         private System.Windows.Forms.Label lbl_PartDescription;
-        private System.Windows.Forms.TextBox textBox5;
         private System.Windows.Forms.Label lbl_Count;
         private System.Windows.Forms.Label lbl_Minute;
         private System.Windows.Forms.Label lbl_Hour;

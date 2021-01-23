@@ -227,11 +227,13 @@ namespace AppSettingsHelper.CustomControls
             return devicePart;
         }
         SalesFeedBackMain.OperatorType _operatorType;
-        public DevicePartEdit(SalesFeedBackMain.OperatorType operatorType = SalesFeedBackMain.OperatorType.Add)
+        String[] _Ids;
+        public DevicePartEdit(SalesFeedBackMain.OperatorType operatorType = SalesFeedBackMain.OperatorType.Add,String[] Ids = null)
         {
             InitializeComponent();
             InitUnitStyles();
             _operatorType = operatorType;
+            _Ids = Ids;
             switch (operatorType)
             {
                 case SalesFeedBackMain.OperatorType.Add:
@@ -382,6 +384,21 @@ namespace AppSettingsHelper.CustomControls
                 pic.Image = this.pcb_PartImage.Image;
                 this.pcb_PartImage.Image = bitmap;
             }
+        }
+
+        private void tbx_deviceId_Leave(object sender, EventArgs e)
+        {
+            if (String.IsNullOrWhiteSpace(tbx_deviceId.Text)) return;
+
+            foreach (var item in _Ids)
+            {
+                if (item.Contains(tbx_deviceId.Text))
+                {
+                    this.errorProvider1.SetError(this.lbl_error, "设备部件ID已存在！");
+                    return;
+                }
+            }
+            this.errorProvider1.Clear();
         }
     }
 }

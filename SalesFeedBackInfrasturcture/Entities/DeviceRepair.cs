@@ -29,5 +29,10 @@ namespace SalesFeedBackInfrasturcture.Entities
         /// 维修照片
         /// </summary>
         public List<Byte[]> RepairImages { get; set; } = null;
+        public DeviceRepair Clone()
+        {
+            var deviceRepair = (DeviceRepair)this.MemberwiseClone();
+            return deviceRepair;
+        }
     }
 }

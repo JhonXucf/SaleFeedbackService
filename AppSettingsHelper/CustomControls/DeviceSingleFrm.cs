@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
+using System.Linq;
 using SalesFeedBackInfrasturcture.Entities;
 using SalesFeedBackInfrasturcture.Infrastructure;
 using System.Windows.Forms;
@@ -105,18 +105,12 @@ namespace AppSettingsHelper.CustomControls
                         MessageBox.Show("设备部件信息为空，请先添加设备部件！");
                         return;
                     }
-                    var deviceMaintain = new DeviceMaintainAndRepair(DeviceOperatorStyle.Maintain, this._device.DeviceParts);
+                    var deviceMaintain = new DeviceMaintainAndRepair(DeviceOperatorStyle.Maintain, this._device);
                     deviceMaintain.StartPosition = FormStartPosition.CenterParent;
                     if (deviceMaintain.ShowDialog() == DialogResult.OK)
                     {
-                        this._device.DeviceParts = deviceMaintain._deviceParts;
-                        this.lbl_devicePartNum.Text = _device.DeviceParts.Count.ToString();
-                        System.Threading.Tasks.Task.Run(() =>
-                        {
-                            var jb = AppCommondHelper.JsonSerilize.JsonHelper.GetSerilization(this._device);
-                            AppCommondHelper.JsonSerilize.JsonHelper.WriteToFile(SalesFeedBackMain.DeviceJsonPath,
-                                SalesFeedBackMain.DeviceFileName + this._device.ID + ".json", jb);
-                        });
+                        this._device.DeviceParts = deviceMaintain._device.DeviceParts;
+                        this.lbl_devicePartNum.Text = this._device.DeviceParts.Count.ToString();
                     }
                     break;
                 case "ModifyDevice":
@@ -131,39 +125,29 @@ namespace AppSettingsHelper.CustomControls
                         MessageBox.Show("设备部件信息为空，请先添加设备部件！");
                         return;
                     }
-                    var deviceRepair = new DeviceMaintainAndRepair(DeviceOperatorStyle.Repair, this._device.DeviceParts);
+                    var deviceRepair = new DeviceMaintainAndRepair(DeviceOperatorStyle.Repair, this._device);
                     deviceRepair.StartPosition = FormStartPosition.CenterParent;
                     if (deviceRepair.ShowDialog() == DialogResult.OK)
                     {
-                        this._device.DeviceParts = deviceRepair._deviceParts;
+                        this._device.DeviceParts = deviceRepair._device.DeviceParts;
                         this.lbl_devicePartNum.Text = _device.DeviceParts.Count.ToString();
-                        System.Threading.Tasks.Task.Run(() =>
-                        {
-                            var jb = AppCommondHelper.JsonSerilize.JsonHelper.GetSerilization(this._device);
-                            AppCommondHelper.JsonSerilize.JsonHelper.WriteToFile(SalesFeedBackMain.DeviceJsonPath,
-                                SalesFeedBackMain.DeviceFileName + this._device.ID + ".json", jb);
-                        });
                     }
                     break;
                 case "DevicePart":
-                    var devicePartEdit = new DevicePartEdit();
+                    var devicePartEdit = new DevicePartEdit(SalesFeedBackMain.OperatorType.Add, this._device.DeviceParts.Keys.ToArray());
                     devicePartEdit.StartPosition = FormStartPosition.CenterParent;
                     if (devicePartEdit.ShowDialog() == DialogResult.OK)
                     {
                         this._device.DeviceParts[devicePartEdit._DevicePart.ID] = devicePartEdit._DevicePart;
                         this.lbl_devicePartNum.Text = _device.DeviceParts.Count.ToString();
-                        System.Threading.Tasks.Task.Run(() =>
-                        {
-                            var jb = AppCommondHelper.JsonSerilize.JsonHelper.GetSerilization(this._device);
-                            AppCommondHelper.JsonSerilize.JsonHelper.WriteToFile(SalesFeedBackMain.DeviceJsonPath,
-                                SalesFeedBackMain.DeviceFileName + this._device.ID + ".json", jb);
-                        });                   
+                        GlobalSet.WriteDevicePartToFile(_device, devicePartEdit._DevicePart, SalesFeedBackMain.OperatorType.Add); 
                     }
                     break;
                 default:
                     break;
             }
         }
+ 
         public event EventHandler ModifyEventClicked;
         public event EventHandler DeleteEventClicked;
     }

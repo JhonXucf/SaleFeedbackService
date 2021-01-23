@@ -7,6 +7,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq.Expressions;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace AppSettingsHelper.CustomControls
@@ -33,7 +34,7 @@ namespace AppSettingsHelper.CustomControls
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Control_MouseMove(object sender, MouseEventArgs e)
-        { 
+        {
             if (e.Button == MouseButtons.Left)
             {
                 this.Top = Control.MousePosition.Y - _mousePoint.Y;
@@ -45,15 +46,15 @@ namespace AppSettingsHelper.CustomControls
         /// <summary>
         /// 设备部件信息
         /// </summary>
-        public Dictionary<String, DevicePart> _deviceParts;
-        public DeviceMaintainAndRepair(DeviceOperatorStyle deviceOperator, Dictionary<String, DevicePart> deviceParts)
+        public Device _device;
+        public DeviceMaintainAndRepair(DeviceOperatorStyle deviceOperator, Device device)
         {
             InitializeComponent();
             this.txt_serach.SearchClick += Txt_serach_SearchClick;
             this.txt_serach.ClearClick += Txt_serach_ClearClick;
             this.txt_serach.TextChanged += Txt_serach_TextChanged;
             _deviceOperator = deviceOperator;
-            _deviceParts = deviceParts;
+            _device = device;
             switch (deviceOperator)
             {
                 case DeviceOperatorStyle.Maintain:
@@ -70,7 +71,7 @@ namespace AppSettingsHelper.CustomControls
         private void InitPartInfos(Expression<Func<DevicePart, String, bool>> criteria = null, String text = null)
         {
             this.gbxContainer.Controls.Clear();
-            foreach (var item in _deviceParts)
+            foreach (var item in _device.DeviceParts)
             {
                 if (null != criteria)
                 {
@@ -129,7 +130,7 @@ namespace AppSettingsHelper.CustomControls
                     }
                 }
             }
-            var mainAndRepair = new DeviceMainTainAndRepairEdit(this._deviceOperator, devicePart);
+            var mainAndRepair = new DeviceMainTainAndRepairEdit(this._deviceOperator, this._device.ID.ToString(), devicePart);
             mainAndRepair.StartPosition = FormStartPosition.CenterParent;
             if (mainAndRepair.ShowDialog() == DialogResult.OK)
             {
@@ -142,7 +143,6 @@ namespace AppSettingsHelper.CustomControls
                             devicePartSingle = item as DevicePartSingle;
                             if (devicePartSingle.IsSelected)
                             {
-
                                 if (this._deviceOperator == DeviceOperatorStyle.Maintain)
                                 {
                                     foreach (var maintain in mainAndRepair._DevicePart.MaintainDetails)
@@ -159,7 +159,7 @@ namespace AppSettingsHelper.CustomControls
                                 else
                                 {
                                     foreach (var maintain in mainAndRepair._DevicePart.RepairDetails)
-                                    { 
+                                    {
                                         if (devicePartSingle._DevicePart.RepairDetails.ContainsKey(maintain.Key))
                                         {
                                             devicePartSingle._DevicePart.RepairDetails[maintain.Key] = maintain.Value;
@@ -167,8 +167,12 @@ namespace AppSettingsHelper.CustomControls
                                         }
                                         devicePartSingle._DevicePart.RepairDetails[maintain.Key] = maintain.Value;
                                     }
-                                    devicePartSingle.MaintainCount = devicePartSingle._DevicePart.RepairDetails.Count;
+                                    devicePartSingle.MaintainCount = devicePartSingle._DevicePart.RepairDetails.Count;                               
                                 }
+                                Task.Run(() =>
+                                {
+                                    GlobalSet.WriteDevicePartMainTainOrRepaitToFile(this._device.ID, devicePartSingle._DevicePart, _deviceOperator, SalesFeedBackMain.OperatorType.Add);
+                                });
                             }
                         }
                     }
@@ -177,27 +181,37 @@ namespace AppSettingsHelper.CustomControls
                 {
                     devicePartSingle.MaintainCount = this._deviceOperator == DeviceOperatorStyle.Maintain ? devicePart.MaintainDetails.Count
                     : devicePart.RepairDetails.Count;
-                }
+                    GlobalSet.WriteDevicePartMainTainOrRepaitToFile(this._device.ID, devicePartSingle._DevicePart, _deviceOperator, SalesFeedBackMain.OperatorType.Add);
+                } 
             }
         }
 
         private void DeviceSingle_DeletedHandle(object sender, EventArgs e)
         {
             var partSingle = sender as DevicePartSingle;
-            if (this._deviceParts.ContainsKey(partSingle._DevicePart.ID))
-                this._deviceParts.Remove(partSingle._DevicePart.ID);
-            if (this._deviceParts.Count == 0)
+            if (MessageBox.Show("确定删除设备部件[" + partSingle._DevicePart.ID + "]吗?", "提示", MessageBoxButtons.OKCancel) == DialogResult.OK)
             {
-                this.DialogResult = DialogResult.OK;
-                this.Close();
+                if (this._device.DeviceParts.ContainsKey(partSingle._DevicePart.ID))
+                {
+                    this._device.DeviceParts.Remove(partSingle._DevicePart.ID);
+                    GlobalSet.WriteDevicePartToFile(_device, partSingle._DevicePart, SalesFeedBackMain.OperatorType.Delete);
+                }
+                if (_device.DeviceParts.Count == 0)
+                {
+                    this.DialogResult = DialogResult.OK;
+                    this.Close();
+                }
             }
         }
 
         private void DeviceSingle_ModifiedHandle(object sender, EventArgs e)
         {
             var partSingle = sender as DevicePartSingle;
-            if (this._deviceParts.ContainsKey(partSingle._DevicePart.ID))
-                this._deviceParts[partSingle._DevicePart.ID] = partSingle._DevicePart;
+            if (_device.DeviceParts.ContainsKey(partSingle._DevicePart.ID))
+            {
+                _device.DeviceParts[partSingle._DevicePart.ID] = partSingle._DevicePart;
+                GlobalSet.WriteDevicePartToFile(_device, partSingle._DevicePart, SalesFeedBackMain.OperatorType.Modify);
+            }
         }
 
         private void Txt_serach_TextChanged(object sender, EventArgs e)

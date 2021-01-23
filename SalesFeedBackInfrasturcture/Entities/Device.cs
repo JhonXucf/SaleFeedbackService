@@ -56,5 +56,10 @@ namespace SalesFeedBackInfrasturcture.Entities
                 DeviceParts[key] = value;
             }
         }
+        public Device Clone()
+        {
+            var device = (Device)this.MemberwiseClone();
+            return device;
+        }
     }
 }

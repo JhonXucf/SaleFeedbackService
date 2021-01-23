@@ -1,5 +1,6 @@
 ﻿using SalesFeedBackInfrasturcture.Entities;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -15,22 +16,25 @@ namespace AppSettingsHelper
     public partial class LoadPage : Form
     {
         System.Threading.Timer timer;
-        public Dictionary<String, Device> _Devices;
+        public ConcurrentDictionary<String, Device> _Devices;
         public LoadPage()
         {
             InitializeComponent();
             this.StartPosition = FormStartPosition.CenterScreen;
             this.Load += LoadPage_Load;
-            var files = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory + "DevicesInfo\\");
-            if (files.Length == 0) return;
-            _Devices = new Dictionary<string, Device>();
-            Parallel.ForEach(files, ac =>
+            Task.Run(() =>
             {
-                var device = AppCommondHelper.JsonSerilize.JsonHelper.ReadTFromJsonFile<Device>(ac);
-                _Devices[device.ID] = device;
+                var files = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory + "DevicesInfo\\");
+                if (files.Length == 0) return;
+                _Devices = new ConcurrentDictionary<string, Device>();
+                Parallel.ForEach(files, ac =>
+                {
+                    var device = AppCommondHelper.JsonSerilize.JsonHelper.ReadTFromJsonFile<Device>(ac);
+                    _Devices[device.ID] = device;
+                });
             });
         }
-        
+
         private void LoadPage_Load(object sender, EventArgs e)
         {
             timer = new System.Threading.Timer(Processer, null, Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);

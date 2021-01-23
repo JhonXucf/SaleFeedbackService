@@ -29,5 +29,10 @@ namespace SalesFeedBackInfrasturcture.Entities
         /// 保养照片
         /// </summary>
         public List<Byte[]> MaintainImages { get; set; } = null;
+        public DeviceMaintain Clone()
+        {
+            var deviceMaintain = (DeviceMaintain)this.MemberwiseClone();
+            return deviceMaintain;
+        }
     }
 }

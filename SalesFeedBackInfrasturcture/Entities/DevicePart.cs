@@ -71,5 +71,10 @@ namespace SalesFeedBackInfrasturcture.Entities
             var func = criteria.Compile();
             return func(this, text);
         }
+        public DevicePart Clone()
+        {
+            var devicePart = (DevicePart)this.MemberwiseClone();
+            return devicePart;
+        }
     }
 }

@@ -33,6 +33,15 @@ namespace AppSettingsHelper.CustomControls
             this.lbl_title = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.gbxContainer1 = new System.Windows.Forms.GroupBox();
+            this.pcb_PartImage4 = new System.Windows.Forms.PictureBox();
+            this.pcb_PartImage2 = new System.Windows.Forms.PictureBox();
+            this.pcb_PartImage3 = new System.Windows.Forms.PictureBox();
+            this.pcb_PartImage1 = new System.Windows.Forms.PictureBox();
+            this.btn_Translate = new AppSettingsHelper.UCBtnExt();
+            this.btn_Clear = new AppSettingsHelper.UCBtnExt();
+            this.btnAdd = new AppSettingsHelper.UCBtnExt();
+            this.pcb_PartImage = new System.Windows.Forms.PictureBox();
+            this.lbl_PartImage = new System.Windows.Forms.Label();
             this.lbl_error = new System.Windows.Forms.Label();
             this.tbx_maintainId = new System.Windows.Forms.TextBox();
             this.lbl_maintainId = new System.Windows.Forms.Label();
@@ -50,24 +59,15 @@ namespace AppSettingsHelper.CustomControls
             this.button1 = new System.Windows.Forms.Button();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.pcb_PartImage4 = new System.Windows.Forms.PictureBox();
-            this.pcb_PartImage2 = new System.Windows.Forms.PictureBox();
-            this.pcb_PartImage3 = new System.Windows.Forms.PictureBox();
-            this.pcb_PartImage1 = new System.Windows.Forms.PictureBox();
-            this.btn_Translate = new AppSettingsHelper.UCBtnExt();
-            this.btn_Clear = new AppSettingsHelper.UCBtnExt();
-            this.btnAdd = new AppSettingsHelper.UCBtnExt();
-            this.pcb_PartImage = new System.Windows.Forms.PictureBox();
-            this.lbl_PartImage = new System.Windows.Forms.Label();
             this.gbxContainer1.SuspendLayout();
-            this.groupBoxMain.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pcb_PartImage4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pcb_PartImage2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pcb_PartImage3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pcb_PartImage1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pcb_PartImage)).BeginInit();
+            this.groupBoxMain.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
             // 
             // lbl_title
@@ -114,6 +114,145 @@ namespace AppSettingsHelper.CustomControls
             this.gbxContainer1.TabIndex = 15;
             this.gbxContainer1.TabStop = false;
             // 
+            // pcb_PartImage4
+            // 
+            this.pcb_PartImage4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pcb_PartImage4.Location = new System.Drawing.Point(702, 188);
+            this.pcb_PartImage4.Name = "pcb_PartImage4";
+            this.pcb_PartImage4.Size = new System.Drawing.Size(57, 50);
+            this.pcb_PartImage4.TabIndex = 66;
+            this.pcb_PartImage4.TabStop = false;
+            this.pcb_PartImage4.Click += new System.EventHandler(this.pcb_PartImage1_Click);
+            // 
+            // pcb_PartImage2
+            // 
+            this.pcb_PartImage2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pcb_PartImage2.Location = new System.Drawing.Point(572, 188);
+            this.pcb_PartImage2.Name = "pcb_PartImage2";
+            this.pcb_PartImage2.Size = new System.Drawing.Size(57, 50);
+            this.pcb_PartImage2.TabIndex = 65;
+            this.pcb_PartImage2.TabStop = false;
+            this.pcb_PartImage2.Click += new System.EventHandler(this.pcb_PartImage1_Click);
+            // 
+            // pcb_PartImage3
+            // 
+            this.pcb_PartImage3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pcb_PartImage3.Location = new System.Drawing.Point(637, 188);
+            this.pcb_PartImage3.Name = "pcb_PartImage3";
+            this.pcb_PartImage3.Size = new System.Drawing.Size(57, 50);
+            this.pcb_PartImage3.TabIndex = 64;
+            this.pcb_PartImage3.TabStop = false;
+            this.pcb_PartImage3.Click += new System.EventHandler(this.pcb_PartImage1_Click);
+            // 
+            // pcb_PartImage1
+            // 
+            this.pcb_PartImage1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pcb_PartImage1.Location = new System.Drawing.Point(507, 188);
+            this.pcb_PartImage1.Name = "pcb_PartImage1";
+            this.pcb_PartImage1.Size = new System.Drawing.Size(57, 50);
+            this.pcb_PartImage1.TabIndex = 63;
+            this.pcb_PartImage1.TabStop = false;
+            this.pcb_PartImage1.Click += new System.EventHandler(this.pcb_PartImage1_Click);
+            // 
+            // btn_Translate
+            // 
+            this.btn_Translate.BackColor = System.Drawing.Color.White;
+            this.btn_Translate.BtnBackColor = System.Drawing.Color.White;
+            this.btn_Translate.BtnFont = new System.Drawing.Font("Microsoft YaHei", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btn_Translate.BtnForeColor = System.Drawing.Color.Black;
+            this.btn_Translate.BtnText = "旋  转";
+            this.btn_Translate.ConerRadius = 5;
+            this.btn_Translate.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btn_Translate.EnabledMouseEffect = true;
+            this.btn_Translate.FillColor = System.Drawing.Color.Silver;
+            this.btn_Translate.Font = new System.Drawing.Font("Microsoft YaHei", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.btn_Translate.IsRadius = true;
+            this.btn_Translate.IsShowRect = false;
+            this.btn_Translate.IsShowTips = false;
+            this.btn_Translate.Location = new System.Drawing.Point(772, 87);
+            this.btn_Translate.Margin = new System.Windows.Forms.Padding(0);
+            this.btn_Translate.Name = "btn_Translate";
+            this.btn_Translate.RectColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(77)))), ((int)(((byte)(58)))));
+            this.btn_Translate.RectWidth = 1;
+            this.btn_Translate.Size = new System.Drawing.Size(73, 23);
+            this.btn_Translate.TabIndex = 6;
+            this.btn_Translate.TabStop = false;
+            this.btn_Translate.TipsColor = System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(30)))), ((int)(((byte)(99)))));
+            this.btn_Translate.TipsText = "";
+            this.btn_Translate.BtnClick += new System.EventHandler(this.btn_Translate_BtnClick);
+            // 
+            // btn_Clear
+            // 
+            this.btn_Clear.BackColor = System.Drawing.Color.White;
+            this.btn_Clear.BtnBackColor = System.Drawing.Color.White;
+            this.btn_Clear.BtnFont = new System.Drawing.Font("Microsoft YaHei", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btn_Clear.BtnForeColor = System.Drawing.Color.Black;
+            this.btn_Clear.BtnText = "清  除";
+            this.btn_Clear.ConerRadius = 5;
+            this.btn_Clear.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btn_Clear.EnabledMouseEffect = true;
+            this.btn_Clear.FillColor = System.Drawing.Color.Silver;
+            this.btn_Clear.Font = new System.Drawing.Font("Microsoft YaHei", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.btn_Clear.IsRadius = true;
+            this.btn_Clear.IsShowRect = false;
+            this.btn_Clear.IsShowTips = false;
+            this.btn_Clear.Location = new System.Drawing.Point(772, 46);
+            this.btn_Clear.Margin = new System.Windows.Forms.Padding(0);
+            this.btn_Clear.Name = "btn_Clear";
+            this.btn_Clear.RectColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(77)))), ((int)(((byte)(58)))));
+            this.btn_Clear.RectWidth = 1;
+            this.btn_Clear.Size = new System.Drawing.Size(73, 23);
+            this.btn_Clear.TabIndex = 5;
+            this.btn_Clear.TabStop = false;
+            this.btn_Clear.TipsColor = System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(30)))), ((int)(((byte)(99)))));
+            this.btn_Clear.TipsText = "";
+            this.btn_Clear.BtnClick += new System.EventHandler(this.btn_Clear_BtnClick);
+            // 
+            // btnAdd
+            // 
+            this.btnAdd.BackColor = System.Drawing.Color.White;
+            this.btnAdd.BtnBackColor = System.Drawing.Color.White;
+            this.btnAdd.BtnFont = new System.Drawing.Font("Microsoft YaHei", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnAdd.BtnForeColor = System.Drawing.Color.Black;
+            this.btnAdd.BtnText = "添  加";
+            this.btnAdd.ConerRadius = 5;
+            this.btnAdd.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnAdd.EnabledMouseEffect = true;
+            this.btnAdd.FillColor = System.Drawing.Color.Silver;
+            this.btnAdd.Font = new System.Drawing.Font("Microsoft YaHei", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.btnAdd.IsRadius = true;
+            this.btnAdd.IsShowRect = false;
+            this.btnAdd.IsShowTips = false;
+            this.btnAdd.Location = new System.Drawing.Point(772, 5);
+            this.btnAdd.Margin = new System.Windows.Forms.Padding(0);
+            this.btnAdd.Name = "btnAdd";
+            this.btnAdd.RectColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(77)))), ((int)(((byte)(58)))));
+            this.btnAdd.RectWidth = 1;
+            this.btnAdd.Size = new System.Drawing.Size(73, 23);
+            this.btnAdd.TabIndex = 4;
+            this.btnAdd.TabStop = false;
+            this.btnAdd.TipsColor = System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(30)))), ((int)(((byte)(99)))));
+            this.btnAdd.TipsText = "";
+            this.btnAdd.BtnClick += new System.EventHandler(this.btnPathSelect_BtnClick);
+            // 
+            // pcb_PartImage
+            // 
+            this.pcb_PartImage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pcb_PartImage.Location = new System.Drawing.Point(507, 5);
+            this.pcb_PartImage.Name = "pcb_PartImage";
+            this.pcb_PartImage.Size = new System.Drawing.Size(253, 175);
+            this.pcb_PartImage.TabIndex = 59;
+            this.pcb_PartImage.TabStop = false;
+            // 
+            // lbl_PartImage
+            // 
+            this.lbl_PartImage.AutoSize = true;
+            this.lbl_PartImage.Location = new System.Drawing.Point(424, 5);
+            this.lbl_PartImage.Name = "lbl_PartImage";
+            this.lbl_PartImage.Size = new System.Drawing.Size(59, 15);
+            this.lbl_PartImage.TabIndex = 58;
+            this.lbl_PartImage.Text = "保养图片";
+            // 
             // lbl_error
             // 
             this.lbl_error.AutoSize = true;
@@ -129,7 +268,7 @@ namespace AppSettingsHelper.CustomControls
             this.tbx_maintainId.Location = new System.Drawing.Point(110, 5);
             this.tbx_maintainId.Name = "tbx_maintainId";
             this.tbx_maintainId.Size = new System.Drawing.Size(257, 23);
-            this.tbx_maintainId.TabIndex = 18;
+            this.tbx_maintainId.TabIndex = 0;
             // 
             // lbl_maintainId
             // 
@@ -147,7 +286,7 @@ namespace AppSettingsHelper.CustomControls
             this.dtime_maintainTime.Location = new System.Drawing.Point(110, 77);
             this.dtime_maintainTime.Name = "dtime_maintainTime";
             this.dtime_maintainTime.Size = new System.Drawing.Size(257, 23);
-            this.dtime_maintainTime.TabIndex = 8;
+            this.dtime_maintainTime.TabIndex = 2;
             // 
             // txt_maintainDescription
             // 
@@ -155,7 +294,7 @@ namespace AppSettingsHelper.CustomControls
             this.txt_maintainDescription.Multiline = true;
             this.txt_maintainDescription.Name = "txt_maintainDescription";
             this.txt_maintainDescription.Size = new System.Drawing.Size(257, 108);
-            this.txt_maintainDescription.TabIndex = 5;
+            this.txt_maintainDescription.TabIndex = 3;
             // 
             // lbl_maintainDescription
             // 
@@ -222,7 +361,7 @@ namespace AppSettingsHelper.CustomControls
             this.btn_Close.BtnText = "关   闭";
             this.btn_Close.ConerRadius = 5;
             this.btn_Close.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btn_Close.EnabledMouseEffect = false;
+            this.btn_Close.EnabledMouseEffect = true;
             this.btn_Close.FillColor = System.Drawing.Color.Silver;
             this.btn_Close.Font = new System.Drawing.Font("Microsoft YaHei", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.btn_Close.IsRadius = true;
@@ -234,7 +373,7 @@ namespace AppSettingsHelper.CustomControls
             this.btn_Close.RectColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(77)))), ((int)(((byte)(58)))));
             this.btn_Close.RectWidth = 1;
             this.btn_Close.Size = new System.Drawing.Size(102, 33);
-            this.btn_Close.TabIndex = 19;
+            this.btn_Close.TabIndex = 8;
             this.btn_Close.TabStop = false;
             this.btn_Close.TipsColor = System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(30)))), ((int)(((byte)(99)))));
             this.btn_Close.TipsText = "";
@@ -250,7 +389,7 @@ namespace AppSettingsHelper.CustomControls
             this.btn_Save.BtnText = "保   存";
             this.btn_Save.ConerRadius = 5;
             this.btn_Save.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btn_Save.EnabledMouseEffect = false;
+            this.btn_Save.EnabledMouseEffect = true;
             this.btn_Save.FillColor = System.Drawing.Color.Silver;
             this.btn_Save.Font = new System.Drawing.Font("Microsoft YaHei", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.btn_Save.IsRadius = true;
@@ -262,7 +401,7 @@ namespace AppSettingsHelper.CustomControls
             this.btn_Save.RectColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(77)))), ((int)(((byte)(58)))));
             this.btn_Save.RectWidth = 1;
             this.btn_Save.Size = new System.Drawing.Size(102, 33);
-            this.btn_Save.TabIndex = 18;
+            this.btn_Save.TabIndex = 7;
             this.btn_Save.TabStop = false;
             this.btn_Save.TipsColor = System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(30)))), ((int)(((byte)(99)))));
             this.btn_Save.TipsText = "";
@@ -278,7 +417,7 @@ namespace AppSettingsHelper.CustomControls
             this.btn_Cancel.BtnText = "取   消";
             this.btn_Cancel.ConerRadius = 5;
             this.btn_Cancel.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btn_Cancel.EnabledMouseEffect = false;
+            this.btn_Cancel.EnabledMouseEffect = true;
             this.btn_Cancel.FillColor = System.Drawing.Color.Silver;
             this.btn_Cancel.Font = new System.Drawing.Font("Microsoft YaHei", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.btn_Cancel.IsRadius = true;
@@ -290,7 +429,7 @@ namespace AppSettingsHelper.CustomControls
             this.btn_Cancel.RectColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(77)))), ((int)(((byte)(58)))));
             this.btn_Cancel.RectWidth = 1;
             this.btn_Cancel.Size = new System.Drawing.Size(102, 33);
-            this.btn_Cancel.TabIndex = 20;
+            this.btn_Cancel.TabIndex = 9;
             this.btn_Cancel.TabStop = false;
             this.btn_Cancel.TipsColor = System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(30)))), ((int)(((byte)(99)))));
             this.btn_Cancel.TipsText = "";
@@ -317,145 +456,6 @@ namespace AppSettingsHelper.CustomControls
             // 
             this.errorProvider1.ContainerControl = this;
             // 
-            // pcb_PartImage4
-            // 
-            this.pcb_PartImage4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pcb_PartImage4.Location = new System.Drawing.Point(702, 188);
-            this.pcb_PartImage4.Name = "pcb_PartImage4";
-            this.pcb_PartImage4.Size = new System.Drawing.Size(57, 50);
-            this.pcb_PartImage4.TabIndex = 66;
-            this.pcb_PartImage4.TabStop = false;
-            this.pcb_PartImage4.Click += new System.EventHandler(this.pcb_PartImage1_Click);
-            // 
-            // pcb_PartImage2
-            // 
-            this.pcb_PartImage2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pcb_PartImage2.Location = new System.Drawing.Point(572, 188);
-            this.pcb_PartImage2.Name = "pcb_PartImage2";
-            this.pcb_PartImage2.Size = new System.Drawing.Size(57, 50);
-            this.pcb_PartImage2.TabIndex = 65;
-            this.pcb_PartImage2.TabStop = false;
-            this.pcb_PartImage2.Click += new System.EventHandler(this.pcb_PartImage1_Click);
-            // 
-            // pcb_PartImage3
-            // 
-            this.pcb_PartImage3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pcb_PartImage3.Location = new System.Drawing.Point(637, 188);
-            this.pcb_PartImage3.Name = "pcb_PartImage3";
-            this.pcb_PartImage3.Size = new System.Drawing.Size(57, 50);
-            this.pcb_PartImage3.TabIndex = 64;
-            this.pcb_PartImage3.TabStop = false;
-            this.pcb_PartImage3.Click += new System.EventHandler(this.pcb_PartImage1_Click);
-            // 
-            // pcb_PartImage1
-            // 
-            this.pcb_PartImage1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pcb_PartImage1.Location = new System.Drawing.Point(507, 188);
-            this.pcb_PartImage1.Name = "pcb_PartImage1";
-            this.pcb_PartImage1.Size = new System.Drawing.Size(57, 50);
-            this.pcb_PartImage1.TabIndex = 63;
-            this.pcb_PartImage1.TabStop = false;
-            this.pcb_PartImage1.Click += new System.EventHandler(this.pcb_PartImage1_Click);
-            // 
-            // btn_Translate
-            // 
-            this.btn_Translate.BackColor = System.Drawing.Color.White;
-            this.btn_Translate.BtnBackColor = System.Drawing.Color.White;
-            this.btn_Translate.BtnFont = new System.Drawing.Font("Microsoft YaHei", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btn_Translate.BtnForeColor = System.Drawing.Color.Black;
-            this.btn_Translate.BtnText = "旋  转";
-            this.btn_Translate.ConerRadius = 5;
-            this.btn_Translate.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btn_Translate.EnabledMouseEffect = false;
-            this.btn_Translate.FillColor = System.Drawing.Color.Silver;
-            this.btn_Translate.Font = new System.Drawing.Font("Microsoft YaHei", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.btn_Translate.IsRadius = true;
-            this.btn_Translate.IsShowRect = false;
-            this.btn_Translate.IsShowTips = false;
-            this.btn_Translate.Location = new System.Drawing.Point(772, 87);
-            this.btn_Translate.Margin = new System.Windows.Forms.Padding(0);
-            this.btn_Translate.Name = "btn_Translate";
-            this.btn_Translate.RectColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(77)))), ((int)(((byte)(58)))));
-            this.btn_Translate.RectWidth = 1;
-            this.btn_Translate.Size = new System.Drawing.Size(73, 23);
-            this.btn_Translate.TabIndex = 61;
-            this.btn_Translate.TabStop = false;
-            this.btn_Translate.TipsColor = System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(30)))), ((int)(((byte)(99)))));
-            this.btn_Translate.TipsText = "";
-            this.btn_Translate.BtnClick += new System.EventHandler(this.btn_Translate_BtnClick);
-            // 
-            // btn_Clear
-            // 
-            this.btn_Clear.BackColor = System.Drawing.Color.White;
-            this.btn_Clear.BtnBackColor = System.Drawing.Color.White;
-            this.btn_Clear.BtnFont = new System.Drawing.Font("Microsoft YaHei", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btn_Clear.BtnForeColor = System.Drawing.Color.Black;
-            this.btn_Clear.BtnText = "清  除";
-            this.btn_Clear.ConerRadius = 5;
-            this.btn_Clear.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btn_Clear.EnabledMouseEffect = false;
-            this.btn_Clear.FillColor = System.Drawing.Color.Silver;
-            this.btn_Clear.Font = new System.Drawing.Font("Microsoft YaHei", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.btn_Clear.IsRadius = true;
-            this.btn_Clear.IsShowRect = false;
-            this.btn_Clear.IsShowTips = false;
-            this.btn_Clear.Location = new System.Drawing.Point(772, 46);
-            this.btn_Clear.Margin = new System.Windows.Forms.Padding(0);
-            this.btn_Clear.Name = "btn_Clear";
-            this.btn_Clear.RectColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(77)))), ((int)(((byte)(58)))));
-            this.btn_Clear.RectWidth = 1;
-            this.btn_Clear.Size = new System.Drawing.Size(73, 23);
-            this.btn_Clear.TabIndex = 62;
-            this.btn_Clear.TabStop = false;
-            this.btn_Clear.TipsColor = System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(30)))), ((int)(((byte)(99)))));
-            this.btn_Clear.TipsText = "";
-            this.btn_Clear.BtnClick += new System.EventHandler(this.btn_Clear_BtnClick);
-            // 
-            // btnAdd
-            // 
-            this.btnAdd.BackColor = System.Drawing.Color.White;
-            this.btnAdd.BtnBackColor = System.Drawing.Color.White;
-            this.btnAdd.BtnFont = new System.Drawing.Font("Microsoft YaHei", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnAdd.BtnForeColor = System.Drawing.Color.Black;
-            this.btnAdd.BtnText = "添  加";
-            this.btnAdd.ConerRadius = 5;
-            this.btnAdd.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnAdd.EnabledMouseEffect = false;
-            this.btnAdd.FillColor = System.Drawing.Color.Silver;
-            this.btnAdd.Font = new System.Drawing.Font("Microsoft YaHei", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.btnAdd.IsRadius = true;
-            this.btnAdd.IsShowRect = false;
-            this.btnAdd.IsShowTips = false;
-            this.btnAdd.Location = new System.Drawing.Point(772, 5);
-            this.btnAdd.Margin = new System.Windows.Forms.Padding(0);
-            this.btnAdd.Name = "btnAdd";
-            this.btnAdd.RectColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(77)))), ((int)(((byte)(58)))));
-            this.btnAdd.RectWidth = 1;
-            this.btnAdd.Size = new System.Drawing.Size(73, 23);
-            this.btnAdd.TabIndex = 60;
-            this.btnAdd.TabStop = false;
-            this.btnAdd.TipsColor = System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(30)))), ((int)(((byte)(99)))));
-            this.btnAdd.TipsText = "";
-            this.btnAdd.BtnClick += new System.EventHandler(this.btnPathSelect_BtnClick);
-            // 
-            // pcb_PartImage
-            // 
-            this.pcb_PartImage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pcb_PartImage.Location = new System.Drawing.Point(507, 5);
-            this.pcb_PartImage.Name = "pcb_PartImage";
-            this.pcb_PartImage.Size = new System.Drawing.Size(253, 175);
-            this.pcb_PartImage.TabIndex = 59;
-            this.pcb_PartImage.TabStop = false;
-            // 
-            // lbl_PartImage
-            // 
-            this.lbl_PartImage.AutoSize = true;
-            this.lbl_PartImage.Location = new System.Drawing.Point(424, 5);
-            this.lbl_PartImage.Name = "lbl_PartImage";
-            this.lbl_PartImage.Size = new System.Drawing.Size(59, 15);
-            this.lbl_PartImage.TabIndex = 58;
-            this.lbl_PartImage.Text = "保养图片";
-            // 
             // DeviceMainTainAndRepairEdit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -477,14 +477,14 @@ namespace AppSettingsHelper.CustomControls
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Control_MouseMove);
             this.gbxContainer1.ResumeLayout(false);
             this.gbxContainer1.PerformLayout();
-            this.groupBoxMain.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pcb_PartImage4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pcb_PartImage2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pcb_PartImage3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pcb_PartImage1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pcb_PartImage)).EndInit();
+            this.groupBoxMain.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
