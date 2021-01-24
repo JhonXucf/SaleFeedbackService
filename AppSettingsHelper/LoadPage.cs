@@ -24,7 +24,8 @@ namespace AppSettingsHelper
             this.Load += LoadPage_Load;
             Task.Run(() =>
             {
-                var files = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory + "DevicesInfo\\");
+                if (!Directory.Exists(GlobalSet.m_deviceJsonPath)) return;//路径不存在，则返回
+                var files = Directory.GetFiles(GlobalSet.m_deviceJsonPath);
                 if (files.Length == 0) return;
                 _Devices = new ConcurrentDictionary<string, Device>();
                 Parallel.ForEach(files, ac =>
@@ -51,7 +52,7 @@ namespace AppSettingsHelper
             {
                 pnl_Load.Width += 10;
             }));
-            if (pnl_Load.Width >= 700)
+            if (pnl_Load.Width >= this.Width)
             {
                 timer.Dispose();
                 this.DialogResult = DialogResult.OK;

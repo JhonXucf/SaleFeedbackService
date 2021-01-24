@@ -9,14 +9,10 @@ using System.Reflection;
 using System.Text;
 using SalesFeedBackInfrasturcture.Entities;
 using System.Collections;
-using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using Microsoft.Win32;
 using System.Diagnostics;
 using SalesFeedBackInfrasturcture.Infrastructure;
-using AppCommondHelper;
 using AppSettingsHelper.CustomControls;
-using Newtonsoft.Json;
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
 using System.Threading;
@@ -30,12 +26,11 @@ namespace AppSettingsHelper
         public SalesFeedBackMain(ConcurrentDictionary<String, Device> device = null)
         {
             InitializeComponent();
-
+            InitBorder();
             _clock = new Clock();
             _clock.Size = new Size(this.pnl_title.Height - 5, this.pnl_title.Height - 5);
             _clock.Location = new Point(this.pnl_title.Width - this.pnl_minimizeAndClose.Width - this._clock.Width, 5);
             this.pnl_title.Controls.Add(_clock);
-            InitBorder();
             if (null != device)
             {
                 this._Devices = device;
@@ -56,6 +51,8 @@ namespace AppSettingsHelper
         /// </summary>
         Boolean _IsPatterned = false;
         String _searchPattern = String.Empty;
+        Int32 _LogContainerSelectedIndex = 0;
+        Boolean _IsFirstLoadLog = false;
         #endregion
 
         #region 边框鼠标拖动及关闭
@@ -300,8 +297,10 @@ namespace AppSettingsHelper
             var inputText = textbox.InputText;
             if (string.IsNullOrWhiteSpace(inputText))
             {
+                Task.Run(() => ReadLogAsync());
                 return;
             }
+            Task.Run(() => ReadLogAsync(inputText));
         }
 
         void InitDeviceManagerMenu()
@@ -488,7 +487,7 @@ namespace AppSettingsHelper
             readLogOption.StartTime = this.dtp_StartTime.Value;
             readLogOption.EndTime = this.dtp_EndTime.Value;
             readLogOption.SearchPattern = searchPattern;
-            switch (tabControl2.SelectedIndex)
+            switch (_LogContainerSelectedIndex)
             {
                 case 0:
                     readLogOption.logEventLevel = LogEventLevel.Information;
@@ -506,30 +505,47 @@ namespace AppSettingsHelper
                     break;
             }
             var ct = _cts.Token;
-            switch (readLogOption.logEventLevel)
+            var taskResult = ReadAsync(readLogOption, ct).ContinueWith(task =>
             {
-                case LogEventLevel.Verbose:
-                    break;
-                case LogEventLevel.Debug:
-                    break;
-                case LogEventLevel.Information:
-                    this.richTextBox_information.Text = "";
-                    break;
-                case LogEventLevel.Warning:
-                    break;
-                case LogEventLevel.Error:
-                    break;
-                case LogEventLevel.Fatal:
-                    break;
-                default:
-                    break;
-            }
+                this.Invoke(new Action(() =>
+                {
+                    switch (readLogOption.logEventLevel)
+                    {
+                        case LogEventLevel.Verbose:
+                            break;
+                        case LogEventLevel.Debug:
+                            break;
+                        case LogEventLevel.Information:
+                            if (task.Result == null || task.Result.Length == 0)
+                            {
+                                this.richTextBox_information.Text = "";
+                                return;
+                            }
+                            foreach (var item in task.Result)
+                            {
+                                this.richTextBox_information.Text += item;
+                            }
+                            break;
+                        case LogEventLevel.Warning:
+                            //this.richTextBox_warning.Text = taskResult.Result.ToString();
+                            break;
+                        case LogEventLevel.Error:
+                            //this.richTextBox_error.Text = taskResult.Result.ToString();
+                            break;
+                        case LogEventLevel.Fatal:
+                            //this.richTextBox_Fatal.Text = taskResult.Result.ToString();
+                            break;
+                        default:
+                            break;
+                    }
+                }));
+            });
         }
         /// <summary>
         /// 方法：读取Txt文件，（日志文件）
         /// </summary>
         /// <param name="path"></param>
-        public String Read(ReadLogOption op, CancellationToken ct)
+        public async Task<String[]> ReadAsync(ReadLogOption op, CancellationToken ct)
         {
             var pop = new ParallelOptions();
             pop.CancellationToken = ct;
@@ -557,82 +573,62 @@ namespace AppSettingsHelper
             }
             var files = Directory.GetFiles(path);
             var searchFiles = new List<String>();
-            // var searchFiles = new ConcurrentQueue<String>();
-            //String searchFile = String.Empty;
-            String stringFileNameWithOutExtension = String.Empty;
-            var stringDate = String.Empty;
-            var dateTime = DateTime.Now;
-            foreach (var item in files)
-            {
-                stringFileNameWithOutExtension = Path.GetFileNameWithoutExtension(item);
-                stringDate = stringFileNameWithOutExtension.Substring(7);
-                dateTime = Convert.ToDateTime(stringDate);
-                if (dateTime.CompareTo(op.StartTime) < 0 || dateTime.CompareTo(op.EndTime) < 0)
+            ParallelLoopResult loopResult = Parallel.ForEach<String, String>(
+                files,
+                pop,
+                () => { return null; },
+                (file, loopState, index, taskLocalString) =>
                 {
-                    searchFiles.Add(item);
+                    String stringFileNameWithOutExtension = Path.GetFileNameWithoutExtension(file);
+                    var stringDate = stringFileNameWithOutExtension.Substring(stringFileNameWithOutExtension.Length - 10, 10);
+                    var dateTime = Convert.ToDateTime(stringDate);
+                    //var year = stringDate.Substring(0, 4) + "-";
+                    //var month = stringDate.Substring(4, 2) + "-";
+                    //var day = stringDate.Substring(6, 2);
+                    //var dateTime = Convert.ToDateTime(year + month + day);
+                    if (dateTime.CompareTo(op.StartTime) >= 0 && dateTime.CompareTo(op.EndTime) <= 0)
+                    {
+                        return file;
+                    }
+                    return null;
+                },
+                taskLocalFinally =>
+                {
+                    if (taskLocalFinally != null)
+                    {
+                        searchFiles.Add(taskLocalFinally);
+                    }
+                });
+            if (searchFiles.Count == 0) return null;
+            Task<String>[] readTasks = new Task<String>[searchFiles.Count];
+            for (int i = searchFiles.Count - 1; i >= 0; i--)
+            {
+                readTasks[i] = ReadLineAsync(searchFiles[i]);
+            }
+            String[] results = await Task.WhenAll(readTasks);
+
+            return results;
+        }
+        private static async Task<String> ReadLineAsync(String file)
+        {
+            var sb = new StringBuilder();
+            FileStream fs = null;
+            try
+            {
+                fs = File.OpenRead(file);
+                using (StreamReader sr = new StreamReader(fs, Encoding.UTF8))
+                {
+                    var line = String.Empty;
+                    while ((line = await sr.ReadLineAsync()) != null)
+                    {
+                        sb.AppendLine(line);
+                    }
                 }
             }
-            foreach (var item in searchFiles)
-            {
-                //使用指定的路径、创建模式和读 / 写权限初始化 System.IO.FileStream 类的新实例。
-                FileStream fs = new FileStream(item, FileMode.Open, FileAccess.Read);
-
-                //用指定的字符编码为指定的流初始化 System.IO.StreamReader 类的一个新实例。
-                StreamReader sr = new StreamReader(fs, Encoding.UTF8);
-
-                String line = "";
-                richTextBox_information.Text = "";
-                List<String> loglist = new List<String>();
-                while ((line = sr.ReadLine()) != null)
-                {
-                    //将对象添加到List<>的结尾处
-                    loglist.Add(line.ToString());
-                    if (line.ToString().Contains('-'))
-                    {
-                        //回车加换行
-                        loglist.Add("\r\n");
-                    }
-                }
-                //当泛型loglist元素数大于300时，将元素显示在控件richTextBox1上（倒序）。
-                if (loglist.Count > 300)
-                {
-                    for (int i = loglist.Count - 1; i >= loglist.Count - 300; i--)
-                    {
-                        richTextBox_information.Text += loglist[i].ToString();
-                    }
-                }
-                //当泛型loglist元素数小于等于300时，将元素显示在控件richTextBox1上（倒序）。
-                else
-                    for (int i = loglist.Count - 1; i >= 0; i--)
-                    {
-                        richTextBox_information.Text += loglist[i].ToString();
-                    }
-                //关闭、释放资源
-                fs.Close();
-                fs.Dispose();
-                sr.Close();
-                sr.Dispose();
-            }
-            //ParallelLoopResult loopResult = Parallel.ForEach<String[], String>(
-            //    files,
-            //    pop,
-            //    () => { return null; },
-            //    (loopState, index, local) =>
-            //    {
-            //        String stringFileNameWithOutExtension = Path.GetFileNameWithoutExtension(files[index]);
-            //        var stringDate = stringFileNameWithOutExtension.Substring(7);
-            //        var dateTime = Convert.ToDateTime(stringDate);
-            //        if (dateTime.CompareTo(op.StartTime) < 0 || dateTime.CompareTo(op.EndTime) < 0)
-            //        {
-            //            searchFile = files[index];
-            //        }
-            //        return searchFile;
-            //    },
-            //    localFinally =>
-            //    {
-            //        searchFiles.Enqueue(searchFile);
-            //    }); 
-            return "";
+            catch (IOException ex)
+            { /*忽略拒绝访问的任何文件*/}
+            finally { if (fs != null) fs.Dispose(); }
+            return sb.ToString();
         }
         private void tpg_deviceManager_SizeChanged(object sender, EventArgs e)
         {
@@ -645,6 +641,21 @@ namespace AppSettingsHelper
                 }
             }
         }
+
+        private void tabControl2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            _LogContainerSelectedIndex = tabControl2.SelectedIndex;
+        }
+
+        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!_IsFirstLoadLog)
+            {
+                _IsFirstLoadLog = true;
+                Task.Run(() => ReadLogAsync());
+            }
+        }
+
         private void 刷新ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             System.Threading.Tasks.Task.Factory.StartNew(() =>

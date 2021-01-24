@@ -102,6 +102,7 @@
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(1300, 655);
             this.tabControl1.TabIndex = 1;
+            this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
             // tpg_deviceManager
             // 
@@ -143,6 +144,7 @@
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.BackColor = System.Drawing.Color.LightGray;
             this.splitContainer1.Panel1.Controls.Add(this.txt_serach);
             this.splitContainer1.Panel1.Controls.Add(this.lbl_medium);
             this.splitContainer1.Panel1.Controls.Add(this.dtp_EndTime);
@@ -173,7 +175,7 @@
             this.txt_serach.IsRadius = true;
             this.txt_serach.IsShowClearBtn = true;
             this.txt_serach.IsShowKeyboard = false;
-            this.txt_serach.IsShowRect = true;
+            this.txt_serach.IsShowRect = false;
             this.txt_serach.IsShowSearchBtn = true;
             this.txt_serach.KeyBoardType = AppSettingsHelper.KeyBoardType.UCKeyBorderAll_EN;
             this.txt_serach.Location = new System.Drawing.Point(466, 0);
@@ -256,6 +258,7 @@
             this.tabControl2.SelectedIndex = 0;
             this.tabControl2.Size = new System.Drawing.Size(1284, 568);
             this.tabControl2.TabIndex = 0;
+            this.tabControl2.SelectedIndexChanged += new System.EventHandler(this.tabControl2_SelectedIndexChanged);
             // 
             // tabPage_Information
             // 

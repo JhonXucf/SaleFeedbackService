@@ -1,11 +1,13 @@
 ﻿using AppCommondHelper;
 using AppCommondHelper.JsonSerilize;
+using AppCommondHelper.Logger;
 using SalesFeedBackInfrasturcture.Entities;
 using SalesFeedBackInfrasturcture.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
+using System.Runtime.InteropServices;
+using System.Text; 
 using System.Threading.Tasks;
 
 namespace AppSettingsHelper
@@ -24,7 +26,7 @@ namespace AppSettingsHelper
             m_AppOption = new AppCommondHelper.Infrastucture.AppOption
             {
                 AppName = "AppSettingsHelper",
-                LoggerPath = SerilogLogger.GetLogPath(),
+                LoggerPath = AppDomain.CurrentDomain.BaseDirectory,
                 IsEnableJsonSerilize = true
             };
         }
@@ -42,6 +44,8 @@ namespace AppSettingsHelper
         /// </summary>
         public static String m_deviceFileName = "Device_";
         public static String m_FileExtensionName = ".json";
+        public static Byte[] m_TodayLog = null;
+        public static CustomLogger m_Logger;
         #endregion
         #region 静态方法
         /// <summary>
@@ -120,7 +124,7 @@ namespace AppSettingsHelper
                         deviceCopy.PartImages = null;
                         var opType = operatorType == SalesFeedBackMain.OperatorType.Add ? "新增设备部件##" : "修改设备部件##";
                         SerilogLogger.Logger.Information(m_AppOption.AppName + "##设备ID" + device.ID + "##" + opType + JsonHelper.GetSerilization(deviceCopy));
-                    });                  
+                    });
                     break;
                 case SalesFeedBackMain.OperatorType.Delete:
                     Task.Run(() =>
@@ -130,7 +134,7 @@ namespace AppSettingsHelper
                         var deviceCopy = devicePart.Clone();
                         deviceCopy.PartImages = null;
                         SerilogLogger.Logger.Warning(m_AppOption.AppName + "##设备ID" + device.ID + "##删除设备部件##" + JsonHelper.GetSerilization(deviceCopy));
-                    });                 
+                    });
                     break;
                 default:
                     break;
@@ -209,5 +213,63 @@ namespace AppSettingsHelper
             }
         }
         #endregion 
+        /// <summary>
+        /// 文件句柄操作类
+        /// </summary>
+        public class FileHandleAPI
+        {
+            #region 文件访问模式
+            public const int OF_READ = 0;
+            public const int OF_WRITE = 1;
+            public const int OF_READWRITE = 2;
+            #endregion
+
+            #region 共享模式（参考OpenFile函数的标志常数表）
+            public const int OF_SHARE_COMPAT = 0x0;      //文件可由多个应用程序打开多次
+            public const int OF_SHARE_EXCLUSIVE = 0x10;  //其他任何一个程序都不能再打开这个文件
+            public const int OF_SHARE_DENY_WRITE = 0x20; //其他程序可以读文件，但不能写文件
+            public const int OF_SHARE_DENY_READ = 0x30;  //禁止其他程序读写文件内容
+            public const int OF_SHARE_DENY_NONE = 0x40;  //可打开文件，以便由其他程序读写
+            #endregion
+
+            public static readonly IntPtr HFILE_ERROR = new IntPtr(-1);
+
+
+            /// <summary>
+            /// 获取当前线程文件句柄
+            /// </summary>
+            /// <param name="lpPathName">file path</param>
+            /// <param name="iReadWrite"></param>
+            /// <returns></returns>
+            [DllImport("kernel32.dll")]
+            public static extern IntPtr _lopen(string lpPathName, int iReadWrite);
+
+            /// <summary>
+            /// 关闭当前线程的文件句柄
+            /// </summary>
+            /// <param name="hObject"></param>
+            /// <returns></returns>
+            [DllImport("kernel32.dll")]
+            public static extern bool CloseHandle(IntPtr hObject);
+
+            /// <summary>
+            /// 检查当前文件的句柄是否被占用
+            /// </summary>
+            /// <param name="filePath">file path</param>
+            /// <returns></returns>
+            public static bool IsOpen(string filePath)
+            {
+                IntPtr vHandle = _lopen(filePath, OF_READWRITE | OF_SHARE_EXCLUSIVE);
+                if (vHandle == HFILE_ERROR)
+                {
+                    return true;
+                }
+                else
+                {
+                    CloseHandle(vHandle);
+                    return false;
+                }
+            }
+        }
     }
 }
