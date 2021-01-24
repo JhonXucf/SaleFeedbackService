@@ -47,41 +47,41 @@ namespace SaleFeedbackService
                 {
                     _tcpServer.HandleClientClose = (server, connection) =>
                     {
-                        _logger.LogInformation($"The TcpClient(ConnectionId : {connection.ConnectionId} IP: {connection.IP}) disconnected the Server.");
+                        GlobalSet.m_Logger.Information($"The TcpClient(ConnectionId : {connection.ConnectionId} IP: {connection.IP}) disconnected the Server.");
                     };
                     _tcpServer.HandleException = e =>
                     {
-                        _logger.LogError(e, "The TcpNetworkServer has a problem.");
+                        GlobalSet.m_Logger.Error("The TcpNetworkServer has a problem.", e);
                     };
                     _tcpServer.HandleNewClientConnected = (server, connection) =>
                     {
-                        _logger.LogInformation($"The TcpClient(ConnectionId : {connection.ConnectionId} IP: {connection.IP}) connected the Server.");
+                        GlobalSet.m_Logger.Information($"The TcpClient(ConnectionId : {connection.ConnectionId} IP: {connection.IP}) connected the Server.");
                     };
                     _tcpServer.HandleRecMsg = (server, connection, recMsg) =>
                     {
-                        _logger.LogInformation($"The TcpNetworkServer receive the message from the TcpClient(ConnectionId : " +
+                        GlobalSet.m_Logger.Information($"The TcpNetworkServer receive the message from the TcpClient(ConnectionId : " +
                             $"{connection.ConnectionId} IP: {connection.IP} Message : {recMsg.GetUtf8Str()})");
                     };
                     _tcpServer.HandleSendMsg = (server, connection, sendMsg) =>
                     {
-                        _logger.LogInformation($"The TcpNetworkServer send the message to the TcpClient(ConnectionId : " +
+                        GlobalSet.m_Logger.Information($"The TcpNetworkServer send the message to the TcpClient(ConnectionId : " +
                             $"{connection.ConnectionId} IP: {connection.IP} Message : {sendMsg.GetUtf8Str()})");
                     };
                     _tcpServer.HandleServerStarted = sever =>
                     {
-                        _logger.LogInformation($"The TcpNetworkServer was started up");
+                        GlobalSet.m_Logger.Information($"The TcpNetworkServer was started up");
                     };
                 }
                 _tcpServer.StartServer();
             }
-            _logger.LogInformation("WorkerTcp Service is starting");
+            GlobalSet.m_Logger.Information("WorkerTcp Service is starting");
             return base.StartAsync(cancellationToken);
         }
         public override Task StopAsync(CancellationToken cancellationToken)
         {
             if (_tcpSocketOption != null && _tcpSocketOption.IsEnableTcp)
                 _tcpServer.StopServer();
-            _logger.LogInformation("WorkerTcp Service has been stopped..");
+            GlobalSet.m_Logger.Information("WorkerTcp Service has been stopped..");
             return base.StopAsync(cancellationToken);
         }
         protected override Task ExecuteAsync(CancellationToken stoppingToken)

@@ -95,16 +95,25 @@ namespace AppCommondHelper.Logger
                 File.Create(filePath).Close();
             }
             var sb = new StringBuilder();
-            sb.AppendLine(msg);
+            sb.Append(msg);
             if (null != ex)
             {
-                sb.AppendLine(ex.Message);
-                sb.AppendLine(ex.StackTrace);
+                sb.Append(ex.Message);
+                sb.Append(ex.StackTrace);
             }
             using (StreamWriter sw = new StreamWriter(filePath, true, Encoding.UTF8))
             {
                 sw.WriteLineAsync(sb.ToString());
             }
         }
+    }
+    public enum LogEventLevel
+    {
+        Information,
+        Warning,
+        Error,
+        Fatal,
+        Verbose,
+        Debug
     }
 }

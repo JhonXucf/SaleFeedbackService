@@ -33,7 +33,7 @@ namespace SaleFeedbackService
             IFileProvider fileProvider = new PhysicalFileProvider(AppDomain.CurrentDomain.BaseDirectory);
             fileProvider.Watch("*.json").RegisterChangeCallback((obj) =>
             {
-                _logger.LogInformation("The appsettings.json was changed");
+                GlobalSet.m_Logger.Information("The appsettings.json was changed");
             }, null);
 
             var udpSection = _configuration.GetSection(nameof(UdpSocketOption));
@@ -53,32 +53,32 @@ namespace SaleFeedbackService
                 {
                     _udpClient.HandleRecMsg = (udpSocket, ipEndPoint, recMsg) =>
                     {
-                        _logger.LogInformation($"The UdpNetworkServer receive the message {recMsg.GetUtf8Str()}");
+                        GlobalSet.m_Logger.Information($"The UdpNetworkServer receive the message {recMsg.GetUtf8Str()}");
                     };
                     _udpClient.HandleException = e =>
                     {
-                        _logger.LogError(e, $"The UdpNetworkServer has a problem");
+                        GlobalSet.m_Logger.Error($"The UdpNetworkServer has a problem", e);
                     };
                     _udpClient.HandleStarted = () =>
                      {
-                         _logger.LogInformation($"The UdpNetworkServer was started up.");
+                         GlobalSet.m_Logger.Information($"The UdpNetworkServer was started up.");
                      };
                     _udpClient.HandleSendMsg = (udpSocket, ipEndPoint, sendMsg) =>
                     {
-                        _logger.LogInformation($"The UdpNetworkServer Send the message : {sendMsg.GetUtf8Str()}");
+                        GlobalSet.m_Logger.Information($"The UdpNetworkServer Send the message : {sendMsg.GetUtf8Str()}");
                     };
                 }
                 _udpClient.Start();
             }
 
-            _logger.LogInformation("WorkerUdp Service is starting");
+            GlobalSet.m_Logger.Information("WorkerUdp Service is starting");
             return base.StartAsync(cancellationToken);
         }
         public override Task StopAsync(CancellationToken cancellationToken)
         {
             if (_udpSocketOption != null && _udpSocketOption.IsEnableUdp)
                 _udpClient.Stop();
-            _logger.LogInformation("WorkerUdp Service has been stopped..");
+            GlobalSet.m_Logger.Information("WorkerUdp Service has been stopped..");
             return base.StopAsync(cancellationToken);
         }
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)

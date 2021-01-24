@@ -77,7 +77,7 @@ namespace AppSettingsHelper
                             }
                         }
                         var opType = operatorType == SalesFeedBackMain.OperatorType.Add ? "新增设备##" : "修改设备##";
-                        SerilogLogger.Logger.Information(m_AppOption.AppName + "##" + opType + JsonHelper.GetSerilization(deviceCopy));
+                        m_Logger.Information(m_AppOption.AppName + "##" + opType + JsonHelper.GetSerilization(deviceCopy));
                     });
                     break;
                 case SalesFeedBackMain.OperatorType.Delete:
@@ -97,7 +97,7 @@ namespace AppSettingsHelper
                             }
                         }
                         File.Delete(m_deviceJsonPath + m_deviceFileName + deviceCopy.ID + m_FileExtensionName);
-                        SerilogLogger.Logger.Warning(m_AppOption.AppName + "##删除设备##" + JsonHelper.GetSerilization(deviceCopy));
+                        m_Logger.Warning(m_AppOption.AppName + "##删除设备##" + JsonHelper.GetSerilization(deviceCopy));
                     });
                     break;
                 default:
@@ -123,7 +123,7 @@ namespace AppSettingsHelper
                         var deviceCopy = devicePart.Clone();
                         deviceCopy.PartImages = null;
                         var opType = operatorType == SalesFeedBackMain.OperatorType.Add ? "新增设备部件##" : "修改设备部件##";
-                        SerilogLogger.Logger.Information(m_AppOption.AppName + "##设备ID" + device.ID + "##" + opType + JsonHelper.GetSerilization(deviceCopy));
+                        m_Logger.Information(m_AppOption.AppName + "##设备ID" + device.ID + "##" + opType + JsonHelper.GetSerilization(deviceCopy));
                     });
                     break;
                 case SalesFeedBackMain.OperatorType.Delete:
@@ -133,7 +133,7 @@ namespace AppSettingsHelper
                         JsonHelper.WriteToFile(m_deviceJsonPath, m_deviceFileName + device.ID + m_FileExtensionName, js);
                         var deviceCopy = devicePart.Clone();
                         deviceCopy.PartImages = null;
-                        SerilogLogger.Logger.Warning(m_AppOption.AppName + "##设备ID" + device.ID + "##删除设备部件##" + JsonHelper.GetSerilization(deviceCopy));
+                        m_Logger.Warning(m_AppOption.AppName + "##设备ID" + device.ID + "##删除设备部件##" + JsonHelper.GetSerilization(deviceCopy));
                     });
                     break;
                 default:
@@ -168,7 +168,7 @@ namespace AppSettingsHelper
                             }
                             if (sb.Length > 0)
                             {
-                                SerilogLogger.Logger.Information(sb.ToString());
+                                m_Logger.Information(sb.ToString());
                             }
                             break;
                         case DeviceOperatorStyle.Repair:
@@ -182,7 +182,7 @@ namespace AppSettingsHelper
                             }
                             if (sb1.Length > 0)
                             {
-                                SerilogLogger.Logger.Information(sb1.ToString());
+                                m_Logger.Information(sb1.ToString());
                             }
                             break;
                         default:
@@ -196,13 +196,13 @@ namespace AppSettingsHelper
                             var main = deviceMaintain.Clone();
                             main.MaintainImages = null;
                             var opType = "设备部件保养删除##";
-                            SerilogLogger.Logger.Warning(m_AppOption.AppName + "##设备ID" + deviceId + "##部件ID" + devicePart.ID + "##" + opType + "保养ID" + deviceMaintain.ID + JsonHelper.GetSerilization(main));
+                            m_Logger.Warning(m_AppOption.AppName + "##设备ID" + deviceId + "##部件ID" + devicePart.ID + "##" + opType + "保养ID" + deviceMaintain.ID + JsonHelper.GetSerilization(main));
                             break;
                         case DeviceOperatorStyle.Repair:
                             var repair = deviceRepair.Clone();
                             repair.RepairImages = null;
                             var opType1 = "设备部件修复删除##";
-                            SerilogLogger.Logger.Warning(m_AppOption.AppName + "##设备ID" + deviceId + "##部件ID" + devicePart.ID + "##" + opType1 + "修复ID" + deviceRepair.ID + JsonHelper.GetSerilization(repair));
+                            m_Logger.Warning(m_AppOption.AppName + "##设备ID" + deviceId + "##部件ID" + devicePart.ID + "##" + opType1 + "修复ID" + deviceRepair.ID + JsonHelper.GetSerilization(repair));
                             break;
                         default:
                             break;

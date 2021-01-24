@@ -16,13 +16,12 @@ using AppSettingsHelper.CustomControls;
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
 using System.Threading;
-using Serilog.Events;
+using AppCommondHelper.Logger;
 
 namespace AppSettingsHelper
 {
     public partial class SalesFeedBackMain : Form
     {
-
         public SalesFeedBackMain(ConcurrentDictionary<String, Device> device = null)
         {
             InitializeComponent();
@@ -516,9 +515,9 @@ namespace AppSettingsHelper
                         case LogEventLevel.Debug:
                             break;
                         case LogEventLevel.Information:
+                            this.richTextBox_information.Text = "";
                             if (task.Result == null || task.Result.Length == 0)
-                            {
-                                this.richTextBox_information.Text = "";
+                            {                                
                                 return;
                             }
                             foreach (var item in task.Result)
@@ -573,32 +572,44 @@ namespace AppSettingsHelper
             }
             var files = Directory.GetFiles(path);
             var searchFiles = new List<String>();
-            ParallelLoopResult loopResult = Parallel.ForEach<String, String>(
-                files,
-                pop,
-                () => { return null; },
-                (file, loopState, index, taskLocalString) =>
+            foreach (var file in files)
+            {
+                String stringFileNameWithOutExtension = Path.GetFileNameWithoutExtension(file);
+                var stringDate = stringFileNameWithOutExtension.Substring(stringFileNameWithOutExtension.Length - 10, 10);
+                var dateTime = Convert.ToDateTime(stringDate);
+                if (dateTime.CompareTo(op.StartTime) >= 0 && dateTime.CompareTo(op.EndTime) <= 0)
                 {
-                    String stringFileNameWithOutExtension = Path.GetFileNameWithoutExtension(file);
-                    var stringDate = stringFileNameWithOutExtension.Substring(stringFileNameWithOutExtension.Length - 10, 10);
-                    var dateTime = Convert.ToDateTime(stringDate);
-                    //var year = stringDate.Substring(0, 4) + "-";
-                    //var month = stringDate.Substring(4, 2) + "-";
-                    //var day = stringDate.Substring(6, 2);
-                    //var dateTime = Convert.ToDateTime(year + month + day);
-                    if (dateTime.CompareTo(op.StartTime) >= 0 && dateTime.CompareTo(op.EndTime) <= 0)
-                    {
-                        return file;
-                    }
-                    return null;
-                },
-                taskLocalFinally =>
-                {
-                    if (taskLocalFinally != null)
-                    {
-                        searchFiles.Add(taskLocalFinally);
-                    }
-                });
+                    searchFiles.Add(file);
+                } 
+            }
+            #region ParallelLoopResult
+            //ParallelLoopResult loopResult = Parallel.ForEach<String, String>(
+            //   files,
+            //   pop,
+            //   () => { return null; },
+            //   (file, loopState, index, taskLocalString) =>
+            //   {
+            //       String stringFileNameWithOutExtension = Path.GetFileNameWithoutExtension(file);
+            //       var stringDate = stringFileNameWithOutExtension.Substring(stringFileNameWithOutExtension.Length - 10, 10);
+            //       var dateTime = Convert.ToDateTime(stringDate);
+            //        //var year = stringDate.Substring(0, 4) + "-";
+            //        //var month = stringDate.Substring(4, 2) + "-";
+            //        //var day = stringDate.Substring(6, 2);
+            //        //var dateTime = Convert.ToDateTime(year + month + day);
+            //        if (dateTime.CompareTo(op.StartTime) >= 0 && dateTime.CompareTo(op.EndTime) <= 0)
+            //       {
+            //           return file;
+            //       }
+            //       return null;
+            //   },
+            //   taskLocalFinally =>
+            //   {
+            //       if (taskLocalFinally != null)
+            //       {
+            //           searchFiles.Add(taskLocalFinally);
+            //       }
+            //   });
+            #endregion 
             if (searchFiles.Count == 0) return null;
             Task<String>[] readTasks = new Task<String>[searchFiles.Count];
             for (int i = searchFiles.Count - 1; i >= 0; i--)

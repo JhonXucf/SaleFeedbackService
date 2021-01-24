@@ -20,8 +20,6 @@ namespace AppSettingsHelper
             Application.SetCompatibleTextRenderingDefault(false);
             GlobalSet.m_Logger = new AppCommondHelper.Logger.CustomLogger();
             GlobalSet.m_Logger.Information($"This is {GlobalSet.m_AppOption.AppName} app Started.");
-            //SerilogLogger.InitSerilog(GlobalSet.m_AppOption.LoggerPath);
-            //SerilogLogger.Logger.Information($"This is {GlobalSet.m_AppOption.AppName} app Started.");
             var pageLoad = new LoadPage();
             if (pageLoad.ShowDialog() == DialogResult.OK)
             {
