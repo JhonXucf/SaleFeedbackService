@@ -1,11 +1,6 @@
 using System;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Serilog;
-using Serilog.Events;
-using AppCommondHelper.Infrastucture;
-using Microsoft.Extensions.Configuration;
-using AppCommondHelper;
 
 namespace SaleFeedbackService
 {
@@ -31,8 +26,7 @@ namespace SaleFeedbackService
                 {
                     services.AddHostedService<WorkerUdp>();
                     services.AddHostedService<WorkerTcp>();
-                })
-                .UseSerilog();
+                });
 
     }
 }

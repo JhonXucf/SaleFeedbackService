@@ -36,7 +36,6 @@ namespace AppSettingsHelper.Forms
     /// <seealso cref="System.Windows.Forms.IMessageFilter" />
     public partial class FrmAnchor : Form, IMessageFilter
     {
-
         /// <summary>
         /// The m parent control
         /// </summary>

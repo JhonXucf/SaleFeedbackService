@@ -346,7 +346,7 @@ namespace AppSettingsHelper.CustomControls
             }
             catch (Exception ex)
             {
-
+                GlobalSet.m_Logger.Error("选择图片", ex);
             }
         }
 
@@ -392,7 +392,7 @@ namespace AppSettingsHelper.CustomControls
 
             foreach (var item in _Ids)
             {
-                if (item.Contains(tbx_deviceId.Text))
+                if (item.Equals(tbx_deviceId.Text))
                 {
                     this.errorProvider1.SetError(this.lbl_error, "设备部件ID已存在！");
                     return;

@@ -220,6 +220,7 @@
             this.dtp_EndTime.Name = "dtp_EndTime";
             this.dtp_EndTime.Size = new System.Drawing.Size(123, 24);
             this.dtp_EndTime.TabIndex = 3;
+            this.dtp_EndTime.Leave += new System.EventHandler(this.dtp_StartTime_Leave);
             // 
             // lbl_EndTime
             // 
@@ -247,6 +248,7 @@
             this.dtp_StartTime.Name = "dtp_StartTime";
             this.dtp_StartTime.Size = new System.Drawing.Size(123, 24);
             this.dtp_StartTime.TabIndex = 0;
+            this.dtp_StartTime.Leave += new System.EventHandler(this.dtp_StartTime_Leave);
             // 
             // tabControl_log
             // 
@@ -690,8 +692,6 @@
         private System.Windows.Forms.Label lbl_SearchCount;
         private System.Windows.Forms.Button btn_Last;
         private System.Windows.Forms.Button btn_Next;
-        private System.Windows.Forms.Label lbl_currentPar;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label lbl_SearchTip;
         private System.Windows.Forms.Button btn_jumpToIndex;
         private System.Windows.Forms.TextBox tbx_currentPatternNum;

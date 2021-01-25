@@ -264,6 +264,7 @@ namespace AppSettingsHelper
             }
             catch (Exception ex)
             {
+                GlobalSet.m_Logger.Error("初始化", ex);
             }
         }
         void InitDeviceManagerMenu()
@@ -636,15 +637,22 @@ namespace AppSettingsHelper
             if (!Directory.Exists(path)) return null;
             var files = Directory.GetFiles(path);
             if (files.Length == 0) return null;
-            var searchFiles = new ConcurrentBag<String>();
-            Parallel.ForEach(files, ac =>
+            var concurrentFiles = new Dictionary<Int32, String>();
+            var fileIndex = 0;
+            foreach (var item in files)
             {
-                String stringFileNameWithOutExtension = Path.GetFileNameWithoutExtension(ac);
+                concurrentFiles[fileIndex] = item;
+                fileIndex++;
+            }
+            var searchFiles = new ConcurrentDictionary<Int32, String>();
+            Parallel.ForEach(concurrentFiles, ac =>
+            {
+                String stringFileNameWithOutExtension = Path.GetFileNameWithoutExtension(ac.Value);
                 var stringDate = stringFileNameWithOutExtension.Substring(stringFileNameWithOutExtension.Length - 10, 10);
                 var dateTime = Convert.ToDateTime(stringDate);
                 if (dateTime.CompareTo(op.StartTime) >= 0 && dateTime.CompareTo(op.EndTime) <= 0)
                 {
-                    searchFiles.Add(ac);
+                    searchFiles.TryAdd(ac.Key, ac.Value);
                 }
             });
             #region ParallelLoopResult
@@ -674,10 +682,12 @@ namespace AppSettingsHelper
             #endregion 
             if (searchFiles.Count == 0) return null;
             Task<String>[] readTasks = new Task<String>[searchFiles.Count];
-            var array = searchFiles.ToArray();
-            for (int i = array.Length - 1; i >= 0; i--)
+            var aimFiles = searchFiles.OrderBy(p => p.Key);
+            fileIndex = 0;
+            foreach (var item in aimFiles)
             {
-                readTasks[i] = ReadLineAsync(array[i]);
+                readTasks[fileIndex] = ReadLineAsync(item.Value);
+                fileIndex++;
             }
             String[] results = await Task.WhenAll(readTasks);
 
@@ -704,7 +714,7 @@ namespace AppSettingsHelper
                     }
                 }
             }
-            catch (IOException ex)
+            catch (IOException)
             { /*忽略拒绝访问的任何文件*/}
             finally { if (fs != null) fs.Dispose(); }
             return sb.ToString();
@@ -787,6 +797,12 @@ namespace AppSettingsHelper
             this.tbx_currentPatternNum.Text = (index + 1).ToString();
             richTextBox_information.ScrollToCaret();
         }
+
+        private void dtp_StartTime_Leave(object sender, EventArgs e)
+        {
+            this.txt_serach.Focus();
+        }
+
         private void tabControl_log_Selected(object sender, TabControlEventArgs e)
         {
             if (null != _tabPageSelected)

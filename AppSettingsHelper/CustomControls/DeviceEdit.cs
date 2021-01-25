@@ -160,7 +160,7 @@ namespace AppSettingsHelper.CustomControls
 
             foreach (var item in _Ids)
             {
-                if (item.Contains(tbx_deviceId.Text))
+                if (item.Equals(tbx_deviceId.Text))
                 {
                     this.errorProvider1.SetError(this.lbl_error, "设备ID已存在！");
                     return;

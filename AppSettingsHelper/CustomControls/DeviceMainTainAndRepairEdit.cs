@@ -284,7 +284,7 @@ namespace AppSettingsHelper.CustomControls
             }
             catch (Exception ex)
             {
-
+                GlobalSet.m_Logger.Error("添加图片",ex);
             }
         }
 

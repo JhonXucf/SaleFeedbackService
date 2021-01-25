@@ -14,41 +14,7 @@ namespace Test
     {
         static void Main(string[] args)
         {
-            var files = Directory.GetFiles(@"D:\许朝飞\许朝飞\售后信息维护\SalesFeedbackService\AppSettingsHelper\bin\Debug\netcoreapp3.1\logs\Info");
-            var searchFiles = new ConcurrentBag<String>();
-            var pop = new ParallelOptions();
-            pop.CancellationToken = CancellationToken.None;
-            ParallelLoopResult loopResult = Parallel.ForEach<String, String>(
-               files,
-               pop,
-               () => { return null; },
-               (file, loopState, index, taskLocalFile) =>
-               {
-                   Console.WriteLine($"正在处理第{index}个文件：{file}");
-                   return file;
-               },
-               taskLocalFile =>
-               {
-                   if (null != taskLocalFile)
-                       searchFiles.Add(taskLocalFile);
-               });
-
-            //使用指定的路径、创建模式和读 / 写权限初始化 System.IO.FileStream 类的新实例。 
-            using (FileStream fs = new FileStream(@"E:\WorkCodeDirectory\SaleFeedbackService\AppSettingsHelper\bin\Debug\netcoreapp3.1\logs\Info\log_info20210124.txt", FileMode.Open, FileAccess.Read))
-            {
-                //用指定的字符编码为指定的流初始化 System.IO.StreamReader 类的一个新实例。
-                using (StreamReader sr = new StreamReader(fs, Encoding.UTF8))
-                {
-                    while (true)
-                    {
-                        var line = ReadLineAsync(sr);
-                        if (line.Result == null)
-                        {
-                            return;
-                        }
-                    }
-                }
-            }
+             
             var text = "log_info20210123";
             var stringDate = text.Substring(8);
             var year = stringDate.Substring(0, 4) + "-";
