@@ -41,18 +41,22 @@
             this.lbl_EndTime = new System.Windows.Forms.Label();
             this.lbl_StartTime = new System.Windows.Forms.Label();
             this.dtp_StartTime = new System.Windows.Forms.DateTimePicker();
-            this.tabControl2 = new System.Windows.Forms.TabControl();
+            this.tabControl_log = new System.Windows.Forms.TabControl();
             this.tabPage_Information = new System.Windows.Forms.TabPage();
             this.richTextBox_information = new System.Windows.Forms.RichTextBox();
             this.contextMenuLog = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.刷新ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.清空日志ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.panel_SearchPatternShow = new System.Windows.Forms.Panel();
+            this.btn_jumpToIndex = new System.Windows.Forms.Button();
+            this.tbx_currentPatternNum = new System.Windows.Forms.TextBox();
+            this.lbl_SearchTip = new System.Windows.Forms.Label();
+            this.btn_Last = new System.Windows.Forms.Button();
+            this.btn_Next = new System.Windows.Forms.Button();
+            this.lbl_SearchCount = new System.Windows.Forms.Label();
+            this.lbl_SearchTitle = new System.Windows.Forms.Label();
             this.tabPage_Warning = new System.Windows.Forms.TabPage();
-            this.richTextBox_warning = new System.Windows.Forms.RichTextBox();
             this.tabPage_eroor = new System.Windows.Forms.TabPage();
-            this.richTextBox_error = new System.Windows.Forms.RichTextBox();
             this.tabPage_Fatal = new System.Windows.Forms.TabPage();
-            this.richTextBox_Fatal = new System.Windows.Forms.RichTextBox();
             this.tabPage9 = new System.Windows.Forms.TabPage();
             this.lbMessage = new System.Windows.Forms.Label();
             this.lbServicestate = new System.Windows.Forms.Label();
@@ -73,12 +77,10 @@
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            this.tabControl2.SuspendLayout();
+            this.tabControl_log.SuspendLayout();
             this.tabPage_Information.SuspendLayout();
             this.contextMenuLog.SuspendLayout();
-            this.tabPage_Warning.SuspendLayout();
-            this.tabPage_eroor.SuspendLayout();
-            this.tabPage_Fatal.SuspendLayout();
+            this.panel_SearchPatternShow.SuspendLayout();
             this.tabPage9.SuspendLayout();
             this.pnl_header.SuspendLayout();
             this.pnl_minimizeAndClose.SuspendLayout();
@@ -154,7 +156,7 @@
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.tabControl2);
+            this.splitContainer1.Panel2.Controls.Add(this.tabControl_log);
             this.splitContainer1.Size = new System.Drawing.Size(1284, 611);
             this.splitContainer1.SplitterDistance = 39;
             this.splitContainer1.TabIndex = 1;
@@ -246,23 +248,24 @@
             this.dtp_StartTime.Size = new System.Drawing.Size(123, 24);
             this.dtp_StartTime.TabIndex = 0;
             // 
-            // tabControl2
+            // tabControl_log
             // 
-            this.tabControl2.Controls.Add(this.tabPage_Information);
-            this.tabControl2.Controls.Add(this.tabPage_Warning);
-            this.tabControl2.Controls.Add(this.tabPage_eroor);
-            this.tabControl2.Controls.Add(this.tabPage_Fatal);
-            this.tabControl2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl2.Location = new System.Drawing.Point(0, 0);
-            this.tabControl2.Name = "tabControl2";
-            this.tabControl2.SelectedIndex = 0;
-            this.tabControl2.Size = new System.Drawing.Size(1284, 568);
-            this.tabControl2.TabIndex = 0;
-            this.tabControl2.SelectedIndexChanged += new System.EventHandler(this.tabControl2_SelectedIndexChanged);
+            this.tabControl_log.Controls.Add(this.tabPage_Information);
+            this.tabControl_log.Controls.Add(this.tabPage_Warning);
+            this.tabControl_log.Controls.Add(this.tabPage_eroor);
+            this.tabControl_log.Controls.Add(this.tabPage_Fatal);
+            this.tabControl_log.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl_log.Location = new System.Drawing.Point(0, 0);
+            this.tabControl_log.Name = "tabControl_log";
+            this.tabControl_log.SelectedIndex = 0;
+            this.tabControl_log.Size = new System.Drawing.Size(1284, 568);
+            this.tabControl_log.TabIndex = 0;
+            this.tabControl_log.Selected += new System.Windows.Forms.TabControlEventHandler(this.tabControl_log_Selected);
             // 
             // tabPage_Information
             // 
             this.tabPage_Information.Controls.Add(this.richTextBox_information);
+            this.tabPage_Information.Controls.Add(this.panel_SearchPatternShow);
             this.tabPage_Information.Location = new System.Drawing.Point(4, 27);
             this.tabPage_Information.Name = "tabPage_Information";
             this.tabPage_Information.Padding = new System.Windows.Forms.Padding(3);
@@ -280,35 +283,107 @@
             this.richTextBox_information.Location = new System.Drawing.Point(3, 3);
             this.richTextBox_information.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.richTextBox_information.Name = "richTextBox_information";
-            this.richTextBox_information.Size = new System.Drawing.Size(1270, 531);
+            this.richTextBox_information.Size = new System.Drawing.Size(1270, 497);
             this.richTextBox_information.TabIndex = 1;
             this.richTextBox_information.Text = "";
             // 
             // contextMenuLog
             // 
             this.contextMenuLog.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.刷新ToolStripMenuItem,
-            this.清空日志ToolStripMenuItem});
+            this.刷新ToolStripMenuItem});
             this.contextMenuLog.Name = "contextMenuStrip1";
-            this.contextMenuLog.Size = new System.Drawing.Size(127, 48);
+            this.contextMenuLog.Size = new System.Drawing.Size(101, 26);
             // 
             // 刷新ToolStripMenuItem
             // 
             this.刷新ToolStripMenuItem.Name = "刷新ToolStripMenuItem";
-            this.刷新ToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
+            this.刷新ToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
             this.刷新ToolStripMenuItem.Text = "刷新";
             this.刷新ToolStripMenuItem.Click += new System.EventHandler(this.刷新ToolStripMenuItem_Click);
             // 
-            // 清空日志ToolStripMenuItem
+            // panel_SearchPatternShow
             // 
-            this.清空日志ToolStripMenuItem.Name = "清空日志ToolStripMenuItem";
-            this.清空日志ToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
-            this.清空日志ToolStripMenuItem.Text = "清空日志";
-            this.清空日志ToolStripMenuItem.Click += new System.EventHandler(this.清空日志ToolStripMenuItem_Click);
+            this.panel_SearchPatternShow.Controls.Add(this.btn_jumpToIndex);
+            this.panel_SearchPatternShow.Controls.Add(this.tbx_currentPatternNum);
+            this.panel_SearchPatternShow.Controls.Add(this.lbl_SearchTip);
+            this.panel_SearchPatternShow.Controls.Add(this.btn_Last);
+            this.panel_SearchPatternShow.Controls.Add(this.btn_Next);
+            this.panel_SearchPatternShow.Controls.Add(this.lbl_SearchCount);
+            this.panel_SearchPatternShow.Controls.Add(this.lbl_SearchTitle);
+            this.panel_SearchPatternShow.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel_SearchPatternShow.Location = new System.Drawing.Point(3, 500);
+            this.panel_SearchPatternShow.Name = "panel_SearchPatternShow";
+            this.panel_SearchPatternShow.Size = new System.Drawing.Size(1270, 34);
+            this.panel_SearchPatternShow.TabIndex = 2;
+            // 
+            // btn_jumpToIndex
+            // 
+            this.btn_jumpToIndex.Location = new System.Drawing.Point(530, 5);
+            this.btn_jumpToIndex.Name = "btn_jumpToIndex";
+            this.btn_jumpToIndex.Size = new System.Drawing.Size(91, 25);
+            this.btn_jumpToIndex.TabIndex = 8;
+            this.btn_jumpToIndex.Text = "跳转";
+            this.btn_jumpToIndex.UseVisualStyleBackColor = true;
+            this.btn_jumpToIndex.Click += new System.EventHandler(this.btn_jumpToIndex_Click);
+            // 
+            // tbx_currentPatternNum
+            // 
+            this.tbx_currentPatternNum.Location = new System.Drawing.Point(424, 5);
+            this.tbx_currentPatternNum.Name = "tbx_currentPatternNum";
+            this.tbx_currentPatternNum.Size = new System.Drawing.Size(100, 24);
+            this.tbx_currentPatternNum.TabIndex = 7;
+            this.tbx_currentPatternNum.Text = "0";
+            this.tbx_currentPatternNum.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // lbl_SearchTip
+            // 
+            this.lbl_SearchTip.AutoSize = true;
+            this.lbl_SearchTip.ForeColor = System.Drawing.Color.Gray;
+            this.lbl_SearchTip.Location = new System.Drawing.Point(1037, 8);
+            this.lbl_SearchTip.Name = "lbl_SearchTip";
+            this.lbl_SearchTip.Size = new System.Drawing.Size(141, 18);
+            this.lbl_SearchTip.TabIndex = 6;
+            this.lbl_SearchTip.Text = "查询中，请稍后.......";
+            // 
+            // btn_Last
+            // 
+            this.btn_Last.Location = new System.Drawing.Point(327, 5);
+            this.btn_Last.Name = "btn_Last";
+            this.btn_Last.Size = new System.Drawing.Size(91, 25);
+            this.btn_Last.TabIndex = 3;
+            this.btn_Last.Text = "上一项";
+            this.btn_Last.UseVisualStyleBackColor = true;
+            this.btn_Last.Click += new System.EventHandler(this.btn_Last_Click);
+            // 
+            // btn_Next
+            // 
+            this.btn_Next.Location = new System.Drawing.Point(230, 5);
+            this.btn_Next.Name = "btn_Next";
+            this.btn_Next.Size = new System.Drawing.Size(91, 25);
+            this.btn_Next.TabIndex = 2;
+            this.btn_Next.Text = "下一项";
+            this.btn_Next.UseVisualStyleBackColor = true;
+            this.btn_Next.Click += new System.EventHandler(this.btn_Next_Click);
+            // 
+            // lbl_SearchCount
+            // 
+            this.lbl_SearchCount.AutoSize = true;
+            this.lbl_SearchCount.Location = new System.Drawing.Point(126, 8);
+            this.lbl_SearchCount.Name = "lbl_SearchCount";
+            this.lbl_SearchCount.Size = new System.Drawing.Size(0, 18);
+            this.lbl_SearchCount.TabIndex = 1;
+            // 
+            // lbl_SearchTitle
+            // 
+            this.lbl_SearchTitle.AutoSize = true;
+            this.lbl_SearchTitle.Location = new System.Drawing.Point(27, 8);
+            this.lbl_SearchTitle.Name = "lbl_SearchTitle";
+            this.lbl_SearchTitle.Size = new System.Drawing.Size(83, 18);
+            this.lbl_SearchTitle.TabIndex = 0;
+            this.lbl_SearchTitle.Text = "查询匹配项";
             // 
             // tabPage_Warning
             // 
-            this.tabPage_Warning.Controls.Add(this.richTextBox_warning);
             this.tabPage_Warning.Location = new System.Drawing.Point(4, 27);
             this.tabPage_Warning.Name = "tabPage_Warning";
             this.tabPage_Warning.Padding = new System.Windows.Forms.Padding(3);
@@ -317,22 +392,8 @@
             this.tabPage_Warning.Text = "警告";
             this.tabPage_Warning.UseVisualStyleBackColor = true;
             // 
-            // richTextBox_warning
-            // 
-            this.richTextBox_warning.BackColor = System.Drawing.Color.White;
-            this.richTextBox_warning.ContextMenuStrip = this.contextMenuLog;
-            this.richTextBox_warning.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.richTextBox_warning.ForeColor = System.Drawing.Color.Black;
-            this.richTextBox_warning.Location = new System.Drawing.Point(3, 3);
-            this.richTextBox_warning.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.richTextBox_warning.Name = "richTextBox_warning";
-            this.richTextBox_warning.Size = new System.Drawing.Size(1270, 531);
-            this.richTextBox_warning.TabIndex = 2;
-            this.richTextBox_warning.Text = "";
-            // 
             // tabPage_eroor
             // 
-            this.tabPage_eroor.Controls.Add(this.richTextBox_error);
             this.tabPage_eroor.Location = new System.Drawing.Point(4, 27);
             this.tabPage_eroor.Name = "tabPage_eroor";
             this.tabPage_eroor.Size = new System.Drawing.Size(1276, 537);
@@ -340,41 +401,14 @@
             this.tabPage_eroor.Text = "错误";
             this.tabPage_eroor.UseVisualStyleBackColor = true;
             // 
-            // richTextBox_error
-            // 
-            this.richTextBox_error.BackColor = System.Drawing.Color.White;
-            this.richTextBox_error.ContextMenuStrip = this.contextMenuLog;
-            this.richTextBox_error.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.richTextBox_error.ForeColor = System.Drawing.Color.Black;
-            this.richTextBox_error.Location = new System.Drawing.Point(0, 0);
-            this.richTextBox_error.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.richTextBox_error.Name = "richTextBox_error";
-            this.richTextBox_error.Size = new System.Drawing.Size(1276, 537);
-            this.richTextBox_error.TabIndex = 2;
-            this.richTextBox_error.Text = "";
-            // 
             // tabPage_Fatal
             // 
-            this.tabPage_Fatal.Controls.Add(this.richTextBox_Fatal);
             this.tabPage_Fatal.Location = new System.Drawing.Point(4, 27);
             this.tabPage_Fatal.Name = "tabPage_Fatal";
             this.tabPage_Fatal.Size = new System.Drawing.Size(1276, 537);
             this.tabPage_Fatal.TabIndex = 3;
             this.tabPage_Fatal.Text = "严重错误";
             this.tabPage_Fatal.UseVisualStyleBackColor = true;
-            // 
-            // richTextBox_Fatal
-            // 
-            this.richTextBox_Fatal.BackColor = System.Drawing.Color.White;
-            this.richTextBox_Fatal.ContextMenuStrip = this.contextMenuLog;
-            this.richTextBox_Fatal.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.richTextBox_Fatal.ForeColor = System.Drawing.Color.Black;
-            this.richTextBox_Fatal.Location = new System.Drawing.Point(0, 0);
-            this.richTextBox_Fatal.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.richTextBox_Fatal.Name = "richTextBox_Fatal";
-            this.richTextBox_Fatal.Size = new System.Drawing.Size(1276, 537);
-            this.richTextBox_Fatal.TabIndex = 2;
-            this.richTextBox_Fatal.Text = "";
             // 
             // tabPage9
             // 
@@ -601,12 +635,11 @@
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
-            this.tabControl2.ResumeLayout(false);
+            this.tabControl_log.ResumeLayout(false);
             this.tabPage_Information.ResumeLayout(false);
             this.contextMenuLog.ResumeLayout(false);
-            this.tabPage_Warning.ResumeLayout(false);
-            this.tabPage_eroor.ResumeLayout(false);
-            this.tabPage_Fatal.ResumeLayout(false);
+            this.panel_SearchPatternShow.ResumeLayout(false);
+            this.panel_SearchPatternShow.PerformLayout();
             this.tabPage9.ResumeLayout(false);
             this.tabPage9.PerformLayout();
             this.pnl_header.ResumeLayout(false);
@@ -636,10 +669,9 @@
         private System.Windows.Forms.PictureBox pb_icon;
         private System.Windows.Forms.Button btn_close;
         private System.Windows.Forms.Button btn_minimize;
-        private System.Windows.Forms.ToolStripMenuItem 清空日志ToolStripMenuItem;
         private System.Windows.Forms.Label lbMessage;
         private System.Windows.Forms.ContextMenuStrip contextMenuDevice;
-        private System.Windows.Forms.TabControl tabControl2;
+        private System.Windows.Forms.TabControl tabControl_log;
         private System.Windows.Forms.TabPage tabPage_Information;
         private System.Windows.Forms.RichTextBox richTextBox_information;
         private System.Windows.Forms.TabPage tabPage_Warning;
@@ -653,9 +685,16 @@
         private System.Windows.Forms.Label lbl_StartTime;
         private System.Windows.Forms.DateTimePicker dtp_StartTime;
         private UCTextBoxEx txt_serach;
-        private System.Windows.Forms.RichTextBox richTextBox_warning;
-        private System.Windows.Forms.RichTextBox richTextBox_error;
-        private System.Windows.Forms.RichTextBox richTextBox_Fatal;
+        private System.Windows.Forms.Panel panel_SearchPatternShow;
+        private System.Windows.Forms.Label lbl_SearchTitle;
+        private System.Windows.Forms.Label lbl_SearchCount;
+        private System.Windows.Forms.Button btn_Last;
+        private System.Windows.Forms.Button btn_Next;
+        private System.Windows.Forms.Label lbl_currentPar;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lbl_SearchTip;
+        private System.Windows.Forms.Button btn_jumpToIndex;
+        private System.Windows.Forms.TextBox tbx_currentPatternNum;
     }
 }
 

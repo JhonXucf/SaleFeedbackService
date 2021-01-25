@@ -12,30 +12,6 @@ namespace AppCommondHelper.Logger
         /// 获取本地bin路径
         /// </summary>
         static readonly String m_LogPath = m_filePath + "Logs";
-        /// <summary>
-        /// 信息日志信息文件写入路径
-        /// </summary>
-        static readonly String m_LogInfo = m_LogPath + "\\Info\\log_Info";
-        /// <summary>
-        /// 调试日志信息文件写入路径
-        /// </summary>
-        static readonly String m_LogDebug = m_LogPath + "\\Info\\log_Debug";
-        /// <summary>
-        /// 冗长的日志信息文件写入路径
-        /// </summary>
-        static readonly String m_LogVerbose = m_LogPath + "\\Info\\log_Verbose";
-        /// <summary>
-        /// 警告的日志信息文件写入路径
-        /// </summary>
-        static readonly String m_LogWarning = m_LogPath + "\\Warning\\log_Warn";
-        /// <summary>
-        /// 错误的日志信息文件写入路径
-        /// </summary>
-        static readonly String m_LogError = m_LogPath + "\\Error\\log_Error";
-        /// <summary>
-        /// 致命的日志信息文件写入路径
-        /// </summary>
-        static readonly String m_LogFatal = m_LogPath + "\\Fatal\\log_Fatal";
         static readonly String m_FileExtension = ".txt";
         public String LogRootPath
         {
@@ -50,46 +26,45 @@ namespace AppCommondHelper.Logger
 
         public void Debug(string msg, Exception error = null)
         {
-            var date = DateTime.Now.ToString("yyyy-MM-dd");
-            var filePath = m_LogDebug + date + m_FileExtension;
-            WriteToFileAsync(filePath, msg, error);
+            var filePath = GetLogPath(LogEventLevel.Debug);
+            WriteToFileAsync(filePath, msg, "Debug", error);
         }
         public void Error(string msg, Exception error = null)
         {
-            var date = DateTime.Now.ToString("yyyy-MM-dd");
-            var filePath = m_LogError + date + m_FileExtension;
-            WriteToFileAsync(filePath, msg, error);
+            var filePath = GetLogPath(LogEventLevel.Error);
+            WriteToFileAsync(filePath, msg, "Error", error);
         }
 
         public void Fatal(string msg, Exception error = null)
         {
-            var date = DateTime.Now.ToString("yyyy-MM-dd");
-            var filePath = m_LogFatal + date + m_FileExtension;
-            WriteToFileAsync(filePath, msg, error);
+            var filePath = GetLogPath(LogEventLevel.Fatal);
+            WriteToFileAsync(filePath, msg, "Fatal", error);
         }
 
         public void Information(string msg, Exception error = null)
         {
-            var date = DateTime.Now.ToString("yyyy-MM-dd");
-            var filePath = m_LogInfo + date + m_FileExtension;
-            WriteToFileAsync(filePath, msg, error);
+            var filePath = GetLogPath(LogEventLevel.Information);
+            WriteToFileAsync(filePath, msg, "Information", error);
         }
 
         public void Verbose(string msg, Exception error = null)
         {
-            var date = DateTime.Now.ToString("yyyy-MM-dd");
-            var filePath = m_LogVerbose + date + m_FileExtension;
-            WriteToFileAsync(filePath, msg, error);
+            var filePath = GetLogPath(LogEventLevel.Verbose);
+            WriteToFileAsync(filePath, msg, "Verbose", error);
         }
 
         public void Warning(string msg, Exception error = null)
         {
-            var date = DateTime.Now.ToString("yyyy-MM-dd");
-            var filePath = m_LogWarning + date + m_FileExtension;
-            WriteToFileAsync(filePath, msg, error);
+            var filePath = GetLogPath(LogEventLevel.Warning);
+            WriteToFileAsync(filePath, msg, "Warning", error);
         }
-        private void WriteToFileAsync(String filePath, String msg, Exception ex = null)
+        private void WriteToFileAsync(String filePath, String msg, String title, Exception ex = null)
         {
+            msg = DateTime.Now.ToString("yyyy-MM-dd HH:mm:dd") + " [" + title + "] " + msg;
+            if (!Directory.Exists(filePath))
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+            }
             if (!File.Exists(filePath))
             {
                 File.Create(filePath).Close();
@@ -106,14 +81,43 @@ namespace AppCommondHelper.Logger
                 sw.WriteLineAsync(sb.ToString());
             }
         }
+        private String GetLogPath(LogEventLevel eventLevel)
+        {
+            var date = DateTime.Now.ToString("yyyy-MM-dd");
+            var filePath = string.Empty;
+            switch (eventLevel)
+            {
+                case LogEventLevel.Information:
+                    filePath = m_LogPath + "\\Info\\log_Info" + date + m_FileExtension;
+                    break;
+                case LogEventLevel.Warning:
+                    filePath = m_LogPath + "\\Warning\\log_Warn" + date + m_FileExtension;
+                    break;
+                case LogEventLevel.Error:
+                    filePath = m_LogPath + "\\Error\\log_Error" + date + m_FileExtension;
+                    break;
+                case LogEventLevel.Fatal:
+                    filePath = m_LogPath + "\\Fatal\\log_Fatal" + date + m_FileExtension;
+                    break;
+                case LogEventLevel.Verbose:
+                    filePath = m_LogPath + "\\Verbose\\log_Verbose" + date + m_FileExtension;
+                    break;
+                case LogEventLevel.Debug:
+                    filePath = m_LogPath + "\\Debug\\log_Debug" + date + m_FileExtension;
+                    break;
+                default:
+                    break;
+            }
+            return filePath;
+        }
     }
     public enum LogEventLevel
     {
-        Information,
-        Warning,
-        Error,
-        Fatal,
-        Verbose,
-        Debug
+        Information,//信息
+        Warning,//警告
+        Error,//错误
+        Fatal,//严重错误
+        Verbose,//冗余
+        Debug,//调试
     }
 }

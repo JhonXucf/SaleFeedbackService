@@ -26,6 +26,7 @@ namespace AppSettingsHelper
         {
             InitializeComponent();
             InitBorder();
+            lbl_SearchTip.Visible = false;
             _clock = new Clock();
             _clock.Size = new Size(this.pnl_title.Height - 5, this.pnl_title.Height - 5);
             _clock.Location = new Point(this.pnl_title.Width - this.pnl_minimizeAndClose.Width - this._clock.Width, 5);
@@ -45,13 +46,11 @@ namespace AppSettingsHelper
         CancellationTokenSource _cts;
         DeviceSingleFrm _deviceSingleFrm;
         ConcurrentDictionary<String, Device> _Devices = new ConcurrentDictionary<string, Device>();
-        /// <summary>
-        /// 是否匹配到项目
-        /// </summary>
-        Boolean _IsPatterned = false;
-        String _searchPattern = String.Empty;
+
+        String _searchPattern = null;
         Int32 _LogContainerSelectedIndex = 0;
         Boolean _IsFirstLoadLog = false;
+        TabPage _tabPageSelected = null;
         #endregion
 
         #region 边框鼠标拖动及关闭
@@ -215,6 +214,10 @@ namespace AppSettingsHelper
             {
                 e.Cancel = true;
             }
+            else
+            {
+                GlobalSet.m_Logger.Information($"This is {GlobalSet.m_AppOption.AppName} app Ended.");
+            }
         }
         /// <summary>
         /// 标题块按压事件（记住鼠标的位置）
@@ -257,51 +260,12 @@ namespace AppSettingsHelper
                 InitSearchText();
                 IsShowed = true;
                 _cts = new CancellationTokenSource();
+                _tabPageSelected = tabControl_log.TabPages[0];
             }
             catch (Exception ex)
             {
             }
         }
-        void InitSearchText()
-        {
-            this.dtp_StartTime.Value = DateTime.Today;
-            this.dtp_EndTime.Value = DateTime.Today;
-            this.txt_serach.SearchClick += Txt_serach_SearchClick;
-            this.txt_serach.ClearClick += Txt_serach_ClearClick;
-            this.txt_serach.TextChanged += Txt_serach_TextChanged;
-        }
-        private void Txt_serach_TextChanged(object sender, EventArgs e)
-        {
-            var textbox = sender as TextBoxEx;
-            if (string.IsNullOrWhiteSpace(textbox.Text))
-            {
-                if (_IsPatterned)
-                {
-
-                }
-            }
-        }
-
-        private void Txt_serach_ClearClick(object sender, EventArgs e)
-        {
-            if (_IsPatterned)
-            {
-
-            }
-        }
-
-        private void Txt_serach_SearchClick(object sender, EventArgs e)
-        {
-            var textbox = sender as UCTextBoxEx;
-            var inputText = textbox.InputText;
-            if (string.IsNullOrWhiteSpace(inputText))
-            {
-                Task.Run(() => ReadLogAsync());
-                return;
-            }
-            Task.Run(() => ReadLogAsync(inputText));
-        }
-
         void InitDeviceManagerMenu()
         {
             this.contextMenuDevice.Items.Clear();
@@ -378,7 +342,7 @@ namespace AppSettingsHelper
         private void deviceSingle_DeleteEventClicked(object sender, EventArgs e)
         {
             var single = (DeviceSingleFrm)sender;
-            if (MessageBox.Show("确定删除[" + single._Device.DeviceName + "]设备吗?", "提示", MessageBoxButtons.OKCancel) == DialogResult.OK)
+            if (MessageBox.Show("确定删除[" + single._Device.ID + " - " + single._Device.DeviceName + "]设备吗?", "提示", MessageBoxButtons.OKCancel) == DialogResult.OK)
             {
                 var device = new Device();
                 if (this._Devices.Remove(single._Device.ID, out device))
@@ -472,6 +436,69 @@ namespace AppSettingsHelper
             this.lbMessage.Text = "正在安装服务，请稍后...";
 
         }
+        private void tpg_deviceManager_SizeChanged(object sender, EventArgs e)
+        {
+            if (IsShowed)
+            {
+                _clock.Location = new Point(this.pnl_title.Width - this.pnl_minimizeAndClose.Width - this._clock.Width, 5);
+                if (this.tpg_deviceManager.Controls.Count > 0)
+                {
+                    this.tpg_deviceManager.UpdateControlLocation(_StartX, _StartY, _Offset);
+                }
+            }
+        }
+        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!_IsFirstLoadLog)
+            {
+                _IsFirstLoadLog = true;
+                Task.Run(() => ReadLogAsync());
+            }
+        }
+        #region 日志操作
+        void InitSearchText()
+        {
+            this.dtp_StartTime.Value = DateTime.Today;
+            this.dtp_EndTime.Value = DateTime.Today;
+            this.txt_serach.SearchClick += Txt_serach_SearchClick;
+            this.txt_serach.ClearClick += Txt_serach_ClearClick;
+            this.txt_serach.TextChanged += Txt_serach_TextChanged;
+        }
+        private void Txt_serach_TextChanged(object sender, EventArgs e)
+        {
+            var textbox = sender as TextBoxEx;
+            if (string.IsNullOrWhiteSpace(textbox.Text))
+            {
+                this.lbl_SearchCount.Text = "0";
+                this.tbx_currentPatternNum.Text = "0";
+                _searchPattern = null;
+                richTextBox_information.SelectionColor = Color.Black;
+            }
+        }
+
+        private void Txt_serach_ClearClick(object sender, EventArgs e)
+        {
+            this.lbl_SearchCount.Text = "0";
+            this.tbx_currentPatternNum.Text = "0";
+            _searchPattern = null;
+            richTextBox_information.SelectionColor = Color.Black;
+        }
+
+        private void Txt_serach_SearchClick(object sender, EventArgs e)
+        {
+            lbl_SearchTip.Visible = true;
+            var textbox = sender as UCTextBoxEx;
+            var inputText = textbox.InputText;
+            this.lbl_SearchCount.Text = "0";
+            this.tbx_currentPatternNum.Text = "0";
+            if (string.IsNullOrWhiteSpace(inputText))
+            {
+                Task.Run(() => ReadLogAsync());
+                return;
+            }
+            _searchPattern = inputText;
+            Task.Run(() => ReadLogAsync(inputText));
+        }
         public sealed class ReadLogOption
         {
             public LogEventLevel logEventLevel { get; set; }
@@ -479,71 +506,105 @@ namespace AppSettingsHelper
             public DateTime EndTime { get; set; }
             public String SearchPattern { get; set; }
         }
-
+        public struct SearchPatternStructSingle
+        {
+            public Int32 CurrentIndex;
+            public Int32 StartIndex;
+            public Int32 SelectedLength;
+        }
+        Int32 _SearchLogPatternCount = 0;
+        Int32 _SearchLogPatternIndex = 0;
+        List<SearchPatternStructSingle> _SearchPatternStructs;
+        ReadLogOption _ReadLogOption;
+        /// <summary>
+        /// 异步读取日志
+        /// </summary>
+        /// <param name="searchPattern">查询文本</param>
         void ReadLogAsync(String searchPattern = null)
         {
-            var readLogOption = new ReadLogOption();
-            readLogOption.StartTime = this.dtp_StartTime.Value;
-            readLogOption.EndTime = this.dtp_EndTime.Value;
-            readLogOption.SearchPattern = searchPattern;
+            _SearchLogPatternCount = 0;
+            _SearchLogPatternIndex = 0;
+            _ReadLogOption = new ReadLogOption();
+            _ReadLogOption.StartTime = this.dtp_StartTime.Value;
+            _ReadLogOption.EndTime = this.dtp_EndTime.Value;
+            _ReadLogOption.SearchPattern = searchPattern;
             switch (_LogContainerSelectedIndex)
             {
                 case 0:
-                    readLogOption.logEventLevel = LogEventLevel.Information;
+                    _ReadLogOption.logEventLevel = LogEventLevel.Information;
                     break;
                 case 1:
-                    readLogOption.logEventLevel = LogEventLevel.Warning;
+                    _ReadLogOption.logEventLevel = LogEventLevel.Warning;
                     break;
                 case 2:
-                    readLogOption.logEventLevel = LogEventLevel.Error;
+                    _ReadLogOption.logEventLevel = LogEventLevel.Error;
                     break;
                 case 3:
-                    readLogOption.logEventLevel = LogEventLevel.Fatal;
+                    _ReadLogOption.logEventLevel = LogEventLevel.Fatal;
                     break;
                 default:
                     break;
             }
             var ct = _cts.Token;
-            var taskResult = ReadAsync(readLogOption, ct).ContinueWith(task =>
+            var taskResult = ReadAsync(_ReadLogOption, ct).ContinueWith(task =>
             {
                 this.Invoke(new Action(() =>
                 {
-                    switch (readLogOption.logEventLevel)
+                    switch (_ReadLogOption.logEventLevel)
                     {
                         case LogEventLevel.Verbose:
-                            break;
                         case LogEventLevel.Debug:
-                            break;
                         case LogEventLevel.Information:
-                            this.richTextBox_information.Text = "";
+                        case LogEventLevel.Warning:
+                        case LogEventLevel.Error:
                             if (task.Result == null || task.Result.Length == 0)
-                            {                                
+                            {
+                                this.richTextBox_information.Text = "";
                                 return;
                             }
+                            var sb = new StringBuilder();
                             foreach (var item in task.Result)
                             {
-                                this.richTextBox_information.Text += item;
+                                sb.Append(item);
                             }
-                            break;
-                        case LogEventLevel.Warning:
-                            //this.richTextBox_warning.Text = taskResult.Result.ToString();
-                            break;
-                        case LogEventLevel.Error:
-                            //this.richTextBox_error.Text = taskResult.Result.ToString();
-                            break;
-                        case LogEventLevel.Fatal:
-                            //this.richTextBox_Fatal.Text = taskResult.Result.ToString();
+                            var strText = sb.ToString();
+                            this.richTextBox_information.Text = strText;
+                            _SearchPatternStructs = new List<SearchPatternStructSingle>();
+                            if (!String.IsNullOrWhiteSpace(searchPattern) && strText.Contains(searchPattern))
+                            {
+                                var index = 0;
+                                var currentIndex = 0;
+                                while ((index = this.richTextBox_information.Find(searchPattern, index, RichTextBoxFinds.MatchCase)) > 0)
+                                {
+                                    currentIndex++;
+                                    var searchSingle = new SearchPatternStructSingle();
+                                    searchSingle.CurrentIndex = currentIndex;
+                                    searchSingle.StartIndex = index;
+                                    searchSingle.SelectedLength = searchPattern.Length;
+                                    _SearchPatternStructs.Add(searchSingle);
+                                    _SearchLogPatternCount++;
+                                    index += searchPattern.Length;
+                                }
+                            }
+                            if (_SearchLogPatternCount > 0)
+                            {
+                                this.lbl_SearchCount.Text = _SearchLogPatternCount.ToString();
+                                UpdateRichTextBox(this._SearchLogPatternIndex);
+                            }
                             break;
                         default:
                             break;
                     }
+                    lbl_SearchTip.Visible = false;
                 }));
             });
         }
         /// <summary>
-        /// 方法：读取Txt文件，（日志文件）
+        /// 异步读取日志
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="op">读取日志选项</param>
+        /// <param name="ct">是否取消</param>
+        /// <returns></returns>
         public async Task<String[]> ReadAsync(ReadLogOption op, CancellationToken ct)
         {
             var pop = new ParallelOptions();
@@ -552,8 +613,10 @@ namespace AppSettingsHelper
             switch (op.logEventLevel)
             {
                 case LogEventLevel.Verbose:
+                    path += "Verbose\\";
                     break;
                 case LogEventLevel.Debug:
+                    path += "Debug\\";
                     break;
                 case LogEventLevel.Information:
                     path += "Info\\";
@@ -570,18 +633,20 @@ namespace AppSettingsHelper
                 default:
                     break;
             }
+            if (!Directory.Exists(path)) return null;
             var files = Directory.GetFiles(path);
-            var searchFiles = new List<String>();
-            foreach (var file in files)
+            if (files.Length == 0) return null;
+            var searchFiles = new ConcurrentBag<String>();
+            Parallel.ForEach(files, ac =>
             {
-                String stringFileNameWithOutExtension = Path.GetFileNameWithoutExtension(file);
+                String stringFileNameWithOutExtension = Path.GetFileNameWithoutExtension(ac);
                 var stringDate = stringFileNameWithOutExtension.Substring(stringFileNameWithOutExtension.Length - 10, 10);
                 var dateTime = Convert.ToDateTime(stringDate);
                 if (dateTime.CompareTo(op.StartTime) >= 0 && dateTime.CompareTo(op.EndTime) <= 0)
                 {
-                    searchFiles.Add(file);
-                } 
-            }
+                    searchFiles.Add(ac);
+                }
+            });
             #region ParallelLoopResult
             //ParallelLoopResult loopResult = Parallel.ForEach<String, String>(
             //   files,
@@ -592,11 +657,7 @@ namespace AppSettingsHelper
             //       String stringFileNameWithOutExtension = Path.GetFileNameWithoutExtension(file);
             //       var stringDate = stringFileNameWithOutExtension.Substring(stringFileNameWithOutExtension.Length - 10, 10);
             //       var dateTime = Convert.ToDateTime(stringDate);
-            //        //var year = stringDate.Substring(0, 4) + "-";
-            //        //var month = stringDate.Substring(4, 2) + "-";
-            //        //var day = stringDate.Substring(6, 2);
-            //        //var dateTime = Convert.ToDateTime(year + month + day);
-            //        if (dateTime.CompareTo(op.StartTime) >= 0 && dateTime.CompareTo(op.EndTime) <= 0)
+            //       if (dateTime.CompareTo(op.StartTime) >= 0 && dateTime.CompareTo(op.EndTime) <= 0)
             //       {
             //           return file;
             //       }
@@ -609,17 +670,24 @@ namespace AppSettingsHelper
             //           searchFiles.Add(taskLocalFinally);
             //       }
             //   });
+            //while (!loopResult.IsCompleted);
             #endregion 
             if (searchFiles.Count == 0) return null;
             Task<String>[] readTasks = new Task<String>[searchFiles.Count];
-            for (int i = searchFiles.Count - 1; i >= 0; i--)
+            var array = searchFiles.ToArray();
+            for (int i = array.Length - 1; i >= 0; i--)
             {
-                readTasks[i] = ReadLineAsync(searchFiles[i]);
+                readTasks[i] = ReadLineAsync(array[i]);
             }
             String[] results = await Task.WhenAll(readTasks);
 
             return results;
         }
+        /// <summary>
+        /// 读取日志
+        /// </summary>
+        /// <param name="file">日志路径</param>
+        /// <returns></returns>
         private static async Task<String> ReadLineAsync(String file)
         {
             var sb = new StringBuilder();
@@ -641,64 +709,126 @@ namespace AppSettingsHelper
             finally { if (fs != null) fs.Dispose(); }
             return sb.ToString();
         }
-        private void tpg_deviceManager_SizeChanged(object sender, EventArgs e)
+        /// <summary>
+        /// 下一项
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btn_Next_Click(object sender, EventArgs e)
         {
-            if (IsShowed)
+            if (string.IsNullOrWhiteSpace(_ReadLogOption.SearchPattern))
             {
-                _clock.Location = new Point(this.pnl_title.Width - this.pnl_minimizeAndClose.Width - this._clock.Width, 5);
-                if (this.tpg_deviceManager.Controls.Count > 0)
-                {
-                    this.tpg_deviceManager.UpdateControlLocation(_StartX, _StartY, _Offset);
-                }
+                MessageBox.Show("查询文本为空！");
+                return;
             }
-        }
-
-        private void tabControl2_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            _LogContainerSelectedIndex = tabControl2.SelectedIndex;
-        }
-
-        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (!_IsFirstLoadLog)
+            this._SearchLogPatternIndex++;
+            if (this._SearchLogPatternIndex >= this._SearchLogPatternCount)
             {
-                _IsFirstLoadLog = true;
-                Task.Run(() => ReadLogAsync());
+                this._SearchLogPatternIndex = 0;
             }
+            UpdateRichTextBox(this._SearchLogPatternIndex);
+        }
+        /// <summary>
+        /// 上一项
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btn_Last_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(_ReadLogOption.SearchPattern))
+            {
+                MessageBox.Show("查询文本为空！");
+                return;
+            }
+            this._SearchLogPatternIndex--;
+            if (this._SearchLogPatternIndex < 0)
+            {
+                this._SearchLogPatternIndex = this._SearchLogPatternCount - 1;
+            }
+            UpdateRichTextBox(this._SearchLogPatternIndex);
+        }
+        /// <summary>
+        /// 跳转查找
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btn_jumpToIndex_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(_ReadLogOption.SearchPattern))
+            {
+                MessageBox.Show("查询文本为空！");
+                return;
+            }
+            var index = 0;
+            if (!int.TryParse(this.tbx_currentPatternNum.Text, out index))
+            {
+                MessageBox.Show($"请输入要跳转的从1到{ this._SearchLogPatternCount }之间的正确数字！");
+                return;
+            }
+            if (index < 1 || index > this._SearchLogPatternCount)
+            {
+                MessageBox.Show($"请输入要跳转的从1到{ this._SearchLogPatternCount }之间的正确数字！");
+                return;
+            }
+            this._SearchLogPatternIndex = --index;
+            UpdateRichTextBox(this._SearchLogPatternIndex);
+        }
+        private void UpdateRichTextBox(Int32 index)
+        {
+            var searchSingle = _SearchPatternStructs[index];
+            richTextBox_information.SelectionColor = Color.Black;
+            richTextBox_information.SelectionStart = searchSingle.StartIndex;
+            //得到字符串的长度
+            richTextBox_information.SelectionLength = searchSingle.SelectedLength;
+            //然后就可以改变这个字符串的颜色
+            richTextBox_information.SelectionColor = Color.Blue;
+            //改变字体
+            //richTextBox_information.SelectionFont = new Font("黑体", 13);
+            this.tbx_currentPatternNum.Text = (index + 1).ToString();
+            richTextBox_information.ScrollToCaret();
+        }
+        private void tabControl_log_Selected(object sender, TabControlEventArgs e)
+        {
+            if (null != _tabPageSelected)
+            {
+                _tabPageSelected.Controls.Clear();
+            }
+            _tabPageSelected = tabControl_log.TabPages[e.TabPageIndex];
+            _LogContainerSelectedIndex = e.TabPageIndex;
+            if (e.TabPage == this.tabPage_Information)
+            {
+                this.tabPage_Information.Controls.Add(this.richTextBox_information);
+                this.tabPage_Information.Controls.Add(this.panel_SearchPatternShow);
+            }
+            else if (e.TabPage == this.tabPage_Warning)
+            {
+                this.tabPage_Warning.Controls.Add(this.richTextBox_information);
+                this.tabPage_Warning.Controls.Add(this.panel_SearchPatternShow);
+            }
+            else if (e.TabPage == this.tabPage_eroor)
+            {
+                this.tabPage_eroor.Controls.Add(this.richTextBox_information);
+                this.tabPage_eroor.Controls.Add(this.panel_SearchPatternShow);
+            }
+            else if (e.TabPage == this.tabPage_Fatal)
+            {
+                this.tabPage_Fatal.Controls.Add(this.richTextBox_information);
+                this.tabPage_Fatal.Controls.Add(this.panel_SearchPatternShow);
+            }
+            Task.Run(() =>
+            {
+                ReadLogAsync(_searchPattern);
+            });
         }
 
         private void 刷新ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            System.Threading.Tasks.Task.Factory.StartNew(() =>
+            Task.Run(() =>
             {
-                ReadLogAsync();
+                ReadLogAsync(_searchPattern);
             });
         }
-        private void 清空日志ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            string path = "LOGFile.txt";
-            //指定标识符  来指示   对话框中  的  返回值
-            DialogResult dr = MessageBox.Show("确定清空所有日志吗?数据无法恢复！", "Warning", MessageBoxButtons.OKCancel);
-            if (dr == DialogResult.OK)
-            {
-                //将richTextBox页面内容清空
-                richTextBox_information.Text = "";
-
-                //实例化一个  FileStream  对象（对文件进行读写操作）
-                FileStream fs;
-
-                //判断文件是否存在。其中path为  日志文件地址  ，在上面代码中已赋值。
-                if (File.Exists(path))
-                {
-                    fs = new FileStream(path, FileMode.Truncate, FileAccess.Write);//Truncate模式打开文件可以清空。
-                }
-                else
-                {
-                    fs = new FileStream(path, FileMode.Create, FileAccess.Write);
-                }
-                fs.Close();
-            }
-        }
+        #endregion 
     }
 }
 

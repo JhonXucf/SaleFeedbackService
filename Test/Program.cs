@@ -4,6 +4,9 @@ using AppCommondHelper.JsonSerilize;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Threading;
+using System.Collections.Concurrent;
 
 namespace Test
 {
@@ -11,6 +14,25 @@ namespace Test
     {
         static void Main(string[] args)
         {
+            var files = Directory.GetFiles(@"D:\许朝飞\许朝飞\售后信息维护\SalesFeedbackService\AppSettingsHelper\bin\Debug\netcoreapp3.1\logs\Info");
+            var searchFiles = new ConcurrentBag<String>();
+            var pop = new ParallelOptions();
+            pop.CancellationToken = CancellationToken.None;
+            ParallelLoopResult loopResult = Parallel.ForEach<String, String>(
+               files,
+               pop,
+               () => { return null; },
+               (file, loopState, index, taskLocalFile) =>
+               {
+                   Console.WriteLine($"正在处理第{index}个文件：{file}");
+                   return file;
+               },
+               taskLocalFile =>
+               {
+                   if (null != taskLocalFile)
+                       searchFiles.Add(taskLocalFile);
+               });
+
             //使用指定的路径、创建模式和读 / 写权限初始化 System.IO.FileStream 类的新实例。 
             using (FileStream fs = new FileStream(@"E:\WorkCodeDirectory\SaleFeedbackService\AppSettingsHelper\bin\Debug\netcoreapp3.1\logs\Info\log_info20210124.txt", FileMode.Open, FileAccess.Read))
             {
@@ -54,7 +76,7 @@ namespace Test
                 readTasks[i] = ReadLineAsync(files[0]);
             }
 
-            String[] sums = await Task.WhenAll(readTasks); 
+            String[] sums = await Task.WhenAll(readTasks);
             return sums;
         }
         private static async Task<String> ReadLineAsync(String file)
