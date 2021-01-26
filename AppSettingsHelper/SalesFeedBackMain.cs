@@ -33,10 +33,12 @@ namespace AppSettingsHelper
             _clock.Size = new Size(this.pnl_title.Height - 5, this.pnl_title.Height - 5);
             _clock.Location = new Point(this.pnl_title.Width - this.pnl_minimizeAndClose.Width - this._clock.Width, 5);
             this.pnl_title.Controls.Add(_clock);
+            _cts = new CancellationTokenSource();
             if (null != device)
             {
                 this._Devices = device;
             }
+            //运行管道服务
             Task.Run(() =>
             {
                 StartServerNamedPipe();
@@ -57,27 +59,68 @@ namespace AppSettingsHelper
             this.WindowState = FormWindowState.Normal;
         }
         #region 私有成员
+        /// <summary>
+        /// 页面是否加载展示
+        /// </summary>
         private Boolean IsShowed = false;
+        /// <summary>
+        /// 时钟控件
+        /// </summary>
         private Clock _clock = null;
         private Point _mousePoint = new Point();     //鼠标所在位置（top,left）
         Label[] _labels = new Label[4];              //上下左右边框集合
         private Int32 _lastWidth = 0;                //上次窗体宽度（改变窗体大小时使用）
         private Int32 _lastHeight = 0;               //上次窗体高度（改变窗体大小时使用） 
+        /// <summary>
+        /// 是否取消操作--日志
+        /// </summary>
         CancellationTokenSource _cts;
+        /// <summary>
+        /// 设备单列简讯展示
+        /// </summary>
         DeviceSingleFrm _deviceSingleFrm;
+        /// <summary>
+        /// 线程安全的设备数据集合
+        /// </summary>
         ConcurrentDictionary<String, Device> _Devices = new ConcurrentDictionary<string, Device>();
-
+        /// <summary>
+        /// 查找匹配字符
+        /// </summary>
         String _searchPattern = null;
+        /// <summary>
+        /// 日志空间选择的是哪一个比如信息
+        /// </summary>
         Int32 _LogContainerSelectedIndex = 0;
+        /// <summary>
+        /// 是否是第一次加载log
+        /// </summary>
         Boolean _IsFirstLoadLog = false;
+        /// <summary>
+        /// 当前选中的page控件
+        /// </summary>
         TabPage _tabPageSelected = null;
+        /// <summary>
+        /// 管道通信服务器端
+        /// </summary>
         NamedPipeServer _serverNamedPipe;
+        /// <summary>
+        /// 查询匹配到了多少项
+        /// </summary>
         Int32 _SearchLogPatternCount = 0;
+        /// <summary>
+        /// 当前选择是第几项
+        /// </summary>
         Int32 _SearchLogPatternIndex = 0;
+        /// <summary>
+        /// 查询产生的结果集合
+        /// </summary>
         List<SearchPatternStructSingle> _SearchPatternStructs;
+        /// <summary>
+        /// 日志查询选项
+        /// </summary>
         ReadLogOption _ReadLogOption;
         /// <summary>
-        /// 防止查询日志太大导致的溢出
+        /// 防止查询日志太大导致的溢出---相当于作为分页集合
         /// </summary>
         ConcurrentDictionary<Int32, String> _SearchResults = new ConcurrentDictionary<Int32, String>();
         #endregion
@@ -290,7 +333,6 @@ namespace AppSettingsHelper
                 InitDeviceFromJsonFile();
                 InitSearchText();
                 IsShowed = true;
-                _cts = new CancellationTokenSource();
                 _tabPageSelected = tabControl_log.TabPages[0];
             }
             catch (Exception ex)
@@ -315,8 +357,32 @@ namespace AppSettingsHelper
         /// <returns></returns>
         public string OnPipeReadMsg(string arg)
         {
-            Console.WriteLine("客户端发过来的数据：\r\n{0}\r\n", arg);
-            MessageBox.Show(arg);
+            try
+            {
+                if (arg.Length > 0)
+                {
+                    String[] result = arg.Split(',');
+                    var deviceId = result[0];
+                    var departId = result[1];
+                    foreach (var item in this.tpg_deviceManager.Controls)
+                    {
+                        if (item is DeviceSingleFrm)
+                        {
+                            var sinfrm = item as DeviceSingleFrm;
+                            if (sinfrm._Device.ID.Equals(deviceId))
+                            {
+                                sinfrm.SetMaintainCount(departId);
+                                return string.Format(" 字符串长度：{0} ", arg.Length);
+                            }
+                            continue;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                GlobalSet.m_Logger.Error("管道接收数据", ex);
+            } 
             return string.Format(" 字符串长度：{0} ", arg.Length);
         }
         void InitDeviceManagerMenu()
@@ -564,7 +630,7 @@ namespace AppSettingsHelper
             public Int32 CurrentIndex;
             public Int32 StartIndex;
             public Int32 SelectedLength;
-        } 
+        }
         /// <summary>
         /// 异步读取日志
         /// </summary>
@@ -574,8 +640,8 @@ namespace AppSettingsHelper
             _SearchLogPatternCount = 0;
             _SearchLogPatternIndex = 0;
             _ReadLogOption = new ReadLogOption();
-            _ReadLogOption.StartTime = this.dtp_StartTime.Value;
-            _ReadLogOption.EndTime = this.dtp_EndTime.Value;
+            _ReadLogOption.StartTime = DateTime.Parse(this.dtp_StartTime.Text);
+            _ReadLogOption.EndTime = DateTime.Parse(this.dtp_EndTime.Text);
             _ReadLogOption.SearchPattern = searchPattern;
             switch (_LogContainerSelectedIndex)
             {
@@ -612,38 +678,78 @@ namespace AppSettingsHelper
                                 return;
                             }
                             var sb = new StringBuilder();
+                            var pageIndex = 0;
                             foreach (var item in task.Result)
                             {
-                                if (sb.Length + item.Length > sb.Capacity)
+                                //当字符快要大于String容量的时候进行分页保存
+                                if (sb.Length + item.Length >= sb.MaxCapacity)
                                 {
+                                    _SearchResults[pageIndex] = sb.ToString();
+                                    sb = new StringBuilder();
+                                    pageIndex++;
                                     break;
                                 }
                                 sb.Append(item);
                             }
-                            var strText = sb.ToString();
-                            this.richTextBox_information.Text = strText;
-                            _SearchPatternStructs = new List<SearchPatternStructSingle>();
-                            if (!String.IsNullOrWhiteSpace(searchPattern) && strText.Contains(searchPattern))
+                            if (_SearchResults.Count > 0)
                             {
-                                var index = 0;
-                                var currentIndex = 0;
-                                while ((index = this.richTextBox_information.Find(searchPattern, index, RichTextBoxFinds.MatchCase)) > 0)
+                                var strText = _SearchResults[0];
+                                this.richTextBox_information.Text = strText;
+                                var searchPatternStructSingles = new List<List<SearchPatternStructSingle>>();
+                                foreach (var item in _SearchResults)
                                 {
-                                    currentIndex++;
-                                    var searchSingle = new SearchPatternStructSingle();
-                                    searchSingle.CurrentIndex = currentIndex;
-                                    searchSingle.StartIndex = index;
-                                    searchSingle.SelectedLength = searchPattern.Length;
-                                    _SearchPatternStructs.Add(searchSingle);
-                                    _SearchLogPatternCount++;
-                                    index += searchPattern.Length;
+                                    _SearchPatternStructs = new List<SearchPatternStructSingle>();
+                                }
+                                _SearchPatternStructs = new List<SearchPatternStructSingle>();
+                                if (!String.IsNullOrWhiteSpace(searchPattern) && strText.Contains(searchPattern))
+                                {
+                                    var index = 0;
+                                    var currentIndex = 0;
+                                    while ((index = this.richTextBox_information.Find(searchPattern, index, RichTextBoxFinds.MatchCase)) > 0)
+                                    {
+                                        currentIndex++;
+                                        var searchSingle = new SearchPatternStructSingle();
+                                        searchSingle.CurrentIndex = currentIndex;
+                                        searchSingle.StartIndex = index;
+                                        searchSingle.SelectedLength = searchPattern.Length;
+                                        _SearchPatternStructs.Add(searchSingle);
+                                        _SearchLogPatternCount++;
+                                        index += searchPattern.Length;
+                                    }
+                                }
+                                if (_SearchLogPatternCount > 0)
+                                {
+                                    this.lbl_SearchCount.Text = _SearchLogPatternCount.ToString();
+                                    UpdateRichTextBox(this._SearchLogPatternIndex);
                                 }
                             }
-                            if (_SearchLogPatternCount > 0)
+                            else
                             {
-                                this.lbl_SearchCount.Text = _SearchLogPatternCount.ToString();
-                                UpdateRichTextBox(this._SearchLogPatternIndex);
-                            }
+                                var strText = sb.ToString();
+                                this.richTextBox_information.Text = strText;
+                                _SearchPatternStructs = new List<SearchPatternStructSingle>();
+                                if (!String.IsNullOrWhiteSpace(searchPattern) && strText.Contains(searchPattern))
+                                {
+                                    var index = 0;
+                                    var currentIndex = 0;
+                                    while ((index = this.richTextBox_information.Find(searchPattern, index, RichTextBoxFinds.MatchCase)) > 0)
+                                    {
+                                        currentIndex++;
+                                        var searchSingle = new SearchPatternStructSingle();
+                                        searchSingle.CurrentIndex = currentIndex;
+                                        searchSingle.StartIndex = index;
+                                        searchSingle.SelectedLength = searchPattern.Length;
+                                        _SearchPatternStructs.Add(searchSingle);
+                                        _SearchLogPatternCount++;
+                                        index += searchPattern.Length;
+                                    }
+                                }
+                                if (_SearchLogPatternCount > 0)
+                                {
+                                    this.lbl_SearchCount.Text = _SearchLogPatternCount.ToString();
+                                    UpdateRichTextBox(this._SearchLogPatternIndex);
+                                }
+                            } 
                             break;
                         default:
                             break;

@@ -134,7 +134,7 @@ namespace SaleFeedbackService
         /// <param name="applicationName">The name of the application to launch</param>
         /// <param name="procInfo">Process information regarding the launched application that gets returned to the caller</param>
         /// <returns></returns>
-        public static bool StartProcessAndBypassUAC(String applicationName, out PROCESS_INFORMATION procInfo)
+        public static bool StartProcessAndBypassUAC(String applicationName,String domain, out PROCESS_INFORMATION procInfo)
         {
             uint winlogonPid = 0;
             IntPtr hUserTokenDup = IntPtr.Zero,
@@ -161,7 +161,7 @@ namespace SaleFeedbackService
 
                         if (bsuccess)
                         {
-                            if (sb.ToString().Trim() == "Jhon xu"/* new INIHelper().GetIniKeyValueForStr("DoMain", "MainName", applicationName)*/)
+                            if (sb.ToString().Trim() == domain)
                             {
                                 dwSessionId = (uint)pSessionInfo[i].SessionID;
                             }

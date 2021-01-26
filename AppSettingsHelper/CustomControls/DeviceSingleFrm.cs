@@ -29,10 +29,14 @@ namespace AppSettingsHelper.CustomControls
         List<String> _PartIds;
         public void SetMaintainCount(String partId)
         {
-            if (null == _PartIds) _PartIds = new List<string>();
+            if (null == _PartIds)
+            {
+                _PartIds = new List<string>();
+                this.Invoke(new Action(() => { this.miantainShowCountControl1.Visible = true; }));
+            }
             if (_PartIds.Contains(partId)) return;
             _PartIds.Add(partId);
-            this.miantainShowCountControl1.Pis_Index = _PartIds.Count.ToString(); 
+            this.Invoke(new Action(() => { this.miantainShowCountControl1.Pis_Index = _PartIds.Count.ToString(); }));
         }
         public void RemoveMaintainCount(String partId)
         {
@@ -42,7 +46,7 @@ namespace AppSettingsHelper.CustomControls
             if (_PartIds.Count == 0)
                 this.miantainShowCountControl1.Visible = false;
             this.miantainShowCountControl1.Pis_Index = _PartIds.Count.ToString();
-        } 
+        }
         System.Threading.Timer timer;
         ContextMenuStrip contextOpreatorMenu;
         public DeviceSingleFrm()
@@ -59,9 +63,9 @@ namespace AppSettingsHelper.CustomControls
             timer.Change(TimeSpan.Zero, Timeout.InfiniteTimeSpan);
         }
         private void Processer(object sender)
-        { 
+        {
             //设置三分钟执行一次
-            var nextTime = DateTime.Now.AddMinutes(3);
+            var nextTime = DateTime.Now.AddMinutes(0.5);
             //执行完后,重新设置定时器下次执行时间.
             timer.Change(nextTime.Subtract(DateTime.Now), Timeout.InfiniteTimeSpan);
             if (null == this._PartIds || this._PartIds.Count == 0)
@@ -70,20 +74,35 @@ namespace AppSettingsHelper.CustomControls
             }
             this.Invoke(new Action(() =>
             {
-                this.miantainShowCountControl1.EclipsBackColor = Color.LightCoral;
-                Task.Delay(30);
-                this.miantainShowCountControl1.EclipsBackColor = Color.IndianRed;
-                Task.Delay(30);
-                this.miantainShowCountControl1.EclipsBackColor = Color.Firebrick;
-                Task.Delay(30);
-                this.miantainShowCountControl1.EclipsBackColor = Color.Brown;
-                Task.Delay(30);
-                this.miantainShowCountControl1.EclipsBackColor = Color.DarkRed;
-                Task.Delay(30);
-                this.miantainShowCountControl1.EclipsBackColor = Color.Maroon;
-                Task.Delay(30);
-                this.miantainShowCountControl1.EclipsBackColor = Color.Red;
-                Task.Delay(30);
+                var count = 3;
+                while (count-- > 0)
+                {
+                    this.miantainShowCountControl1.EclipsBackColor = Color.LightCoral;
+                    Task.Delay(100);
+                    this.miantainShowCountControl1.EclipsBackColor = Color.IndianRed;
+                    Task.Delay(100);
+                    this.miantainShowCountControl1.EclipsBackColor = Color.Firebrick;
+                    Task.Delay(100);
+                    this.miantainShowCountControl1.EclipsBackColor = Color.Brown;
+                    Task.Delay(100);
+                    this.miantainShowCountControl1.EclipsBackColor = Color.DarkRed;
+                    Task.Delay(100);
+                    this.miantainShowCountControl1.EclipsBackColor = Color.Maroon;
+                    Task.Delay(100);
+                    this.miantainShowCountControl1.EclipsBackColor = Color.OrangeRed;
+                    Task.Delay(100);
+                    this.miantainShowCountControl1.EclipsBackColor = Color.Tomato;
+                    Task.Delay(100);
+                    this.miantainShowCountControl1.EclipsBackColor = Color.Coral;
+                    Task.Delay(100);
+                    this.miantainShowCountControl1.EclipsBackColor = Color.Salmon;
+                    Task.Delay(100);
+                    this.miantainShowCountControl1.EclipsBackColor = Color.DarkSalmon;
+                    Task.Delay(100);
+                    this.miantainShowCountControl1.EclipsBackColor = Color.LightSalmon;
+                    Task.Delay(100); 
+                    this.miantainShowCountControl1.EclipsBackColor = Color.LightCoral;
+                }
             }));
 
         }
@@ -164,6 +183,26 @@ namespace AppSettingsHelper.CustomControls
                     {
                         this._device.DeviceParts = deviceMaintain._device.DeviceParts;
                         this.lbl_devicePartNum.Text = this._device.DeviceParts.Count.ToString();
+                        if (null != this._PartIds && this._PartIds.Count > 0)
+                        {
+                            foreach (var item in this._PartIds)
+                            {
+                                if (this._device.DeviceParts.ContainsKey(item))
+                                {
+                                    var devicePart = this._device.DeviceParts[item];
+                                    if (devicePart.MaintainCycles.Count == 0) continue;
+                                    if (devicePart.MaintainDetails.Count == 0) continue;
+                                    //取上次保养时间进行比较
+                                    var lastMaintainTime = devicePart.MaintainDetails.OrderBy(p => p.Value.MaintainTime).First().Value.MaintainTime;
+                                    //如果需要保养就继续比对下一个
+                                    if (MaintainTimeCompareToLocalTime(devicePart, lastMaintainTime))
+                                    {
+                                        continue;
+                                    }
+                                    RemoveMaintainCount(devicePart.ID);
+                                }
+                            }
+                        }
                     }
                     break;
                 case "ModifyDevice":
@@ -200,7 +239,40 @@ namespace AppSettingsHelper.CustomControls
                     break;
             }
         }
-
+        private Boolean MaintainTimeCompareToLocalTime(DevicePart devicePart, DateTime maintianTime)
+        {
+            foreach (var mainCycle in devicePart.MaintainCycles)
+            {
+                switch (mainCycle.Key)
+                {
+                    case DeviceMaintainStyle.Minute:
+                        maintianTime = maintianTime.AddMinutes(mainCycle.Value);
+                        break;
+                    case DeviceMaintainStyle.Hour:
+                        maintianTime = maintianTime.AddHours(mainCycle.Value);
+                        break;
+                    case DeviceMaintainStyle.Day:
+                        maintianTime = maintianTime.AddDays(mainCycle.Value);
+                        break;
+                    case DeviceMaintainStyle.Month:
+                        maintianTime = maintianTime.AddMonths(mainCycle.Value);
+                        break;
+                    case DeviceMaintainStyle.Quarter:
+                        maintianTime = maintianTime.AddMonths(mainCycle.Value * 3);
+                        break;
+                    case DeviceMaintainStyle.Year:
+                        maintianTime = maintianTime.AddYears(mainCycle.Value);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            if (maintianTime.CompareTo(DateTime.Now.ToLocalTime()) < 0)//小于0说明保养时间到了
+            {
+                return true;
+            }
+            return false;
+        }
         public event EventHandler ModifyEventClicked;
         public event EventHandler DeleteEventClicked;
     }

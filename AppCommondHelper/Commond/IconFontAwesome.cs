@@ -76,7 +76,7 @@ namespace AppCommondHelper
             BackColer = Color.Transparent;
             ForeColer = Color.Black;
             BorderColer = Color.Gray;
-            string path = FontAwesomeLocation + FontAwesomeName;
+            string path = AppDomain.CurrentDomain.BaseDirectory + FontAwesomeLocation + FontAwesomeName;
             if (File.Exists(path))
             {
                 FontCollection.AddFontFile(path);
@@ -84,7 +84,7 @@ namespace AppCommondHelper
             else
             {
                 throw new FileNotFoundException("IconFontAwesome font file not found", path);
-            } 
+            }
         }
 
         #endregion

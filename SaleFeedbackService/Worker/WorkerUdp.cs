@@ -31,19 +31,21 @@ namespace SaleFeedbackService
         private readonly IConfiguration _configuration;
         private UdpSocketOption _udpSocketOption;
         private ConcurrentDictionary<String, Device> _Devices;
-        private IFileProvider fileProvider;
+        private IFileProvider _fileProvider;
+        private readonly String _domain;
         public WorkerUdp(ILogger<WorkerUdp> logger, IConfiguration configuration)
         {
             _logger = logger;
             _configuration = configuration;
+            _domain = _configuration.GetSection(nameof(AppOption))[nameof(AppOption.DomianName)];
             InitDevices();
         }
         public override Task StartAsync(CancellationToken cancellationToken)
         {
             if (!Directory.Exists(GlobalSet.m_deviceJsonPath))
                 Directory.CreateDirectory(GlobalSet.m_deviceJsonPath);
-            fileProvider = new PhysicalFileProvider(GlobalSet.m_deviceJsonPath);
-            fileProvider.Watch("*.json").RegisterChangeCallback((obj) =>
+            _fileProvider = new PhysicalFileProvider(GlobalSet.m_deviceJsonPath);
+            _fileProvider.Watch("*.json").RegisterChangeCallback((obj) =>
             {
                 GlobalSet.m_Logger.Information($"The UdpNetworkServer detect the file changed");
                 InitDevices();
@@ -97,12 +99,15 @@ namespace SaleFeedbackService
         {
             while (!stoppingToken.IsCancellationRequested)
             {
+                #region 检测保养
                 if (null != _Devices && _Devices.Count > 0)
                 {
                     Parallel.ForEach(_Devices, ac =>
                     {
                         foreach (var item in ac.Value.DeviceParts)
                         {
+                            //这里要做一个缓存的机制，加上过期时间，如果已经发送过消息，
+                            //几分钟以内就不用再发了，节约系统资源
                             if (item.Value.MaintainCycles.Count == 0) return;
                             if (item.Value.MaintainDetails.Count == 0)
                             {
@@ -123,6 +128,8 @@ namespace SaleFeedbackService
                         }
                     });
                 }
+                #endregion
+
                 await Task.Delay(1000, stoppingToken);
             }
         }
@@ -185,26 +192,32 @@ namespace SaleFeedbackService
         private void RunAppSettings()
         {
             ApplicationLoader.PROCESS_INFORMATION procInfo;
-            ApplicationLoader.StartProcessAndBypassUAC(GlobalSet.m_filePath + "AppSettingsHelper.exe",out procInfo);
+            ApplicationLoader.StartProcessAndBypassUAC(GlobalSet.m_filePath + "AppSettingsHelper.exe", _domain, out procInfo);
         }
         private void StartClientNamedPipe(String serverName, String message)
         {
-            if (!DetectAppSettingsIsRun())
+            try
             {
-                #region 要运行软件
-                //RunAppSettings();
-                //if (!DetectAppSettingsIsRun())
-                //{
-                //    GlobalSet.m_Logger.Fatal("AppSettingsHelper 不存在或存在异常行为！");
-                //    return;
-                //}
-                #endregion 
-            }
+                if (!DetectAppSettingsIsRun())
+                {
+                    #region 要运行软件
+                    RunAppSettings();
+                    if (!DetectAppSettingsIsRun())
+                    {
+                        GlobalSet.m_Logger.Fatal("AppSettingsHelper 不存在或存在异常行为！");
+                        return;
+                    }
+                    #endregion
+                }
 
-            NamedPipeClient client = new NamedPipeClient(serverName, ".");
-            string response = client.Request(message);
-            GlobalSet.m_Logger.Information("AppSettingsHelper 接收到了保养提示信息！");
-            GlobalSet.m_Logger.Information("服务端返回数据：\r\n" + response);
+                NamedPipeClient client = new NamedPipeClient(serverName, ".");
+                string response = client.Request(message);
+                GlobalSet.m_Logger.Information("AppSettingsHelper 接收到了保养提示信息！返回数据：\r\n" + response);
+            }
+            catch (Exception ex)
+            {
+                GlobalSet.m_Logger.Error("管道发送数据", ex);
+            } 
         }
     }
 }

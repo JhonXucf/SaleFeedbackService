@@ -7,6 +7,7 @@ namespace AppCommondHelper.Infrastucture
     [Serializable]
     public class AppOption
     {
+        public String DomianName { get; set; } = "Administrator";
         public String AppName { get; set; } = "SaleFeedbackWorkerService";
         public String LoggerPath { get; set; } = AppDomain.CurrentDomain.BaseDirectory;
         public Boolean IsEnableJsonSerilize { get; set; } = true;
