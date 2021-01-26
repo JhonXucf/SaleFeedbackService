@@ -40,6 +40,7 @@ namespace AppSettingsHelper.CustomControls
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.miantainShowCountControl1 = new AppSettingsHelper.MiantainShowCountControl();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -148,10 +149,29 @@ namespace AppSettingsHelper.CustomControls
             this.label2.TabIndex = 0;
             this.label2.Text = "设备ID";
             // 
+            // miantainShowCountControl1
+            // 
+            this.miantainShowCountControl1.BorderVisiable = false;
+            this.miantainShowCountControl1.EclipsBackColor = System.Drawing.Color.Red;
+            this.miantainShowCountControl1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.miantainShowCountControl1.ForeColor = System.Drawing.Color.Black;
+            this.miantainShowCountControl1.LabelText = "";
+            this.miantainShowCountControl1.Location = new System.Drawing.Point(208, 4);
+            this.miantainShowCountControl1.Margin = new System.Windows.Forms.Padding(4);
+            this.miantainShowCountControl1.Name = "miantainShowCountControl1";
+            this.miantainShowCountControl1.OriginalColor = System.Drawing.Color.Red;
+            this.miantainShowCountControl1.Pis_Index = "";
+            this.miantainShowCountControl1.PisIndexFont = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.miantainShowCountControl1.PisindexForeColor = System.Drawing.Color.PaleGreen;
+            this.miantainShowCountControl1.Size = new System.Drawing.Size(27, 27);
+            this.miantainShowCountControl1.TabIndex = 8;
+            this.miantainShowCountControl1.Visible = false;
+            // 
             // DeviceSingleFrm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.miantainShowCountControl1);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.lbl_title);
             this.Controls.Add(this.label1);
@@ -177,5 +197,6 @@ namespace AppSettingsHelper.CustomControls
         private System.Windows.Forms.Label lbl_deviceDescription;
         private System.Windows.Forms.Label lbl_devicePartNum;
         private System.Windows.Forms.Label lbl_deviceName;
+        private MiantainShowCountControl miantainShowCountControl1;
     }
 }

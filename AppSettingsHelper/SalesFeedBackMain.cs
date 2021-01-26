@@ -17,6 +17,8 @@ using System.Collections.Concurrent;
 using System.Threading.Tasks;
 using System.Threading;
 using AppCommondHelper.Logger;
+using System.IO.Pipes;
+using AppCommondHelper.PipeCommunication;
 
 namespace AppSettingsHelper
 {
@@ -35,14 +37,32 @@ namespace AppSettingsHelper
             {
                 this._Devices = device;
             }
+            Task.Run(() =>
+            {
+                StartServerNamedPipe();
+            });
+            this.itemShowMainform.Click += ItemShowMainform_Click;
+            this.itemCloseMainform.Click += ItemCloseMainform_Click;
+        }
+        //退出
+        private void ItemCloseMainform_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+        //展示
+        private void ItemShowMainform_Click(object sender, EventArgs e)
+        {
+            this.Show();
+            this.ShowInTaskbar = true;
+            this.WindowState = FormWindowState.Normal;
         }
         #region 私有成员
         private Boolean IsShowed = false;
         private Clock _clock = null;
         private Point _mousePoint = new Point();     //鼠标所在位置（top,left）
-        System.Windows.Forms.Label[] _labels = new System.Windows.Forms.Label[4];    //上下左右边框集合
-        private Int32 _lastWidth = 0;                  //上次窗体宽度（改变窗体大小时使用）
-        private Int32 _lastHeight = 0;                   //上次窗体高度（改变窗体大小时使用） 
+        Label[] _labels = new Label[4];              //上下左右边框集合
+        private Int32 _lastWidth = 0;                //上次窗体宽度（改变窗体大小时使用）
+        private Int32 _lastHeight = 0;               //上次窗体高度（改变窗体大小时使用） 
         CancellationTokenSource _cts;
         DeviceSingleFrm _deviceSingleFrm;
         ConcurrentDictionary<String, Device> _Devices = new ConcurrentDictionary<string, Device>();
@@ -51,6 +71,15 @@ namespace AppSettingsHelper
         Int32 _LogContainerSelectedIndex = 0;
         Boolean _IsFirstLoadLog = false;
         TabPage _tabPageSelected = null;
+        NamedPipeServer _serverNamedPipe;
+        Int32 _SearchLogPatternCount = 0;
+        Int32 _SearchLogPatternIndex = 0;
+        List<SearchPatternStructSingle> _SearchPatternStructs;
+        ReadLogOption _ReadLogOption;
+        /// <summary>
+        /// 防止查询日志太大导致的溢出
+        /// </summary>
+        ConcurrentDictionary<Int32, String> _SearchResults = new ConcurrentDictionary<Int32, String>();
         #endregion
 
         #region 边框鼠标拖动及关闭
@@ -200,7 +229,9 @@ namespace AppSettingsHelper
         /// <param name="e"></param>
         private void btn_close_Click(object sender, EventArgs e)
         {
-            Close();
+            this.Hide();
+            this.ShowInTaskbar = false;
+            this.WindowState = FormWindowState.Minimized;
         }
         /// <summary>
         /// 关闭窗口
@@ -266,6 +297,27 @@ namespace AppSettingsHelper
             {
                 GlobalSet.m_Logger.Error("初始化", ex);
             }
+        }
+        /// <summary>
+        /// 启动命名管道
+        /// </summary>
+        public void StartServerNamedPipe()
+        {
+            _serverNamedPipe = new NamedPipeServer("SalesFeedBack");
+            _serverNamedPipe.Readed += OnPipeReadMsg;
+            _serverNamedPipe.Start();
+        }
+
+        /// <summary>
+        /// 收到管道数据
+        /// </summary>
+        /// <param name="arg"></param>
+        /// <returns></returns>
+        public string OnPipeReadMsg(string arg)
+        {
+            Console.WriteLine("客户端发过来的数据：\r\n{0}\r\n", arg);
+            MessageBox.Show(arg);
+            return string.Format(" 字符串长度：{0} ", arg.Length);
         }
         void InitDeviceManagerMenu()
         {
@@ -512,11 +564,7 @@ namespace AppSettingsHelper
             public Int32 CurrentIndex;
             public Int32 StartIndex;
             public Int32 SelectedLength;
-        }
-        Int32 _SearchLogPatternCount = 0;
-        Int32 _SearchLogPatternIndex = 0;
-        List<SearchPatternStructSingle> _SearchPatternStructs;
-        ReadLogOption _ReadLogOption;
+        } 
         /// <summary>
         /// 异步读取日志
         /// </summary>
@@ -566,6 +614,10 @@ namespace AppSettingsHelper
                             var sb = new StringBuilder();
                             foreach (var item in task.Result)
                             {
+                                if (sb.Length + item.Length > sb.Capacity)
+                                {
+                                    break;
+                                }
                                 sb.Append(item);
                             }
                             var strText = sb.ToString();

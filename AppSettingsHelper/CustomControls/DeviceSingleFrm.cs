@@ -5,6 +5,9 @@ using System.Linq;
 using SalesFeedBackInfrasturcture.Entities;
 using SalesFeedBackInfrasturcture.Infrastructure;
 using System.Windows.Forms;
+using System.Threading;
+using System.Drawing;
+using System.Threading.Tasks;
 
 namespace AppSettingsHelper.CustomControls
 {
@@ -23,6 +26,24 @@ namespace AppSettingsHelper.CustomControls
                 }
             }
         }
+        List<String> _PartIds;
+        public void SetMaintainCount(String partId)
+        {
+            if (null == _PartIds) _PartIds = new List<string>();
+            if (_PartIds.Contains(partId)) return;
+            _PartIds.Add(partId);
+            this.miantainShowCountControl1.Pis_Index = _PartIds.Count.ToString(); 
+        }
+        public void RemoveMaintainCount(String partId)
+        {
+            if (null == _PartIds) return;
+            if (_PartIds.Contains(partId))
+                _PartIds.Remove(partId);
+            if (_PartIds.Count == 0)
+                this.miantainShowCountControl1.Visible = false;
+            this.miantainShowCountControl1.Pis_Index = _PartIds.Count.ToString();
+        } 
+        System.Threading.Timer timer;
         ContextMenuStrip contextOpreatorMenu;
         public DeviceSingleFrm()
         {
@@ -33,6 +54,38 @@ namespace AppSettingsHelper.CustomControls
             {
                 item.ContextMenuStrip = this.contextOpreatorMenu;
             }
+            timer = new System.Threading.Timer(Processer, null, Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
+            //立即执行一次
+            timer.Change(TimeSpan.Zero, Timeout.InfiniteTimeSpan);
+        }
+        private void Processer(object sender)
+        { 
+            //设置三分钟执行一次
+            var nextTime = DateTime.Now.AddMinutes(3);
+            //执行完后,重新设置定时器下次执行时间.
+            timer.Change(nextTime.Subtract(DateTime.Now), Timeout.InfiniteTimeSpan);
+            if (null == this._PartIds || this._PartIds.Count == 0)
+            {
+                return;
+            }
+            this.Invoke(new Action(() =>
+            {
+                this.miantainShowCountControl1.EclipsBackColor = Color.LightCoral;
+                Task.Delay(30);
+                this.miantainShowCountControl1.EclipsBackColor = Color.IndianRed;
+                Task.Delay(30);
+                this.miantainShowCountControl1.EclipsBackColor = Color.Firebrick;
+                Task.Delay(30);
+                this.miantainShowCountControl1.EclipsBackColor = Color.Brown;
+                Task.Delay(30);
+                this.miantainShowCountControl1.EclipsBackColor = Color.DarkRed;
+                Task.Delay(30);
+                this.miantainShowCountControl1.EclipsBackColor = Color.Maroon;
+                Task.Delay(30);
+                this.miantainShowCountControl1.EclipsBackColor = Color.Red;
+                Task.Delay(30);
+            }));
+
         }
         private void SetDeviceInfo(Device device)
         {
@@ -140,14 +193,14 @@ namespace AppSettingsHelper.CustomControls
                     {
                         this._device.DeviceParts[devicePartEdit._DevicePart.ID] = devicePartEdit._DevicePart;
                         this.lbl_devicePartNum.Text = _device.DeviceParts.Count.ToString();
-                        GlobalSet.WriteDevicePartToFile(_device, devicePartEdit._DevicePart, SalesFeedBackMain.OperatorType.Add); 
+                        GlobalSet.WriteDevicePartToFile(_device, devicePartEdit._DevicePart, SalesFeedBackMain.OperatorType.Add);
                     }
                     break;
                 default:
                     break;
             }
         }
- 
+
         public event EventHandler ModifyEventClicked;
         public event EventHandler DeleteEventClicked;
     }

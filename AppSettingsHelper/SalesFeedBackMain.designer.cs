@@ -71,6 +71,10 @@
             this.pnl_title = new System.Windows.Forms.Panel();
             this.lbl_title = new System.Windows.Forms.Label();
             this.pb_icon = new System.Windows.Forms.PictureBox();
+            this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
+            this.contextMenuHide = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.itemShowMainform = new System.Windows.Forms.ToolStripMenuItem();
+            this.itemCloseMainform = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1.SuspendLayout();
             this.tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -86,6 +90,7 @@
             this.pnl_minimizeAndClose.SuspendLayout();
             this.pnl_title.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pb_icon)).BeginInit();
+            this.contextMenuHide.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -613,6 +618,33 @@
             this.pb_icon.TabIndex = 0;
             this.pb_icon.TabStop = false;
             // 
+            // notifyIcon
+            // 
+            this.notifyIcon.ContextMenuStrip = this.contextMenuHide;
+            this.notifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon.Icon")));
+            this.notifyIcon.Text = "VCAM设备保养与维修服务";
+            this.notifyIcon.Visible = true;
+            // 
+            // contextMenuHide
+            // 
+            this.contextMenuHide.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itemShowMainform,
+            this.itemCloseMainform});
+            this.contextMenuHide.Name = "contextMenuHide";
+            this.contextMenuHide.Size = new System.Drawing.Size(101, 48);
+            // 
+            // itemShowMainform
+            // 
+            this.itemShowMainform.Name = "itemShowMainform";
+            this.itemShowMainform.Size = new System.Drawing.Size(100, 22);
+            this.itemShowMainform.Text = "显示";
+            // 
+            // itemCloseMainform
+            // 
+            this.itemCloseMainform.Name = "itemCloseMainform";
+            this.itemCloseMainform.Size = new System.Drawing.Size(100, 22);
+            this.itemCloseMainform.Text = "退出";
+            // 
             // SalesFeedBackMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -649,6 +681,7 @@
             this.pnl_title.ResumeLayout(false);
             this.pnl_title.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pb_icon)).EndInit();
+            this.contextMenuHide.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -695,6 +728,10 @@
         private System.Windows.Forms.Label lbl_SearchTip;
         private System.Windows.Forms.Button btn_jumpToIndex;
         private System.Windows.Forms.TextBox tbx_currentPatternNum;
+        private System.Windows.Forms.NotifyIcon notifyIcon;
+        private System.Windows.Forms.ContextMenuStrip contextMenuHide;
+        private System.Windows.Forms.ToolStripMenuItem itemShowMainform;
+        private System.Windows.Forms.ToolStripMenuItem itemCloseMainform;
     }
 }
 

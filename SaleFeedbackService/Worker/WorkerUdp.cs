@@ -16,6 +16,8 @@ using SalesFeedBackInfrasturcture.Entities;
 using SalesFeedBackInfrasturcture.Infrastructure;
 using System.IO.Pipes;
 using System.Text;
+using AppCommondHelper.PipeCommunication;
+using System.Diagnostics;
 
 namespace SaleFeedbackService
 {
@@ -29,6 +31,7 @@ namespace SaleFeedbackService
         private readonly IConfiguration _configuration;
         private UdpSocketOption _udpSocketOption;
         private ConcurrentDictionary<String, Device> _Devices;
+        private IFileProvider fileProvider;
         public WorkerUdp(ILogger<WorkerUdp> logger, IConfiguration configuration)
         {
             _logger = logger;
@@ -37,7 +40,9 @@ namespace SaleFeedbackService
         }
         public override Task StartAsync(CancellationToken cancellationToken)
         {
-            IFileProvider fileProvider = new PhysicalFileProvider(AppDomain.CurrentDomain.BaseDirectory);
+            if (!Directory.Exists(GlobalSet.m_deviceJsonPath))
+                Directory.CreateDirectory(GlobalSet.m_deviceJsonPath);
+            fileProvider = new PhysicalFileProvider(GlobalSet.m_deviceJsonPath);
             fileProvider.Watch("*.json").RegisterChangeCallback((obj) =>
             {
                 GlobalSet.m_Logger.Information($"The UdpNetworkServer detect the file changed");
@@ -104,7 +109,7 @@ namespace SaleFeedbackService
                                 var dateTime = item.Value.Created.ToLocalTime();
                                 if (MaintainTimeCompareToLocalTime(item.Value, dateTime))
                                 {
-
+                                    StartClientNamedPipe("SalesFeedBack", ac.Key + "," + item.Key);
                                 }
                             }
                             else
@@ -112,7 +117,7 @@ namespace SaleFeedbackService
                                 var lastMaintainTime = item.Value.MaintainDetails.OrderBy(p => p.Value.MaintainTime).First().Value.MaintainTime;
                                 if (MaintainTimeCompareToLocalTime(item.Value, lastMaintainTime))
                                 {
-
+                                    StartClientNamedPipe("SalesFeedBack", ac.Key + "," + item.Key);
                                 }
                             }
                         }
@@ -131,7 +136,7 @@ namespace SaleFeedbackService
                 _Devices = new ConcurrentDictionary<string, Device>();
                 Parallel.ForEach(files, ac =>
                 {
-                    var device = AppCommondHelper.JsonSerilize.JsonHelper.ReadTFromJsonFile<Device>(ac);
+                    var device = JsonHelper.ReadTFromJsonFile<Device>(ac);
                     if (null != device.DeviceParts && device.DeviceParts.Count > 0)
                     {
                         _Devices[device.ID] = device;
@@ -146,22 +151,22 @@ namespace SaleFeedbackService
                 switch (mainCycle.Key)
                 {
                     case DeviceMaintainStyle.Minute:
-                        maintianTime.AddMinutes(mainCycle.Value);
+                        maintianTime = maintianTime.AddMinutes(mainCycle.Value);
                         break;
                     case DeviceMaintainStyle.Hour:
-                        maintianTime.AddHours(mainCycle.Value);
+                        maintianTime = maintianTime.AddHours(mainCycle.Value);
                         break;
                     case DeviceMaintainStyle.Day:
-                        maintianTime.AddDays(mainCycle.Value);
+                        maintianTime = maintianTime.AddDays(mainCycle.Value);
                         break;
                     case DeviceMaintainStyle.Month:
-                        maintianTime.AddMonths(mainCycle.Value);
+                        maintianTime = maintianTime.AddMonths(mainCycle.Value);
                         break;
                     case DeviceMaintainStyle.Quarter:
-                        maintianTime.AddMonths(mainCycle.Value * 3);
+                        maintianTime = maintianTime.AddMonths(mainCycle.Value * 3);
                         break;
                     case DeviceMaintainStyle.Year:
-                        maintianTime.AddYears(mainCycle.Value);
+                        maintianTime = maintianTime.AddYears(mainCycle.Value);
                         break;
                     default:
                         break;
@@ -173,49 +178,33 @@ namespace SaleFeedbackService
             }
             return false;
         }
-        private async Task<String> DevicePartMaintainRequestAsync(String serverName, String message)
+        private Boolean DetectAppSettingsIsRun()
         {
-            using (var pipe = new NamedPipeClientStream(serverName, "pipeName", PipeDirection.InOut, PipeOptions.Asynchronous | PipeOptions.WriteThrough))
-            {
-                pipe.Connect();//必须在readMode之前
-                pipe.ReadMode = PipeTransmissionMode.Message;
-
-                //将数据异步发送给服务器
-                Byte[] request = Encoding.UTF8.GetBytes(message);
-                await pipe.WriteAsync(request, 0, request.Length);
-
-                //异步读取服务器的响应
-                Byte[] response = new Byte[1000];
-                Int32 byteRead = await pipe.ReadAsync(response, 0, response.Length);
-                return Encoding.UTF8.GetString(response, 0, byteRead);
-            }
+            return Process.GetProcessesByName("AppSettingsHelper").Length > 0;
         }
-        private async void StartPipeServer(String serverName)
+        private void RunAppSettings()
         {
-            while (true)
-            {
-                var pipe = new NamedPipeServerStream(serverName, PipeDirection.InOut, -1
-                    , PipeTransmissionMode.Message, PipeOptions.Asynchronous | PipeOptions.WriteThrough);
-                //异步接收客户端连接
-                //注意：NamedPipeServerStream使用旧的异步编程模型APM
-                //我用TaskFactory的FromAsync方法将旧的APM转换成新的Task模型
-                await Task.Factory.FromAsync(pipe.BeginWaitForConnection, pipe.EndWaitForConnection, null);
-                ServiceClientRequestAsync(pipe);
-            }
+            ApplicationLoader.PROCESS_INFORMATION procInfo;
+            ApplicationLoader.StartProcessAndBypassUAC(GlobalSet.m_filePath + "AppSettingsHelper.exe",out procInfo);
         }
-
-        private async void ServiceClientRequestAsync(NamedPipeServerStream pipe)
+        private void StartClientNamedPipe(String serverName, String message)
         {
-            if (pipe.IsConnected && pipe.CanRead)
+            if (!DetectAppSettingsIsRun())
             {
-                //异步读取服务器的响应
-                Byte[] response = new Byte[1000];
-                Int32 byteRead = await pipe.ReadAsync(response, 0, response.Length);
-                Encoding.UTF8.GetString(response, 0, byteRead);
-                //将数据异步发送给服务器
-                Byte[] request = Encoding.UTF8.GetBytes("我收到了");
-                await pipe.WriteAsync(request, 0, request.Length);
+                #region 要运行软件
+                //RunAppSettings();
+                //if (!DetectAppSettingsIsRun())
+                //{
+                //    GlobalSet.m_Logger.Fatal("AppSettingsHelper 不存在或存在异常行为！");
+                //    return;
+                //}
+                #endregion 
             }
+
+            NamedPipeClient client = new NamedPipeClient(serverName, ".");
+            string response = client.Request(message);
+            GlobalSet.m_Logger.Information("AppSettingsHelper 接收到了保养提示信息！");
+            GlobalSet.m_Logger.Information("服务端返回数据：\r\n" + response);
         }
     }
 }

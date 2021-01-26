@@ -84,9 +84,7 @@ namespace AppCommondHelper
             else
             {
                 throw new FileNotFoundException("IconFontAwesome font file not found", path);
-            }
-
-            FontCollection.AddFontFile(FontAwesomeLocation + FontAwesomeName);
+            } 
         }
 
         #endregion
