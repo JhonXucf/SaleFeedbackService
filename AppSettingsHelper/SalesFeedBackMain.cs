@@ -5,24 +5,19 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using SalesFeedBackInfrasturcture.Entities;
-using System.Collections;
 using System.Windows.Forms;
-using System.Diagnostics;
-using SalesFeedBackInfrasturcture.Infrastructure;
 using AppSettingsHelper.CustomControls;
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
 using System.Threading;
 using AppCommondHelper.Logger;
-using System.IO.Pipes;
 using AppCommondHelper.PipeCommunication;
 using AppCommondHelper.Commond;
 using Microsoft.Extensions.Configuration;
-using AppCommondHelper.Infrastucture;
 using AppCommondHelper;
+using AppCommondHelper.AppJsonToFile;
 
 namespace AppSettingsHelper
 {
@@ -1028,7 +1023,14 @@ namespace AppSettingsHelper
         }
         private void btn_saveAppSettingJson_Click(object sender, EventArgs e)
         {
-
+            try
+            {
+                SetAppSetting();
+            }
+            catch (Exception ex)
+            {
+                GlobalSet.m_Logger.Error("服务配置文件设置异常", ex);
+            }
         }
         private void GetAppSetting()
         {
@@ -1106,9 +1108,26 @@ namespace AppSettingsHelper
             this.lbMessage.Text = "服务未安装...";
             this.gbx_ServiceContainer.Enabled = false;
         }
+        /// <summary>
+        /// 设置appSettings配置文件
+        /// </summary>
         private void SetAppSetting()
         {
+            IConfigurationRoot configuration = new ConfigurationBuilder().Add<WritableJsonConfigurationSource>(
+                (Action<WritableJsonConfigurationSource>)(s =>
+                {
+                    s.FileProvider = null;
+                    s.Path = "appsettings.json";
+                    s.Optional = false;
+                    s.ReloadOnChange = true;
+                    s.ResolveFileProvider();
+                })).Build();
+            //var st = configuration.GetSection("TcpSocketOption:IP").Value;
+            //Console.WriteLine(configuration.GetSection("TcpSocketOption:IP").Value); // Output: value1
+            //Console.ReadKey();
 
+            //configuration.GetSection("TcpSocketOption:IP").Value = "changed from codeeee";
+            //Console.WriteLine(configuration.GetSection("TcpSocketOption:IP").Value);
         }
 
         private void cbx_enableUDP_CheckedChanged(object sender, EventArgs e)

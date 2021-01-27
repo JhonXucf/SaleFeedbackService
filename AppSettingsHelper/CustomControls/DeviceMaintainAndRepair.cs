@@ -148,7 +148,7 @@ namespace AppSettingsHelper.CustomControls
                     }
                 }
             }
-            var mainAndRepair = new DeviceMainTainAndRepairEdit(this._deviceOperator, devicePart);
+            var mainAndRepair = new DeviceMainTainAndRepairEdit(this._deviceOperator, devicePart.Clone());
             mainAndRepair.StartPosition = FormStartPosition.CenterParent;
             if (mainAndRepair.ShowDialog() == DialogResult.OK)
             {
