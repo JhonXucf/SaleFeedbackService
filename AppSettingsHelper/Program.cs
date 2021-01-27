@@ -2,6 +2,7 @@ using AppCommondHelper;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -73,7 +74,8 @@ namespace AppSettingsHelper
             {
                 if (process.Id != current.Id)
                 {
-                    if (Assembly.GetExecutingAssembly().Location.Replace("/", "\\") == current.MainModule.FileName)
+                    var str = Assembly.GetExecutingAssembly().Location.Replace("/", "\\");
+                    if (Path.GetFileNameWithoutExtension(str) == Path.GetFileNameWithoutExtension(current.MainModule.FileName))
                     {
                         return process;
                     }

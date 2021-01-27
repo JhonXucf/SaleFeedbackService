@@ -43,7 +43,7 @@ namespace AppCommondHelper.Commond
                 }
                 p.StandardInput.WriteLine("exit");
                 strOutput = p.StandardOutput.ReadToEnd();
-                //strOutput = Encoding.UTF8.GetString(Encoding.Default.GetBytes(strOutput));
+                strOutput = Encoding.UTF8.GetString(Encoding.Default.GetBytes(strOutput));
                 p.WaitForExit();
                 p.Close();
             }

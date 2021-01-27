@@ -1,7 +1,6 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,10 +13,10 @@ using System.IO;
 using System.Collections.Concurrent;
 using SalesFeedBackInfrasturcture.Entities;
 using SalesFeedBackInfrasturcture.Infrastructure;
-using System.IO.Pipes;
-using System.Text;
 using AppCommondHelper.PipeCommunication;
 using System.Diagnostics;
+using Microsoft.Extensions.Caching.Memory;
+using AppCommondHelper;
 
 namespace SaleFeedbackService
 {
@@ -33,11 +32,13 @@ namespace SaleFeedbackService
         private ConcurrentDictionary<String, Device> _Devices;
         private IFileProvider _fileProvider;
         private readonly String _domain;
-        public WorkerUdp(ILogger<WorkerUdp> logger, IConfiguration configuration)
+        private IMemoryCache _cacheMemory;
+        public WorkerUdp(IMemoryCache cacheMemory, ILogger<WorkerUdp> logger, IConfiguration configuration)
         {
             _logger = logger;
             _configuration = configuration;
             _domain = _configuration.GetSection(nameof(AppOption))[nameof(AppOption.DomianName)];
+            _cacheMemory = cacheMemory;
             InitDevices();
         }
         public override Task StartAsync(CancellationToken cancellationToken)
@@ -97,6 +98,7 @@ namespace SaleFeedbackService
         }
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
+            var keyExsit = "";
             while (!stoppingToken.IsCancellationRequested)
             {
                 #region 检测保养
@@ -107,7 +109,10 @@ namespace SaleFeedbackService
                         foreach (var item in ac.Value.DeviceParts)
                         {
                             //这里要做一个缓存的机制，加上过期时间，如果已经发送过消息，
-                            //几分钟以内就不用再发了，节约系统资源
+                            //5分钟以内就不用再发了，节约系统资源
+                         
+                            if (_cacheMemory.TryGetValue(item.Key, out keyExsit)) continue;
+                            _cacheMemory.Set(item.Key, "", DateTimeOffset.Now.AddMinutes(5));
                             if (item.Value.MaintainCycles.Count == 0) return;
                             if (item.Value.MaintainDetails.Count == 0)
                             {
@@ -130,7 +135,7 @@ namespace SaleFeedbackService
                 }
                 #endregion
 
-                await Task.Delay(1000, stoppingToken);
+                await Task.Delay(10000, stoppingToken);
             }
         }
         private void InitDevices()
@@ -180,11 +185,13 @@ namespace SaleFeedbackService
                 }
             }
             if (maintianTime.CompareTo(DateTime.Now.ToLocalTime()) < 0)//小于0说明保养时间到了
-            {
                 return true;
-            }
             return false;
         }
+        /// <summary>
+        /// 检测进程是否存在
+        /// </summary>
+        /// <returns></returns>
         private Boolean DetectAppSettingsIsRun()
         {
             return Process.GetProcessesByName("AppSettingsHelper").Length > 0;
@@ -217,7 +224,7 @@ namespace SaleFeedbackService
             catch (Exception ex)
             {
                 GlobalSet.m_Logger.Error("管道发送数据", ex);
-            } 
+            }
         }
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -25,6 +26,8 @@ namespace SaleFeedbackService
                 .UseWindowsService()
                 .ConfigureServices((hostContext, services) =>
                 {
+                    //内存缓存认证注入 
+                    services.AddSingleton<IMemoryCache, MemoryCache>();
                     services.AddHostedService<WorkerUdp>();
                     services.AddHostedService<WorkerTcp>();
                 });

@@ -19,8 +19,4 @@
     <ProjectReference Include="..\AppCommondHelper\AppCommondHelper.csproj" />
     <ProjectReference Include="..\SalesFeedBackInfrasturcture\SalesFeedBackInfrasturcture.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="ApplicationLoader\" />
-  </ItemGroup>
 </Project>

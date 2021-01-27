@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 using System.IO;
 using System.Security.Principal;
 
-namespace SaleFeedbackService
+namespace AppCommondHelper
 {
 
 
@@ -64,7 +64,6 @@ namespace SaleFeedbackService
 
         #endregion
 
-
         #region Enumberation
         enum TOKEN_TYPE : int
         {
@@ -82,9 +81,6 @@ namespace SaleFeedbackService
 
         #endregion
 
-
-
-
         #region Constants
 
         public const int TOKEN_DUPLICATE = 0x0002;
@@ -97,8 +93,6 @@ namespace SaleFeedbackService
         public const int REALTIME_PRIORITY_CLASS = 0x100;
 
         #endregion
-
-
 
         #region Win32 API Imports
 
@@ -134,7 +128,7 @@ namespace SaleFeedbackService
         /// <param name="applicationName">The name of the application to launch</param>
         /// <param name="procInfo">Process information regarding the launched application that gets returned to the caller</param>
         /// <returns></returns>
-        public static bool StartProcessAndBypassUAC(String applicationName,String domain, out PROCESS_INFORMATION procInfo)
+        public static bool StartProcessAndBypassUAC(String applicationName, String domain, out PROCESS_INFORMATION procInfo)
         {
             uint winlogonPid = 0;
             IntPtr hUserTokenDup = IntPtr.Zero,
@@ -167,13 +161,11 @@ namespace SaleFeedbackService
                             }
                         }
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
-             
                     }
                 }
             }
-
 
             // obtain the process id of the winlogon process that is running within the currently active session
             Process[] processes = Process.GetProcessesByName("explorer");
@@ -184,7 +176,7 @@ namespace SaleFeedbackService
                     winlogonPid = (uint)p.Id;
                 }
             }
- 
+
 
             // obtain a handle to the winlogon process
             hProcess = OpenProcess(MAXIMUM_ALLOWED, false, winlogonPid);
@@ -240,7 +232,7 @@ namespace SaleFeedbackService
             // invalidate the handles
             CloseHandle(hProcess);
             CloseHandle(hPToken);
-            CloseHandle(hUserTokenDup); 
+            CloseHandle(hUserTokenDup);
             return result; // return the result
         }
         #region XP直接调用
@@ -261,7 +253,7 @@ namespace SaleFeedbackService
             result = WTSQueryUserToken(dwSessionID, out hToken);
 
             if (!result)
-            { 
+            {
                 return;
                 //ShowMessageBox("WTSQueryUserToken failed", "AlertService Message");
             }
@@ -311,7 +303,7 @@ namespace SaleFeedbackService
                 CloseHandle(hDupedToken);
         }
         public const int GENERIC_ALL_ACCESS = 0x10000000;
-          
+
         [DllImport("advapi32.dll", SetLastError = true)]
         public static extern bool DuplicateTokenEx(
           IntPtr hExistingToken,

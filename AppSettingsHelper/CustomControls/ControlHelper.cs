@@ -113,8 +113,8 @@ namespace AppSettingsHelper.CustomControls
         }
         public static Bitmap GetBitmap(this String key)
         {
-            int val = AppCommondHelper.IconFontAwesome.TypeDict[key];
-            return AppCommondHelper.IconFontAwesome.GetImage(val);
+            int val = IconFontAwesome.TypeDict[key];
+            return IconFontAwesome.GetImage(val);
         }
         #region 设置控件Enabled，切不改变控件颜色
         /// <summary>

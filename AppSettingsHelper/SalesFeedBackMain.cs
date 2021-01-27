@@ -19,6 +19,10 @@ using System.Threading;
 using AppCommondHelper.Logger;
 using System.IO.Pipes;
 using AppCommondHelper.PipeCommunication;
+using AppCommondHelper.Commond;
+using Microsoft.Extensions.Configuration;
+using AppCommondHelper.Infrastucture;
+using AppCommondHelper;
 
 namespace AppSettingsHelper
 {
@@ -38,25 +42,6 @@ namespace AppSettingsHelper
             {
                 this._Devices = device;
             }
-            //运行管道服务
-            Task.Run(() =>
-            {
-                StartServerNamedPipe();
-            });
-            this.itemShowMainform.Click += ItemShowMainform_Click;
-            this.itemCloseMainform.Click += ItemCloseMainform_Click;
-        }
-        //退出
-        private void ItemCloseMainform_Click(object sender, EventArgs e)
-        {
-            Close();
-        }
-        //展示
-        private void ItemShowMainform_Click(object sender, EventArgs e)
-        {
-            this.Show();
-            this.ShowInTaskbar = true;
-            this.WindowState = FormWindowState.Normal;
         }
         #region 私有成员
         /// <summary>
@@ -92,10 +77,6 @@ namespace AppSettingsHelper
         /// </summary>
         Int32 _LogContainerSelectedIndex = 0;
         /// <summary>
-        /// 是否是第一次加载log
-        /// </summary>
-        Boolean _IsFirstLoadLog = false;
-        /// <summary>
         /// 当前选中的page控件
         /// </summary>
         TabPage _tabPageSelected = null;
@@ -112,9 +93,13 @@ namespace AppSettingsHelper
         /// </summary>
         Int32 _SearchLogPatternIndex = 0;
         /// <summary>
+        /// 当前日志第几页
+        /// </summary>
+        Int32 _LogPageIndex = 0;
+        /// <summary>
         /// 查询产生的结果集合
         /// </summary>
-        List<SearchPatternStructSingle> _SearchPatternStructs;
+        Dictionary<Int32, List<SearchPatternStructSingle>> _SearchPatternStructs;
         /// <summary>
         /// 日志查询选项
         /// </summary>
@@ -123,6 +108,7 @@ namespace AppSettingsHelper
         /// 防止查询日志太大导致的溢出---相当于作为分页集合
         /// </summary>
         ConcurrentDictionary<Int32, String> _SearchResults = new ConcurrentDictionary<Int32, String>();
+        String _ServiceName = "ATestSalesFeedbackService";
         #endregion
 
         #region 边框鼠标拖动及关闭
@@ -293,6 +279,18 @@ namespace AppSettingsHelper
                 GlobalSet.m_Logger.Information($"This is {GlobalSet.m_AppOption.AppName} app Ended.");
             }
         }
+        //退出
+        private void ItemCloseMainform_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+        //展示
+        private void ItemShowMainform_Click(object sender, EventArgs e)
+        {
+            this.Show();
+            this.ShowInTaskbar = true;
+            this.WindowState = FormWindowState.Normal;
+        }
         /// <summary>
         /// 标题块按压事件（记住鼠标的位置）
         /// </summary>
@@ -320,26 +318,7 @@ namespace AppSettingsHelper
         }
         #endregion
 
-        #region 初始化
-        //Form1加载过程
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            try
-            {
-                //设置窗体的启动位置
-                this.StartPosition = FormStartPosition.CenterScreen;
-                //初始化设备菜单管理按钮
-                InitDeviceManagerMenu();
-                InitDeviceFromJsonFile();
-                InitSearchText();
-                IsShowed = true;
-                _tabPageSelected = tabControl_log.TabPages[0];
-            }
-            catch (Exception ex)
-            {
-                GlobalSet.m_Logger.Error("初始化", ex);
-            }
-        }
+        #region 管道服务
         /// <summary>
         /// 启动命名管道
         /// </summary>
@@ -382,9 +361,44 @@ namespace AppSettingsHelper
             catch (Exception ex)
             {
                 GlobalSet.m_Logger.Error("管道接收数据", ex);
-            } 
+            }
             return string.Format(" 字符串长度：{0} ", arg.Length);
         }
+        #endregion
+
+        #region 初始化
+        //Form加载过程
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            try
+            {
+                //设置窗体的启动位置
+                this.StartPosition = FormStartPosition.CenterScreen;
+                //初始化设备菜单管理按钮
+                InitDeviceManagerMenu();
+                InitDeviceFromJsonFile();
+                InitSearchText();
+                IsShowed = true;
+                _tabPageSelected = tabControl_log.TabPages[0];
+                //运行管道服务
+                Task.Run(() =>
+                {
+                    StartServerNamedPipe();
+                });
+                this.itemShowMainform.Click += ItemShowMainform_Click;
+                this.itemCloseMainform.Click += ItemCloseMainform_Click;
+                //加载日志
+                Task.Run(() => ReadLogAsync());
+                GetAppSetting();
+            }
+            catch (Exception ex)
+            {
+                GlobalSet.m_Logger.Error("初始化", ex);
+            }
+        }
+        /// <summary>
+        /// 初始化设备管理菜单
+        /// </summary>
         void InitDeviceManagerMenu()
         {
             this.contextMenuDevice.Items.Clear();
@@ -405,6 +419,9 @@ namespace AppSettingsHelper
                 this.contextMenuDevice.Items.Add(toolStripMenuItem);
             }
         }
+        /// <summary>
+        /// 初始化设备列表
+        /// </summary>
         void InitDeviceFromJsonFile()
         {
             if (_Devices.Count > 0)
@@ -421,6 +438,9 @@ namespace AppSettingsHelper
             if (this.tpg_deviceManager.Controls.Count > 0)
                 this.tpg_deviceManager.UpdateControlLocation(_StartX, _StartY, _Offset);
         }
+        #endregion
+
+        #region 设备相关
         public enum DeviceMenuStyle
         {
             [Description("新增设备")]
@@ -503,57 +523,17 @@ namespace AppSettingsHelper
                     _BrowserExportPath = browserDialog.SelectedPath;
                     var files = Directory.GetFiles(GlobalSet.m_deviceJsonPath);
                     Parallel.ForEach(files, file =>
-                     {
-                         String filePath = _BrowserExportPath + "\\" + Path.GetFileName(file);
-                         if (File.Exists(filePath))//如果存在同名文件，选择删除再拷贝
-                         {
-                             File.Delete(filePath);
-                         }
-                         File.Copy(file, _BrowserExportPath + "\\" + Path.GetFileName(file));
-                     });
+                    {
+                        String filePath = _BrowserExportPath + "\\" + Path.GetFileName(file);
+                        if (File.Exists(filePath))//如果存在同名文件，选择删除再拷贝
+                        {
+                            File.Delete(filePath);
+                        }
+                        File.Copy(file, _BrowserExportPath + "\\" + Path.GetFileName(file));
+                    });
                     MessageBox.Show("导出完成！");
                 }
             }
-        }
-        #endregion
-
-        ///事件：安装服务（使用线程）
-        private void btnDwInstall_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                //创建一个进程
-                Process p = new Process();
-                p.StartInfo.FileName = "cmd.exe";
-                p.StartInfo.UseShellExecute = false;//是否使用操作系统shell启动
-                p.StartInfo.RedirectStandardInput = true;//接受来自调用程序的输入信息
-                p.StartInfo.RedirectStandardOutput = true;//由调用程序获取输出信息
-                p.StartInfo.RedirectStandardError = true;//重定向标准错误输出
-                p.StartInfo.CreateNoWindow = true;//不显示程序窗口
-                p.Start();//启动程序
-
-                string strCMD = @"sc.exe create SalesFeedbackService binpath= c:\temp\SalesFeedbackService\publish start= auto";
-                //向cmd窗口发送输入信息
-                p.StandardInput.WriteLine(strCMD + "&exit");
-
-                p.StandardInput.AutoFlush = true;
-                strCMD = "sc.exe start SalesFeedbackService";
-                //获取cmd窗口的输出信息
-                string output = p.StandardOutput.ReadToEnd();
-                //等待程序执行完退出进程
-                p.WaitForExit();
-                p.Close();
-
-
-                MessageBox.Show(output);
-                Console.WriteLine(output);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message + "\r\n跟踪;" + ex.StackTrace);
-            }
-            this.lbMessage.Text = "正在安装服务，请稍后...";
-
         }
         private void tpg_deviceManager_SizeChanged(object sender, EventArgs e)
         {
@@ -566,14 +546,7 @@ namespace AppSettingsHelper
                 }
             }
         }
-        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (!_IsFirstLoadLog)
-            {
-                _IsFirstLoadLog = true;
-                Task.Run(() => ReadLogAsync());
-            }
-        }
+        #endregion  
         #region 日志操作
         void InitSearchText()
         {
@@ -605,6 +578,7 @@ namespace AppSettingsHelper
 
         private void Txt_serach_SearchClick(object sender, EventArgs e)
         {
+            this.Focus();// datetimepiker这个控件单独改值不改变焦点的话会出现还是取原来的值，所以可以判断鼠标来强制获取焦点
             lbl_SearchTip.Visible = true;
             var textbox = sender as UCTextBoxEx;
             var inputText = textbox.InputText;
@@ -640,8 +614,8 @@ namespace AppSettingsHelper
             _SearchLogPatternCount = 0;
             _SearchLogPatternIndex = 0;
             _ReadLogOption = new ReadLogOption();
-            _ReadLogOption.StartTime = DateTime.Parse(this.dtp_StartTime.Text);
-            _ReadLogOption.EndTime = DateTime.Parse(this.dtp_EndTime.Text);
+            _ReadLogOption.StartTime = DateTime.Parse(this.dtp_StartTime.Value.ToString("yyy-MM-dd"));
+            _ReadLogOption.EndTime = DateTime.Parse(this.dtp_EndTime.Value.ToString("yyy-MM-dd"));
             _ReadLogOption.SearchPattern = searchPattern;
             switch (_LogContainerSelectedIndex)
             {
@@ -677,6 +651,7 @@ namespace AppSettingsHelper
                                 this.richTextBox_information.Text = "";
                                 return;
                             }
+                            _SearchResults.Clear();
                             var sb = new StringBuilder();
                             var pageIndex = 0;
                             foreach (var item in task.Result)
@@ -691,65 +666,46 @@ namespace AppSettingsHelper
                                 }
                                 sb.Append(item);
                             }
-                            if (_SearchResults.Count > 0)
+                            if (_SearchResults.Count == 0)
+                                _SearchResults[pageIndex] = sb.ToString();
+                            if (!String.IsNullOrWhiteSpace(searchPattern))
                             {
                                 var strText = _SearchResults[0];
                                 this.richTextBox_information.Text = strText;
-                                var searchPatternStructSingles = new List<List<SearchPatternStructSingle>>();
-                                foreach (var item in _SearchResults)
+                                //对应的页码对应的查询结果
+                                _SearchPatternStructs = new Dictionary<Int32, List<SearchPatternStructSingle>>();
+                                foreach (var searchText in _SearchResults)
                                 {
-                                    _SearchPatternStructs = new List<SearchPatternStructSingle>();
-                                }
-                                _SearchPatternStructs = new List<SearchPatternStructSingle>();
-                                if (!String.IsNullOrWhiteSpace(searchPattern) && strText.Contains(searchPattern))
-                                {
-                                    var index = 0;
-                                    var currentIndex = 0;
-                                    while ((index = this.richTextBox_information.Find(searchPattern, index, RichTextBoxFinds.MatchCase)) > 0)
+                                    var searchPatternStructs = new List<SearchPatternStructSingle>();
+                                    if (strText.Contains(searchPattern))
                                     {
-                                        currentIndex++;
-                                        var searchSingle = new SearchPatternStructSingle();
-                                        searchSingle.CurrentIndex = currentIndex;
-                                        searchSingle.StartIndex = index;
-                                        searchSingle.SelectedLength = searchPattern.Length;
-                                        _SearchPatternStructs.Add(searchSingle);
-                                        _SearchLogPatternCount++;
-                                        index += searchPattern.Length;
+                                        var index = 0;
+                                        var currentIndex = 0;
+                                        while ((index = this.richTextBox_information.Find(searchPattern, index, RichTextBoxFinds.MatchCase)) > 0)
+                                        {
+                                            currentIndex++;
+                                            var searchSingle = new SearchPatternStructSingle();
+                                            searchSingle.CurrentIndex = currentIndex;
+                                            searchSingle.StartIndex = index;
+                                            searchSingle.SelectedLength = searchPattern.Length;
+                                            searchPatternStructs.Add(searchSingle);
+                                            _SearchLogPatternCount++;
+                                            index += searchPattern.Length;
+                                        }
                                     }
+                                    //添加结果
+                                    _SearchPatternStructs[pageIndex] = searchPatternStructs;
+                                    strText = searchText.Value;
                                 }
+
                                 if (_SearchLogPatternCount > 0)
                                 {
+                                    _LogPageIndex = 0;
                                     this.lbl_SearchCount.Text = _SearchLogPatternCount.ToString();
-                                    UpdateRichTextBox(this._SearchLogPatternIndex);
+                                    UpdateRichTextBox(_LogPageIndex, this._SearchLogPatternIndex);
                                 }
                             }
-                            else
-                            {
-                                var strText = sb.ToString();
-                                this.richTextBox_information.Text = strText;
-                                _SearchPatternStructs = new List<SearchPatternStructSingle>();
-                                if (!String.IsNullOrWhiteSpace(searchPattern) && strText.Contains(searchPattern))
-                                {
-                                    var index = 0;
-                                    var currentIndex = 0;
-                                    while ((index = this.richTextBox_information.Find(searchPattern, index, RichTextBoxFinds.MatchCase)) > 0)
-                                    {
-                                        currentIndex++;
-                                        var searchSingle = new SearchPatternStructSingle();
-                                        searchSingle.CurrentIndex = currentIndex;
-                                        searchSingle.StartIndex = index;
-                                        searchSingle.SelectedLength = searchPattern.Length;
-                                        _SearchPatternStructs.Add(searchSingle);
-                                        _SearchLogPatternCount++;
-                                        index += searchPattern.Length;
-                                    }
-                                }
-                                if (_SearchLogPatternCount > 0)
-                                {
-                                    this.lbl_SearchCount.Text = _SearchLogPatternCount.ToString();
-                                    UpdateRichTextBox(this._SearchLogPatternIndex);
-                                }
-                            } 
+                            this.richTextBox_information.Text = _SearchResults[0].ToString();
                             break;
                         default:
                             break;
@@ -894,7 +850,7 @@ namespace AppSettingsHelper
             {
                 this._SearchLogPatternIndex = 0;
             }
-            UpdateRichTextBox(this._SearchLogPatternIndex);
+            UpdateRichTextBoxWithPage(this._SearchLogPatternIndex);
         }
         /// <summary>
         /// 上一项
@@ -913,7 +869,7 @@ namespace AppSettingsHelper
             {
                 this._SearchLogPatternIndex = this._SearchLogPatternCount - 1;
             }
-            UpdateRichTextBox(this._SearchLogPatternIndex);
+            UpdateRichTextBoxWithPage(this._SearchLogPatternIndex);
         }
         /// <summary>
         /// 跳转查找
@@ -939,11 +895,46 @@ namespace AppSettingsHelper
                 return;
             }
             this._SearchLogPatternIndex = --index;
-            UpdateRichTextBox(this._SearchLogPatternIndex);
+            UpdateRichTextBoxWithPage(this._SearchLogPatternIndex);
         }
-        private void UpdateRichTextBox(Int32 index)
+        private void UpdateRichTextBoxWithPage(Int32 searchIndex)
         {
-            var searchSingle = _SearchPatternStructs[index];
+            var realIndex = 0;
+            var pageIndex = GetPageIndex(searchIndex, ref realIndex);
+            if (pageIndex != _LogPageIndex)
+            {
+                _LogPageIndex = pageIndex;
+                this.richTextBox_information.Text = _SearchResults[_LogPageIndex];
+            }
+            UpdateRichTextBox(pageIndex, realIndex);
+        }
+        /// <summary>
+        /// 获取页数和
+        /// </summary>
+        /// <param name="currentIndex"></param>
+        /// <param name="realIndex"></param>
+        /// <returns></returns>
+        private Int32 GetPageIndex(Int32 currentIndex, ref Int32 realIndex)
+        {
+            var index = 0;
+            var pageIndex = 0;
+            realIndex = currentIndex;
+            foreach (var item in _SearchPatternStructs)
+            {
+                index += item.Value.Count;
+                if (currentIndex > index)
+                {
+                    pageIndex++;
+                    realIndex -= item.Value.Count;//减去上一页项
+                }
+                else
+                    break;
+            }
+            return pageIndex;
+        }
+        private void UpdateRichTextBox(Int32 pageIndex, Int32 index)
+        {
+            var searchSingle = _SearchPatternStructs[pageIndex][index];
             richTextBox_information.SelectionColor = Color.Black;
             richTextBox_information.SelectionStart = searchSingle.StartIndex;
             //得到字符串的长度
@@ -955,12 +946,11 @@ namespace AppSettingsHelper
             this.tbx_currentPatternNum.Text = (index + 1).ToString();
             richTextBox_information.ScrollToCaret();
         }
-
-        private void dtp_StartTime_Leave(object sender, EventArgs e)
-        {
-            this.txt_serach.Focus();
-        }
-
+        /// <summary>
+        /// 用一个控件来实现多次复用
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void tabControl_log_Selected(object sender, TabControlEventArgs e)
         {
             if (null != _tabPageSelected)
@@ -1002,7 +992,268 @@ namespace AppSettingsHelper
                 ReadLogAsync(_searchPattern);
             });
         }
-        #endregion 
+        #endregion
+
+        #region 注册服务
+        ///事件：安装服务（使用线程）
+        private void btnServiceInstall_Click(object sender, EventArgs e)
+        {
+            //已存在返回
+            if (DetectedServiceIsExist()) return;
+            this.lbMessage.Text = "正在安装服务，请稍后...";
+            try
+            {
+                string[] command = {
+                    @"sc.exe create " + _ServiceName + " binpath= " + GlobalSet.m_filePath + "SaleFeedbackService.exe start= auto" ,
+                     "sc.exe start  " + _ServiceName
+                };
+                var output = CmdHelper.ExeCommand(command);
+                GlobalSet.m_Logger.Information(output);
+                if (output.Contains("SUCCESS"))
+                {
+                    this.lbMessage.Text = "服务已安装，正在运行...";
+                }
+                else
+                {
+                    this.lbMessage.Text = "服务安装失败，请用管理员权限运行此程序，再重新安装服务...";
+                }
+            }
+            catch (Exception ex)
+            {
+                GlobalSet.m_Logger.Error("安装服务", ex);
+            }
+        }
+        private void btn_saveAppSettingJson_Click(object sender, EventArgs e)
+        {
+
+        }
+        private void GetAppSetting()
+        {
+            //加载配置文件
+            ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
+            //添加配置文件路径
+            configurationBuilder.SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json");
+            var configuration = configurationBuilder.Build();
+            //获取域名
+            var sessionNames = GetSessionNames();
+            this.cbx_domain.Items.AddRange(sessionNames);
+            var domianName = configuration.GetValue<string>("AppOption:DomianName");
+            if (sessionNames.Contains(domianName))
+            {
+                this.cbx_domain.SelectedItem = domianName;
+            }
+            else
+            {
+                this.cbx_domain.SelectedIndex = 0;
+            }
+            //是否启用udp
+            var udpEnable = configuration.GetValue<Boolean>("UdpSocketOption:IsEnableUdp");
+            if (udpEnable)
+            {
+                this.cbx_enableUDP.Checked = true;
+                this.gbx_UdpContainer.Enabled = true;
+                var udpPort = configuration.GetValue<string>("UdpSocketOption:Port");
+                this.tbx_udpPort.Text = udpPort;
+                var isLoggerUdp = configuration.GetValue<Boolean>("UdpSocketOption:IsLoggerUdp");
+                if (isLoggerUdp)
+                {
+                    this.cbx_saveUdpLog.Checked = true;
+                }
+            }
+
+            //是否启用Tcp
+            var tcpEnable = configuration.GetValue<Boolean>("TcpSocketOption:IsEnableTcp");
+            if (udpEnable)
+            {
+                this.cbx_enableUDP.Checked = true;
+                this.gbx_UdpContainer.Enabled = true;
+                var ip = configuration.GetValue<string>("TcpSocketOption:IP");
+                this.tbx_ip.Text = ip;
+                var tcpPort = configuration.GetValue<string>("TcpSocketOption:Port");
+                this.tbx_tcpPort.Text = tcpPort;
+                var isLoggerTcp = configuration.GetValue<Boolean>("TcpSocketOption:IsLoggerTcp");
+                if (isLoggerTcp)
+                {
+                    this.cbx_saveUdpLog.Checked = true;
+                }
+            }
+            if (DetectedServiceIsRun())
+            {
+                if (DetectedServiceIsRun())
+                {
+                    ServiceIsRunStatus();
+                    this.lbMessage.Text = "服务已安装，正在运行...";
+                    this.gbx_ServiceContainer.Enabled = false;
+                    return;
+                }
+                ServiceIsExistStatus();
+                this.lbMessage.Text = "服务已安装，未运行...";
+                this.gbx_ServiceContainer.Enabled = false;
+                return;
+            }
+            ServiceIsNotExistStatus();
+            this.lbMessage.Text = "服务未安装...";
+            this.gbx_ServiceContainer.Enabled = false;
+        }
+        private void SetAppSetting()
+        {
+
+        }
+
+        private void cbx_enableUDP_CheckedChanged(object sender, EventArgs e)
+        {
+            this.gbx_UdpContainer.Enabled = this.cbx_enableUDP.Checked;
+        }
+
+        private void cbx_enableTCP_CheckedChanged(object sender, EventArgs e)
+        {
+            this.gbx_TcpContainer.Enabled = this.cbx_enableTCP.Checked;
+        }
+
+        private void btnServiceUninstall_Click(object sender, EventArgs e)
+        {
+            var output = string.Empty;
+             string[] command = {
+                "sc.exe stop  " + _ServiceName,
+                "sc.exe delete  " + _ServiceName
+                };
+            if (DetectedServiceIsRun())
+            {
+                output = CmdHelper.ExeCommand(command[1]);
+            }
+            else
+            {
+                output = CmdHelper.ExeCommand(command);
+            } 
+            GlobalSet.m_Logger.Information(output);
+            if (output.Contains("SUCCESS"))
+            {
+                ServiceIsNotExistStatus();
+                this.lbMessage.Text = "服务已卸载！";
+            }
+            else
+            {
+                this.lbMessage.Text = "服务卸载失败，请用管理员权限运行此程序，再重新卸载服务...";
+            }
+        }
+
+        private void btnServiceStart_Click(object sender, EventArgs e)
+        {
+            string[] command = {
+                "sc.exe start ATestSalesFeedbackService "
+                };
+            var output = CmdHelper.ExeCommand(command);
+            GlobalSet.m_Logger.Information(output);
+            if (output.Contains("SUCCESS"))
+            {
+                ServiceIsRunStatus();
+                this.lbMessage.Text = "服务已启动！";
+            }
+            else
+            {
+                this.lbMessage.Text = "服务启动失败，请用管理员权限运行此程序，再重新启动服务...";
+            }
+        }
+
+        private void btnServiceStop_Click(object sender, EventArgs e)
+        {
+            string[] command = {
+                "sc.exe stop ATestSalesFeedbackService "
+                };
+            var output = CmdHelper.ExeCommand(command);
+            GlobalSet.m_Logger.Information(output);
+            if (output.Contains("SUCCESS"))
+            {
+                ServiceIsStopStatus();
+                this.lbMessage.Text = "服务已停止！";
+            }
+            else
+            {
+                this.lbMessage.Text = "服务停止失败，请用管理员权限运行此程序，再重新停止服务...";
+            }
+        }
+        private void ServiceIsExistStatus()
+        {
+            this.btnServiceInstall.Enabled = this.btnServiceStop.Enabled = false;
+        }
+        private void ServiceIsRunStatus()
+        {
+            this.btnServiceInstall.Enabled = this.btnServiceStart.Enabled = false; this.btnServiceUninstall.Enabled = false;
+        }
+        private void ServiceIsNotExistStatus()
+        {
+            this.btnServiceStart.Enabled = this.btnServiceStop.Enabled = this.btnServiceUninstall.Enabled = false;
+        }
+        private void ServiceIsStopStatus()
+        {
+            this.btnServiceInstall.Enabled = this.btnServiceStart.Enabled = false;
+        }
+        private Boolean DetectedServiceIsExist()
+        {
+            string[] command = {
+                "sc.exe query  " + _ServiceName
+                };
+            var output = CmdHelper.ExeCommand(command);
+            GlobalSet.m_Logger.Information(output);
+            if (output.Contains("SUCCESS"))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        private Boolean DetectedServiceIsRun()
+        {
+            string[] command = {
+                "sc.exe query  " + _ServiceName
+                };
+            var output = CmdHelper.ExeCommand(command);
+            GlobalSet.m_Logger.Information(output);
+            if (output.Contains("RUNNING"))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        private String[] GetSessionNames()
+        {
+            TSControl.WTS_SESSION_INFO[]
+            pSessionInfo = TSControl.SessionEnumeration();
+            String[] results = new string[pSessionInfo.Length];
+            for (int i = 0; i < pSessionInfo.Length; i++)
+            {
+                if (pSessionInfo[i].SessionID != 0)
+                {
+                    try
+                    {
+                        int count = 0;
+                        IntPtr buffer = IntPtr.Zero;
+                        StringBuilder sb = new StringBuilder();
+
+                        bool bsuccess = TSControl.WTSQuerySessionInformation(
+                           IntPtr.Zero, pSessionInfo[i].SessionID,
+                           TSControl.WTSInfoClass.WTSUserName, out sb, out count);
+
+                        if (bsuccess)
+                        {
+                            results[i] = sb.ToString().Trim();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        GlobalSet.m_Logger.Error("获取域名", ex);
+                    }
+                }
+            }
+            return results.Where(p => p != null).ToArray();
+        }
+        #endregion
     }
 }
 

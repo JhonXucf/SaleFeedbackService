@@ -84,11 +84,11 @@ namespace SaleFeedbackService
             GlobalSet.m_Logger.Information("WorkerTcp Service has been stopped..");
             return base.StopAsync(cancellationToken);
         }
-        protected override Task ExecuteAsync(CancellationToken stoppingToken)
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             while (true)
             {
-                Task.Delay(1000, stoppingToken);
+                await Task.Delay(10000, stoppingToken);
             }
         }
     }

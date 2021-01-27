@@ -58,8 +58,23 @@
             this.tabPage_eroor = new System.Windows.Forms.TabPage();
             this.tabPage_Fatal = new System.Windows.Forms.TabPage();
             this.tabPage9 = new System.Windows.Forms.TabPage();
+            this.gbx_ServiceContainer = new System.Windows.Forms.GroupBox();
+            this.btn_saveAppSettingJson = new System.Windows.Forms.Button();
+            this.gbx_TcpContainer = new System.Windows.Forms.GroupBox();
+            this.tbx_ip = new System.Windows.Forms.TextBox();
+            this.lbl_tcpIp = new System.Windows.Forms.Label();
+            this.cbx_saveTcpLog = new System.Windows.Forms.CheckBox();
+            this.tbx_tcpPort = new System.Windows.Forms.TextBox();
+            this.lbl_tcpPort = new System.Windows.Forms.Label();
+            this.gbx_UdpContainer = new System.Windows.Forms.GroupBox();
+            this.cbx_saveUdpLog = new System.Windows.Forms.CheckBox();
+            this.tbx_udpPort = new System.Windows.Forms.TextBox();
+            this.lbl_udpPort = new System.Windows.Forms.Label();
+            this.cbx_enableTCP = new System.Windows.Forms.CheckBox();
+            this.cbx_enableUDP = new System.Windows.Forms.CheckBox();
+            this.lbl_domain = new System.Windows.Forms.Label();
+            this.cbx_domain = new System.Windows.Forms.ComboBox();
             this.lbMessage = new System.Windows.Forms.Label();
-            this.lbServicestate = new System.Windows.Forms.Label();
             this.btnServiceUninstall = new System.Windows.Forms.Button();
             this.btnServiceStop = new System.Windows.Forms.Button();
             this.btnServiceStart = new System.Windows.Forms.Button();
@@ -86,6 +101,9 @@
             this.contextMenuLog.SuspendLayout();
             this.panel_SearchPatternShow.SuspendLayout();
             this.tabPage9.SuspendLayout();
+            this.gbx_ServiceContainer.SuspendLayout();
+            this.gbx_TcpContainer.SuspendLayout();
+            this.gbx_UdpContainer.SuspendLayout();
             this.pnl_header.SuspendLayout();
             this.pnl_minimizeAndClose.SuspendLayout();
             this.pnl_title.SuspendLayout();
@@ -109,7 +127,6 @@
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(1300, 655);
             this.tabControl1.TabIndex = 1;
-            this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
             // tpg_deviceManager
             // 
@@ -225,7 +242,6 @@
             this.dtp_EndTime.Name = "dtp_EndTime";
             this.dtp_EndTime.Size = new System.Drawing.Size(123, 24);
             this.dtp_EndTime.TabIndex = 3;
-            this.dtp_EndTime.Leave += new System.EventHandler(this.dtp_StartTime_Leave);
             // 
             // lbl_EndTime
             // 
@@ -253,7 +269,6 @@
             this.dtp_StartTime.Name = "dtp_StartTime";
             this.dtp_StartTime.Size = new System.Drawing.Size(123, 24);
             this.dtp_StartTime.TabIndex = 0;
-            this.dtp_StartTime.Leave += new System.EventHandler(this.dtp_StartTime_Leave);
             // 
             // tabControl_log
             // 
@@ -421,8 +436,8 @@
             // 
             this.tabPage9.BackColor = System.Drawing.Color.White;
             this.tabPage9.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.tabPage9.Controls.Add(this.gbx_ServiceContainer);
             this.tabPage9.Controls.Add(this.lbMessage);
-            this.tabPage9.Controls.Add(this.lbServicestate);
             this.tabPage9.Controls.Add(this.btnServiceUninstall);
             this.tabPage9.Controls.Add(this.btnServiceStop);
             this.tabPage9.Controls.Add(this.btnServiceStart);
@@ -436,31 +451,184 @@
             this.tabPage9.TabIndex = 4;
             this.tabPage9.Text = "windows服务管理";
             // 
+            // gbx_ServiceContainer
+            // 
+            this.gbx_ServiceContainer.Controls.Add(this.btn_saveAppSettingJson);
+            this.gbx_ServiceContainer.Controls.Add(this.gbx_TcpContainer);
+            this.gbx_ServiceContainer.Controls.Add(this.gbx_UdpContainer);
+            this.gbx_ServiceContainer.Controls.Add(this.cbx_enableTCP);
+            this.gbx_ServiceContainer.Controls.Add(this.cbx_enableUDP);
+            this.gbx_ServiceContainer.Controls.Add(this.lbl_domain);
+            this.gbx_ServiceContainer.Controls.Add(this.cbx_domain);
+            this.gbx_ServiceContainer.Location = new System.Drawing.Point(9, 3);
+            this.gbx_ServiceContainer.Name = "gbx_ServiceContainer";
+            this.gbx_ServiceContainer.Size = new System.Drawing.Size(467, 553);
+            this.gbx_ServiceContainer.TabIndex = 11;
+            this.gbx_ServiceContainer.TabStop = false;
+            // 
+            // btn_saveAppSettingJson
+            // 
+            this.btn_saveAppSettingJson.Location = new System.Drawing.Point(324, 461);
+            this.btn_saveAppSettingJson.Name = "btn_saveAppSettingJson";
+            this.btn_saveAppSettingJson.Size = new System.Drawing.Size(103, 30);
+            this.btn_saveAppSettingJson.TabIndex = 15;
+            this.btn_saveAppSettingJson.Text = "保  存";
+            this.btn_saveAppSettingJson.UseVisualStyleBackColor = true;
+            this.btn_saveAppSettingJson.Click += new System.EventHandler(this.btn_saveAppSettingJson_Click);
+            // 
+            // gbx_TcpContainer
+            // 
+            this.gbx_TcpContainer.Controls.Add(this.tbx_ip);
+            this.gbx_TcpContainer.Controls.Add(this.lbl_tcpIp);
+            this.gbx_TcpContainer.Controls.Add(this.cbx_saveTcpLog);
+            this.gbx_TcpContainer.Controls.Add(this.tbx_tcpPort);
+            this.gbx_TcpContainer.Controls.Add(this.lbl_tcpPort);
+            this.gbx_TcpContainer.Enabled = false;
+            this.gbx_TcpContainer.Location = new System.Drawing.Point(40, 280);
+            this.gbx_TcpContainer.Name = "gbx_TcpContainer";
+            this.gbx_TcpContainer.Size = new System.Drawing.Size(387, 159);
+            this.gbx_TcpContainer.TabIndex = 14;
+            this.gbx_TcpContainer.TabStop = false;
+            // 
+            // tbx_ip
+            // 
+            this.tbx_ip.Location = new System.Drawing.Point(138, 28);
+            this.tbx_ip.Name = "tbx_ip";
+            this.tbx_ip.Size = new System.Drawing.Size(163, 29);
+            this.tbx_ip.TabIndex = 15;
+            this.tbx_ip.Text = "127.0.0.1";
+            this.tbx_ip.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // lbl_tcpIp
+            // 
+            this.lbl_tcpIp.AutoSize = true;
+            this.lbl_tcpIp.Location = new System.Drawing.Point(9, 30);
+            this.lbl_tcpIp.Name = "lbl_tcpIp";
+            this.lbl_tcpIp.Size = new System.Drawing.Size(68, 24);
+            this.lbl_tcpIp.TabIndex = 14;
+            this.lbl_tcpIp.Text = "IP地址";
+            // 
+            // cbx_saveTcpLog
+            // 
+            this.cbx_saveTcpLog.AutoSize = true;
+            this.cbx_saveTcpLog.Location = new System.Drawing.Point(9, 116);
+            this.cbx_saveTcpLog.Name = "cbx_saveTcpLog";
+            this.cbx_saveTcpLog.Size = new System.Drawing.Size(230, 28);
+            this.cbx_saveTcpLog.TabIndex = 13;
+            this.cbx_saveTcpLog.Text = "将UDP信息保存到日志";
+            this.cbx_saveTcpLog.UseVisualStyleBackColor = true;
+            // 
+            // tbx_tcpPort
+            // 
+            this.tbx_tcpPort.Location = new System.Drawing.Point(139, 71);
+            this.tbx_tcpPort.Name = "tbx_tcpPort";
+            this.tbx_tcpPort.Size = new System.Drawing.Size(162, 29);
+            this.tbx_tcpPort.TabIndex = 1;
+            this.tbx_tcpPort.Text = "8888";
+            this.tbx_tcpPort.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // lbl_tcpPort
+            // 
+            this.lbl_tcpPort.AutoSize = true;
+            this.lbl_tcpPort.Location = new System.Drawing.Point(9, 73);
+            this.lbl_tcpPort.Name = "lbl_tcpPort";
+            this.lbl_tcpPort.Size = new System.Drawing.Size(90, 24);
+            this.lbl_tcpPort.TabIndex = 0;
+            this.lbl_tcpPort.Text = "TCP端口";
+            // 
+            // gbx_UdpContainer
+            // 
+            this.gbx_UdpContainer.Controls.Add(this.cbx_saveUdpLog);
+            this.gbx_UdpContainer.Controls.Add(this.tbx_udpPort);
+            this.gbx_UdpContainer.Controls.Add(this.lbl_udpPort);
+            this.gbx_UdpContainer.Enabled = false;
+            this.gbx_UdpContainer.Location = new System.Drawing.Point(40, 110);
+            this.gbx_UdpContainer.Name = "gbx_UdpContainer";
+            this.gbx_UdpContainer.Size = new System.Drawing.Size(387, 121);
+            this.gbx_UdpContainer.TabIndex = 13;
+            this.gbx_UdpContainer.TabStop = false;
+            // 
+            // cbx_saveUdpLog
+            // 
+            this.cbx_saveUdpLog.AutoSize = true;
+            this.cbx_saveUdpLog.Location = new System.Drawing.Point(9, 74);
+            this.cbx_saveUdpLog.Name = "cbx_saveUdpLog";
+            this.cbx_saveUdpLog.Size = new System.Drawing.Size(230, 28);
+            this.cbx_saveUdpLog.TabIndex = 13;
+            this.cbx_saveUdpLog.Text = "将UDP信息保存到日志";
+            this.cbx_saveUdpLog.UseVisualStyleBackColor = true;
+            // 
+            // tbx_udpPort
+            // 
+            this.tbx_udpPort.Location = new System.Drawing.Point(138, 25);
+            this.tbx_udpPort.Name = "tbx_udpPort";
+            this.tbx_udpPort.Size = new System.Drawing.Size(163, 29);
+            this.tbx_udpPort.TabIndex = 1;
+            this.tbx_udpPort.Text = "6666";
+            this.tbx_udpPort.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // lbl_udpPort
+            // 
+            this.lbl_udpPort.AutoSize = true;
+            this.lbl_udpPort.Location = new System.Drawing.Point(9, 25);
+            this.lbl_udpPort.Name = "lbl_udpPort";
+            this.lbl_udpPort.Size = new System.Drawing.Size(91, 24);
+            this.lbl_udpPort.TabIndex = 0;
+            this.lbl_udpPort.Text = "UDP端口";
+            // 
+            // cbx_enableTCP
+            // 
+            this.cbx_enableTCP.AutoSize = true;
+            this.cbx_enableTCP.Location = new System.Drawing.Point(19, 247);
+            this.cbx_enableTCP.Name = "cbx_enableTCP";
+            this.cbx_enableTCP.Size = new System.Drawing.Size(149, 28);
+            this.cbx_enableTCP.TabIndex = 12;
+            this.cbx_enableTCP.Text = "启用TCP通信";
+            this.cbx_enableTCP.UseVisualStyleBackColor = true;
+            this.cbx_enableTCP.CheckedChanged += new System.EventHandler(this.cbx_enableTCP_CheckedChanged);
+            // 
+            // cbx_enableUDP
+            // 
+            this.cbx_enableUDP.AutoSize = true;
+            this.cbx_enableUDP.Location = new System.Drawing.Point(19, 77);
+            this.cbx_enableUDP.Name = "cbx_enableUDP";
+            this.cbx_enableUDP.Size = new System.Drawing.Size(150, 28);
+            this.cbx_enableUDP.TabIndex = 11;
+            this.cbx_enableUDP.Text = "启用UDP通信";
+            this.cbx_enableUDP.UseVisualStyleBackColor = true;
+            this.cbx_enableUDP.CheckedChanged += new System.EventHandler(this.cbx_enableUDP_CheckedChanged);
+            // 
+            // lbl_domain
+            // 
+            this.lbl_domain.AutoSize = true;
+            this.lbl_domain.Location = new System.Drawing.Point(19, 35);
+            this.lbl_domain.Name = "lbl_domain";
+            this.lbl_domain.Size = new System.Drawing.Size(90, 24);
+            this.lbl_domain.TabIndex = 9;
+            this.lbl_domain.Text = "当前域名";
+            // 
+            // cbx_domain
+            // 
+            this.cbx_domain.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbx_domain.FormattingEnabled = true;
+            this.cbx_domain.Location = new System.Drawing.Point(115, 32);
+            this.cbx_domain.Name = "cbx_domain";
+            this.cbx_domain.Size = new System.Drawing.Size(194, 32);
+            this.cbx_domain.TabIndex = 10;
+            // 
             // lbMessage
             // 
             this.lbMessage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lbMessage.AutoSize = true;
             this.lbMessage.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.lbMessage.ForeColor = System.Drawing.Color.Blue;
-            this.lbMessage.Location = new System.Drawing.Point(9, 559);
+            this.lbMessage.Location = new System.Drawing.Point(9, 573);
             this.lbMessage.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbMessage.Name = "lbMessage";
             this.lbMessage.Size = new System.Drawing.Size(322, 31);
             this.lbMessage.TabIndex = 8;
             this.lbMessage.Text = "服务已安装，正在运行。";
             this.lbMessage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lbServicestate
-            // 
-            this.lbServicestate.AutoSize = true;
-            this.lbServicestate.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lbServicestate.ForeColor = System.Drawing.Color.Red;
-            this.lbServicestate.Location = new System.Drawing.Point(477, 263);
-            this.lbServicestate.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lbServicestate.Name = "lbServicestate";
-            this.lbServicestate.Size = new System.Drawing.Size(179, 25);
-            this.lbServicestate.TabIndex = 6;
-            this.lbServicestate.Text = "服务正在运行.....";
             // 
             // btnServiceUninstall
             // 
@@ -469,13 +637,14 @@
             this.btnServiceUninstall.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnServiceUninstall.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.btnServiceUninstall.ForeColor = System.Drawing.Color.White;
-            this.btnServiceUninstall.Location = new System.Drawing.Point(286, 105);
+            this.btnServiceUninstall.Location = new System.Drawing.Point(695, 35);
             this.btnServiceUninstall.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btnServiceUninstall.Name = "btnServiceUninstall";
             this.btnServiceUninstall.Size = new System.Drawing.Size(140, 75);
             this.btnServiceUninstall.TabIndex = 1;
             this.btnServiceUninstall.Text = "卸载服务";
             this.btnServiceUninstall.UseVisualStyleBackColor = false;
+            this.btnServiceUninstall.Click += new System.EventHandler(this.btnServiceUninstall_Click);
             // 
             // btnServiceStop
             // 
@@ -484,13 +653,14 @@
             this.btnServiceStop.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnServiceStop.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.btnServiceStop.ForeColor = System.Drawing.Color.White;
-            this.btnServiceStop.Location = new System.Drawing.Point(286, 241);
+            this.btnServiceStop.Location = new System.Drawing.Point(695, 171);
             this.btnServiceStop.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btnServiceStop.Name = "btnServiceStop";
             this.btnServiceStop.Size = new System.Drawing.Size(140, 75);
             this.btnServiceStop.TabIndex = 3;
             this.btnServiceStop.Text = "停止服务";
             this.btnServiceStop.UseVisualStyleBackColor = false;
+            this.btnServiceStop.Click += new System.EventHandler(this.btnServiceStop_Click);
             // 
             // btnServiceStart
             // 
@@ -499,13 +669,14 @@
             this.btnServiceStart.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnServiceStart.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.btnServiceStart.ForeColor = System.Drawing.Color.White;
-            this.btnServiceStart.Location = new System.Drawing.Point(83, 241);
+            this.btnServiceStart.Location = new System.Drawing.Point(492, 171);
             this.btnServiceStart.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btnServiceStart.Name = "btnServiceStart";
             this.btnServiceStart.Size = new System.Drawing.Size(140, 75);
             this.btnServiceStart.TabIndex = 2;
             this.btnServiceStart.Text = "启动服务";
             this.btnServiceStart.UseVisualStyleBackColor = false;
+            this.btnServiceStart.Click += new System.EventHandler(this.btnServiceStart_Click);
             // 
             // btnServiceInstall
             // 
@@ -514,14 +685,14 @@
             this.btnServiceInstall.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnServiceInstall.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.btnServiceInstall.ForeColor = System.Drawing.Color.White;
-            this.btnServiceInstall.Location = new System.Drawing.Point(83, 105);
+            this.btnServiceInstall.Location = new System.Drawing.Point(492, 35);
             this.btnServiceInstall.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btnServiceInstall.Name = "btnServiceInstall";
             this.btnServiceInstall.Size = new System.Drawing.Size(140, 75);
             this.btnServiceInstall.TabIndex = 0;
             this.btnServiceInstall.Text = "安装服务";
             this.btnServiceInstall.UseVisualStyleBackColor = false;
-            this.btnServiceInstall.Click += new System.EventHandler(this.btnDwInstall_Click);
+            this.btnServiceInstall.Click += new System.EventHandler(this.btnServiceInstall_Click);
             // 
             // pnl_header
             // 
@@ -676,6 +847,12 @@
             this.panel_SearchPatternShow.PerformLayout();
             this.tabPage9.ResumeLayout(false);
             this.tabPage9.PerformLayout();
+            this.gbx_ServiceContainer.ResumeLayout(false);
+            this.gbx_ServiceContainer.PerformLayout();
+            this.gbx_TcpContainer.ResumeLayout(false);
+            this.gbx_TcpContainer.PerformLayout();
+            this.gbx_UdpContainer.ResumeLayout(false);
+            this.gbx_UdpContainer.PerformLayout();
             this.pnl_header.ResumeLayout(false);
             this.pnl_minimizeAndClose.ResumeLayout(false);
             this.pnl_title.ResumeLayout(false);
@@ -712,7 +889,6 @@
         private System.Windows.Forms.TabPage tabPage_Warning;
         private System.Windows.Forms.TabPage tabPage_eroor;
         private System.Windows.Forms.TabPage tabPage_Fatal;
-        private System.Windows.Forms.Label lbServicestate;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.Label lbl_medium;
         private System.Windows.Forms.DateTimePicker dtp_EndTime;
@@ -732,6 +908,22 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuHide;
         private System.Windows.Forms.ToolStripMenuItem itemShowMainform;
         private System.Windows.Forms.ToolStripMenuItem itemCloseMainform;
+        private System.Windows.Forms.GroupBox gbx_ServiceContainer;
+        private System.Windows.Forms.Label lbl_domain;
+        private System.Windows.Forms.ComboBox cbx_domain;
+        private System.Windows.Forms.GroupBox gbx_TcpContainer;
+        private System.Windows.Forms.TextBox tbx_ip;
+        private System.Windows.Forms.Label lbl_tcpIp;
+        private System.Windows.Forms.CheckBox cbx_saveTcpLog;
+        private System.Windows.Forms.TextBox tbx_tcpPort;
+        private System.Windows.Forms.Label lbl_tcpPort;
+        private System.Windows.Forms.GroupBox gbx_UdpContainer;
+        private System.Windows.Forms.CheckBox cbx_saveUdpLog;
+        private System.Windows.Forms.TextBox tbx_udpPort;
+        private System.Windows.Forms.Label lbl_udpPort;
+        private System.Windows.Forms.CheckBox cbx_enableTCP;
+        private System.Windows.Forms.CheckBox cbx_enableUDP;
+        private System.Windows.Forms.Button btn_saveAppSettingJson;
     }
 }
 

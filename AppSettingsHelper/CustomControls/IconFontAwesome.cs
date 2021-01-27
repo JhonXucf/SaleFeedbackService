@@ -6,7 +6,7 @@ using System.Drawing.Imaging;
 using System.Drawing.Text;
 using System.Linq;
 
-namespace AppCommondHelper
+namespace AppSettingsHelper
 {
     /// <summary>
     /// IconFontAwesome static helper object,default icon size is 32,no border,backcolor is Color.Transparent,forecolor is Color.Black,border color is Color.Gray.

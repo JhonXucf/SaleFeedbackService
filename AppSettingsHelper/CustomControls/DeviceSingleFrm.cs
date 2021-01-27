@@ -52,6 +52,7 @@ namespace AppSettingsHelper.CustomControls
         public DeviceSingleFrm()
         {
             InitializeComponent();
+            this.miantainShowCountControl1.Visible = false;
             InitDeviceOpreatorMenu();
             this.ContextMenuStrip = this.contextOpreatorMenu;
             foreach (Control item in this.Controls)
