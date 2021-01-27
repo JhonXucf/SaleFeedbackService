@@ -108,7 +108,7 @@ namespace AppSettingsHelper
         /// 防止查询日志太大导致的溢出---相当于作为分页集合
         /// </summary>
         ConcurrentDictionary<Int32, String> _SearchResults = new ConcurrentDictionary<Int32, String>();
-        String _ServiceName = "ATestSalesFeedbackService";
+        String _ServiceName = "SaleFeedbackService";
         #endregion
 
         #region 边框鼠标拖动及关闭
@@ -547,6 +547,7 @@ namespace AppSettingsHelper
             }
         }
         #endregion  
+
         #region 日志操作
         void InitSearchText()
         {
@@ -646,6 +647,7 @@ namespace AppSettingsHelper
                         case LogEventLevel.Information:
                         case LogEventLevel.Warning:
                         case LogEventLevel.Error:
+                        case LogEventLevel.Fatal:
                             if (task.Result == null || task.Result.Length == 0)
                             {
                                 this.richTextBox_information.Text = "";
@@ -1011,6 +1013,7 @@ namespace AppSettingsHelper
                 GlobalSet.m_Logger.Information(output);
                 if (output.Contains("SUCCESS"))
                 {
+                    ServiceIsRunStatus();
                     this.lbMessage.Text = "服务已安装，正在运行...";
                 }
                 else
@@ -1029,56 +1032,63 @@ namespace AppSettingsHelper
         }
         private void GetAppSetting()
         {
-            //加载配置文件
-            ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
-            //添加配置文件路径
-            configurationBuilder.SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json");
-            var configuration = configurationBuilder.Build();
-            //获取域名
-            var sessionNames = GetSessionNames();
-            this.cbx_domain.Items.AddRange(sessionNames);
-            var domianName = configuration.GetValue<string>("AppOption:DomianName");
-            if (sessionNames.Contains(domianName))
+            try
             {
-                this.cbx_domain.SelectedItem = domianName;
-            }
-            else
-            {
-                this.cbx_domain.SelectedIndex = 0;
-            }
-            //是否启用udp
-            var udpEnable = configuration.GetValue<Boolean>("UdpSocketOption:IsEnableUdp");
-            if (udpEnable)
-            {
-                this.cbx_enableUDP.Checked = true;
-                this.gbx_UdpContainer.Enabled = true;
-                var udpPort = configuration.GetValue<string>("UdpSocketOption:Port");
-                this.tbx_udpPort.Text = udpPort;
-                var isLoggerUdp = configuration.GetValue<Boolean>("UdpSocketOption:IsLoggerUdp");
-                if (isLoggerUdp)
+                //加载配置文件
+                ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
+                //添加配置文件路径
+                configurationBuilder.SetBasePath(Directory.GetCurrentDirectory())
+                    .AddJsonFile("appsettings.json");
+                var configuration = configurationBuilder.Build();
+                //获取域名
+                var sessionNames = GetSessionNames();
+                this.cbx_domain.Items.AddRange(sessionNames);
+                var domianName = configuration.GetValue<string>("AppOption:DomianName");
+                if (sessionNames.Contains(domianName))
                 {
-                    this.cbx_saveUdpLog.Checked = true;
+                    this.cbx_domain.SelectedItem = domianName;
                 }
-            }
+                else
+                {
+                    this.cbx_domain.SelectedIndex = 0;
+                }
+                //是否启用udp
+                var udpEnable = configuration.GetValue<Boolean>("UdpSocketOption:IsEnableUdp");
+                if (udpEnable)
+                {
+                    this.cbx_enableUDP.Checked = true;
+                    this.gbx_UdpContainer.Enabled = true;
+                    var udpPort = configuration.GetValue<string>("UdpSocketOption:Port");
+                    this.tbx_udpPort.Text = udpPort;
+                    var isLoggerUdp = configuration.GetValue<Boolean>("UdpSocketOption:IsLoggerUdp");
+                    if (isLoggerUdp)
+                    {
+                        this.cbx_saveUdpLog.Checked = true;
+                    }
+                }
 
-            //是否启用Tcp
-            var tcpEnable = configuration.GetValue<Boolean>("TcpSocketOption:IsEnableTcp");
-            if (udpEnable)
-            {
-                this.cbx_enableUDP.Checked = true;
-                this.gbx_UdpContainer.Enabled = true;
-                var ip = configuration.GetValue<string>("TcpSocketOption:IP");
-                this.tbx_ip.Text = ip;
-                var tcpPort = configuration.GetValue<string>("TcpSocketOption:Port");
-                this.tbx_tcpPort.Text = tcpPort;
-                var isLoggerTcp = configuration.GetValue<Boolean>("TcpSocketOption:IsLoggerTcp");
-                if (isLoggerTcp)
+                //是否启用Tcp
+                var tcpEnable = configuration.GetValue<Boolean>("TcpSocketOption:IsEnableTcp");
+                if (udpEnable)
                 {
-                    this.cbx_saveUdpLog.Checked = true;
+                    this.cbx_enableUDP.Checked = true;
+                    this.gbx_UdpContainer.Enabled = true;
+                    var ip = configuration.GetValue<string>("TcpSocketOption:IP");
+                    this.tbx_ip.Text = ip;
+                    var tcpPort = configuration.GetValue<string>("TcpSocketOption:Port");
+                    this.tbx_tcpPort.Text = tcpPort;
+                    var isLoggerTcp = configuration.GetValue<Boolean>("TcpSocketOption:IsLoggerTcp");
+                    if (isLoggerTcp)
+                    {
+                        this.cbx_saveUdpLog.Checked = true;
+                    }
                 }
             }
-            if (DetectedServiceIsRun())
+            catch (Exception ex)
+            {
+                GlobalSet.m_Logger.Error("初始化服务配置", ex);
+            }
+            if (DetectedServiceIsExist())
             {
                 if (DetectedServiceIsRun())
                 {
@@ -1087,7 +1097,7 @@ namespace AppSettingsHelper
                     this.gbx_ServiceContainer.Enabled = false;
                     return;
                 }
-                ServiceIsExistStatus();
+                ServiceIsExistNotRunStatus();
                 this.lbMessage.Text = "服务已安装，未运行...";
                 this.gbx_ServiceContainer.Enabled = false;
                 return;
@@ -1114,7 +1124,7 @@ namespace AppSettingsHelper
         private void btnServiceUninstall_Click(object sender, EventArgs e)
         {
             var output = string.Empty;
-             string[] command = {
+            string[] command = {
                 "sc.exe stop  " + _ServiceName,
                 "sc.exe delete  " + _ServiceName
                 };
@@ -1125,9 +1135,9 @@ namespace AppSettingsHelper
             else
             {
                 output = CmdHelper.ExeCommand(command);
-            } 
+            }
             GlobalSet.m_Logger.Information(output);
-            if (output.Contains("SUCCESS"))
+            if (!DetectedServiceIsExist())
             {
                 ServiceIsNotExistStatus();
                 this.lbMessage.Text = "服务已卸载！";
@@ -1141,14 +1151,14 @@ namespace AppSettingsHelper
         private void btnServiceStart_Click(object sender, EventArgs e)
         {
             string[] command = {
-                "sc.exe start ATestSalesFeedbackService "
+                "sc.exe start " + _ServiceName,
                 };
             var output = CmdHelper.ExeCommand(command);
             GlobalSet.m_Logger.Information(output);
-            if (output.Contains("SUCCESS"))
+            if (DetectedServiceIsRun())
             {
                 ServiceIsRunStatus();
-                this.lbMessage.Text = "服务已启动！";
+                this.lbMessage.Text = "服务已启动,正在运行！";
             }
             else
             {
@@ -1159,11 +1169,11 @@ namespace AppSettingsHelper
         private void btnServiceStop_Click(object sender, EventArgs e)
         {
             string[] command = {
-                "sc.exe stop ATestSalesFeedbackService "
+                "sc.exe stop " + _ServiceName,
                 };
             var output = CmdHelper.ExeCommand(command);
             GlobalSet.m_Logger.Information(output);
-            if (output.Contains("SUCCESS"))
+            if (!DetectedServiceIsRun())
             {
                 ServiceIsStopStatus();
                 this.lbMessage.Text = "服务已停止！";
@@ -1173,21 +1183,37 @@ namespace AppSettingsHelper
                 this.lbMessage.Text = "服务停止失败，请用管理员权限运行此程序，再重新停止服务...";
             }
         }
-        private void ServiceIsExistStatus()
+        /// <summary>
+        /// 服务已安装，未运行
+        /// </summary>
+        private void ServiceIsExistNotRunStatus()
         {
             this.btnServiceInstall.Enabled = this.btnServiceStop.Enabled = false;
+            this.btnServiceStart.Enabled = this.btnServiceUninstall.Enabled = true;
         }
+        /// <summary>
+        /// 服务已安装，正在运行
+        /// </summary>
         private void ServiceIsRunStatus()
         {
-            this.btnServiceInstall.Enabled = this.btnServiceStart.Enabled = false; this.btnServiceUninstall.Enabled = false;
+            this.btnServiceInstall.Enabled = this.btnServiceStart.Enabled = false;
+            this.btnServiceStop.Enabled = this.btnServiceUninstall.Enabled = true;
         }
+        /// <summary>
+        /// 服务未安装
+        /// </summary>
         private void ServiceIsNotExistStatus()
         {
             this.btnServiceStart.Enabled = this.btnServiceStop.Enabled = this.btnServiceUninstall.Enabled = false;
+            this.btnServiceInstall.Enabled = true;
         }
+        /// <summary>
+        /// 服务停止运行
+        /// </summary>
         private void ServiceIsStopStatus()
         {
-            this.btnServiceInstall.Enabled = this.btnServiceStart.Enabled = false;
+            this.btnServiceInstall.Enabled = this.btnServiceStop.Enabled = false;
+            this.btnServiceStart.Enabled = this.btnServiceUninstall.Enabled = true;
         }
         private Boolean DetectedServiceIsExist()
         {
@@ -1195,14 +1221,13 @@ namespace AppSettingsHelper
                 "sc.exe query  " + _ServiceName
                 };
             var output = CmdHelper.ExeCommand(command);
-            GlobalSet.m_Logger.Information(output);
-            if (output.Contains("SUCCESS"))
+            if (output.Contains("FAILED"))
             {
-                return true;
+                return false;
             }
             else
             {
-                return false;
+                return true;
             }
         }
         private Boolean DetectedServiceIsRun()
@@ -1211,7 +1236,6 @@ namespace AppSettingsHelper
                 "sc.exe query  " + _ServiceName
                 };
             var output = CmdHelper.ExeCommand(command);
-            GlobalSet.m_Logger.Information(output);
             if (output.Contains("RUNNING"))
             {
                 return true;

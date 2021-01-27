@@ -15,6 +15,8 @@ namespace SalesFeedBackInfrasturcture.Infrastructure
         [Description("加锡机DW800")]
         AutoSolderDW800 = 0x08,
         [Description("加锡机ID900")]
-        AutoSolderID900 = 0x016,
+        AutoSolderID900 = 0x16,
+        [Description("VIS氧含量")]
+        VIS = 0x32,
     }
 }

@@ -31,7 +31,7 @@ namespace AppSettingsHelper.CustomControls
         {
             if (null == _PartIds)
             {
-                _PartIds = new List<string>();
+                _PartIds = new List<String>();
                 this.Invoke(new Action(() => { this.miantainShowCountControl1.Visible = true; }));
             }
             if (_PartIds.Contains(partId)) return;
@@ -44,7 +44,10 @@ namespace AppSettingsHelper.CustomControls
             if (_PartIds.Contains(partId))
                 _PartIds.Remove(partId);
             if (_PartIds.Count == 0)
+            {
                 this.miantainShowCountControl1.Visible = false;
+                return;
+            }
             this.miantainShowCountControl1.Pis_Index = _PartIds.Count.ToString();
         }
         System.Threading.Timer timer;
@@ -101,7 +104,7 @@ namespace AppSettingsHelper.CustomControls
                     this.miantainShowCountControl1.EclipsBackColor = Color.DarkSalmon;
                     Task.Delay(100);
                     this.miantainShowCountControl1.EclipsBackColor = Color.LightSalmon;
-                    Task.Delay(100); 
+                    Task.Delay(100);
                     this.miantainShowCountControl1.EclipsBackColor = Color.LightCoral;
                 }
             }));
@@ -173,38 +176,7 @@ namespace AppSettingsHelper.CustomControls
             switch (toolMenu.Tag.ToString())
             {
                 case "Maintain":
-                    if (null == this._device || this._device.DeviceParts.Count == 0)
-                    {
-                        MessageBox.Show("设备部件信息为空，请先添加设备部件！");
-                        return;
-                    }
-                    var deviceMaintain = new DeviceMaintainAndRepair(DeviceOperatorStyle.Maintain, this._device);
-                    deviceMaintain.StartPosition = FormStartPosition.CenterParent;
-                    if (deviceMaintain.ShowDialog() == DialogResult.OK)
-                    {
-                        this._device.DeviceParts = deviceMaintain._device.DeviceParts;
-                        this.lbl_devicePartNum.Text = this._device.DeviceParts.Count.ToString();
-                        if (null != this._PartIds && this._PartIds.Count > 0)
-                        {
-                            foreach (var item in this._PartIds)
-                            {
-                                if (this._device.DeviceParts.ContainsKey(item))
-                                {
-                                    var devicePart = this._device.DeviceParts[item];
-                                    if (devicePart.MaintainCycles.Count == 0) continue;
-                                    if (devicePart.MaintainDetails.Count == 0) continue;
-                                    //取上次保养时间进行比较
-                                    var lastMaintainTime = devicePart.MaintainDetails.OrderBy(p => p.Value.MaintainTime).First().Value.MaintainTime;
-                                    //如果需要保养就继续比对下一个
-                                    if (MaintainTimeCompareToLocalTime(devicePart, lastMaintainTime))
-                                    {
-                                        continue;
-                                    }
-                                    RemoveMaintainCount(devicePart.ID);
-                                }
-                            }
-                        }
-                    }
+                    ShowMaintain();
                     break;
                 case "ModifyDevice":
                     ModifyEventClicked?.Invoke(this, e);
@@ -276,5 +248,46 @@ namespace AppSettingsHelper.CustomControls
         }
         public event EventHandler ModifyEventClicked;
         public event EventHandler DeleteEventClicked;
+
+        private void miantainShowCountControl1_Click(object sender, EventArgs e)
+        {
+            ShowMaintain();
+        }
+        private void ShowMaintain()
+        {
+            if (null == this._device || this._device.DeviceParts.Count == 0)
+            {
+                MessageBox.Show("设备部件信息为空，请先添加设备部件！");
+                return;
+            }
+            var deviceMaintain = new DeviceMaintainAndRepair(DeviceOperatorStyle.Maintain, this._device, this._PartIds);
+            deviceMaintain.StartPosition = FormStartPosition.CenterParent;
+            if (deviceMaintain.ShowDialog() == DialogResult.OK)
+            {
+                this._device.DeviceParts = deviceMaintain._device.DeviceParts;
+                this.lbl_devicePartNum.Text = this._device.DeviceParts.Count.ToString();
+                if (null != this._PartIds && this._PartIds.Count > 0)
+                {
+                    for (int i = 0; i < _PartIds.Count; i++)
+                    {
+                        if (this._device.DeviceParts.ContainsKey(_PartIds[i]))
+                        {
+                            var devicePart = this._device.DeviceParts[_PartIds[i]];
+                            if (devicePart.MaintainCycles.Count == 0) continue;
+                            if (devicePart.MaintainDetails.Count == 0) continue;
+                            //取上次保养时间进行比较
+                            var lastMaintainTime = devicePart.MaintainDetails.OrderBy(p => p.Value.MaintainTime).First().Value.MaintainTime.ToLocalTime();
+                            //如果需要保养就继续比对下一个
+                            if (MaintainTimeCompareToLocalTime(devicePart, lastMaintainTime))
+                            {
+                                continue;
+                            }
+                            RemoveMaintainCount(devicePart.ID);
+                            i--;//减少一个
+                        }
+                    }
+                }
+            }
+        }
     }
 }

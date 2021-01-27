@@ -36,13 +36,15 @@ namespace AppSettingsHelper.CustomControls
             this.btn_Save = new AppSettingsHelper.UCBtnExt();
             this.btn_Close = new AppSettingsHelper.UCBtnExt();
             this.button1 = new System.Windows.Forms.Button();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // lbl_title
             // 
             this.lbl_title.AutoSize = true;
             this.lbl_title.Font = new System.Drawing.Font("Microsoft YaHei", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lbl_title.Location = new System.Drawing.Point(19, 11);
+            this.lbl_title.Location = new System.Drawing.Point(20, 13);
             this.lbl_title.Name = "lbl_title";
             this.lbl_title.Size = new System.Drawing.Size(84, 25);
             this.lbl_title.TabIndex = 10;
@@ -51,7 +53,7 @@ namespace AppSettingsHelper.CustomControls
             // label15
             // 
             this.label15.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.label15.Location = new System.Drawing.Point(3, 2);
+            this.label15.Location = new System.Drawing.Point(4, 4);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(10, 43);
             this.label15.TabIndex = 9;
@@ -166,7 +168,7 @@ namespace AppSettingsHelper.CustomControls
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.button1.ForeColor = System.Drawing.Color.White;
-            this.button1.Location = new System.Drawing.Point(837, 7);
+            this.button1.Location = new System.Drawing.Point(844, 9);
             this.button1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(32, 32);
@@ -175,26 +177,37 @@ namespace AppSettingsHelper.CustomControls
             this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.btn_Close_BtnClick);
             // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.Color.Transparent;
+            this.panel1.Controls.Add(this.lbl_title);
+            this.panel1.Controls.Add(this.button1);
+            this.panel1.Controls.Add(this.label15);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(889, 50);
+            this.panel1.TabIndex = 17;
+            this.panel1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Control_MouseDown);
+            this.panel1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Control_MouseMove);
+            // 
             // DeviceMaintainAndRepair
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(889, 609);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.btn_Close);
             this.Controls.Add(this.btn_Save);
             this.Controls.Add(this.txt_serach);
             this.Controls.Add(this.gbxContainer);
-            this.Controls.Add(this.lbl_title);
-            this.Controls.Add(this.label15);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "DeviceMaintainAndRepair";
             this.Text = "DeviceMaintainAndRepair";
-            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Control_MouseDown);
-            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Control_MouseMove);
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -207,5 +220,6 @@ namespace AppSettingsHelper.CustomControls
         private UCBtnExt btn_Save;
         private UCBtnExt btn_Close;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Panel panel1;
     }
 }

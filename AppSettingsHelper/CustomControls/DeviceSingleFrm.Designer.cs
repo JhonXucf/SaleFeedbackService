@@ -165,6 +165,7 @@ namespace AppSettingsHelper.CustomControls
             this.miantainShowCountControl1.PisindexForeColor = System.Drawing.SystemColors.ControlText;
             this.miantainShowCountControl1.Size = new System.Drawing.Size(27, 27);
             this.miantainShowCountControl1.TabIndex = 8;
+            this.miantainShowCountControl1.Click += new System.EventHandler(this.miantainShowCountControl1_Click);
             // 
             // DeviceSingleFrm
             // 

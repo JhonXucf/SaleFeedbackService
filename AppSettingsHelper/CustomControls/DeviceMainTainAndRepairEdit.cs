@@ -47,15 +47,13 @@ namespace AppSettingsHelper.CustomControls
         DeviceRepair _deviceRepair;
         DevicePart _devicePart;
         DataTable _dt;
-        String _deviceId;
         public DevicePart _DevicePart => _devicePart;
-        public DeviceMainTainAndRepairEdit(DeviceOperatorStyle deviceOperator, String deviceId, DevicePart devicePart = null)
+        public DeviceMainTainAndRepairEdit(DeviceOperatorStyle deviceOperator, DevicePart devicePart = null)
         {
             InitializeComponent();
             this.Load += DeviceMainTainAndRepairEdit_Load;
             _deviceOperator = deviceOperator;
             _devicePart = devicePart;
-            _deviceId = deviceId;
             ContextMenuStrip contextMenuStrip = new ContextMenuStrip();
             var toolStripMenuItemDelete = new ToolStripMenuItem
             {
@@ -112,20 +110,11 @@ namespace AppSettingsHelper.CustomControls
                 if (MessageBox.Show("确定删除所有吗?", "提示", MessageBoxButtons.OKCancel) == DialogResult.OK)
                 {
                     if (_deviceOperator == DeviceOperatorStyle.Maintain)
-                    {
-                        Parallel.ForEach(_devicePart.MaintainDetails, maintain =>
-                         {
-                             GlobalSet.WriteDevicePartMainTainOrRepaitToFile(_deviceId, _devicePart, _deviceOperator, SalesFeedBackMain.OperatorType.Delete, maintain.Value);
-                         });
-
+                    { 
                         _devicePart.MaintainDetails.Clear();
                     }
                     else
-                    {
-                        Parallel.ForEach(_devicePart.RepairDetails, repair =>
-                        {
-                            GlobalSet.WriteDevicePartMainTainOrRepaitToFile(_deviceId, _devicePart, _deviceOperator, SalesFeedBackMain.OperatorType.Delete, null, repair.Value);
-                        });
+                    { 
                         _devicePart.RepairDetails.Clear();
                     }
                     dataGridView1.Rows.Clear();
@@ -140,7 +129,6 @@ namespace AppSettingsHelper.CustomControls
                 {
                     if (_devicePart.MaintainDetails.ContainsKey(Id))
                     {
-                        GlobalSet.WriteDevicePartMainTainOrRepaitToFile(_deviceId, _devicePart, _deviceOperator, SalesFeedBackMain.OperatorType.Delete, _devicePart.MaintainDetails[Id]);
                         _devicePart.MaintainDetails.Remove(Id);
                     }
                     dataGridView1.Rows.RemoveAt(rowIndex);
@@ -149,7 +137,6 @@ namespace AppSettingsHelper.CustomControls
                 {
                     if (_devicePart.RepairDetails.ContainsKey(Id))
                     {
-                        GlobalSet.WriteDevicePartMainTainOrRepaitToFile(_deviceId, _devicePart, _deviceOperator, SalesFeedBackMain.OperatorType.Delete, null, _devicePart.RepairDetails[Id]);
                         _devicePart.RepairDetails.Remove(Id);
 
                     }

@@ -80,6 +80,7 @@ namespace AppCommondHelper.Logger
             {
                 sw.WriteLineAsync(sb.ToString());
             }
+            System.Threading.Tasks.Task.Delay(200);
         }
         private String GetLogPath(LogEventLevel eventLevel)
         {

@@ -6,7 +6,6 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -47,9 +46,17 @@ namespace AppSettingsHelper.CustomControls
         /// 设备部件信息
         /// </summary>
         public Device _device;
-        public DeviceMaintainAndRepair(DeviceOperatorStyle deviceOperator, Device device)
+        /// <summary>
+        /// 需要保养的部件Id集合
+        /// </summary>
+        List<String> _PartIds;
+        public DeviceMaintainAndRepair(DeviceOperatorStyle deviceOperator, Device device, List<String> partIds = null)
         {
             InitializeComponent();
+            if (null != partIds)
+            {
+                _PartIds = partIds;
+            }
             this.txt_serach.SearchClick += Txt_serach_SearchClick;
             this.txt_serach.ClearClick += Txt_serach_ClearClick;
             this.txt_serach.TextChanged += Txt_serach_TextChanged;
@@ -78,6 +85,10 @@ namespace AppSettingsHelper.CustomControls
                     if (item.Value.Find(criteria, text))
                     {
                         var deviceSingle = new DevicePartSingle(item.Value, _deviceOperator);
+                        if (null != _PartIds && _PartIds.Contains(item.Key))
+                        {
+                            deviceSingle.IsSelected = true;
+                        }
                         deviceSingle.AddHandle += DeviceSingle_AddHandle;
                         deviceSingle.ModifiedHandle += DeviceSingle_ModifiedHandle;
                         deviceSingle.DeletedHandle += DeviceSingle_DeletedHandle;
@@ -87,6 +98,10 @@ namespace AppSettingsHelper.CustomControls
                 else
                 {
                     var deviceSingle = new DevicePartSingle(item.Value, _deviceOperator);
+                    if (null != _PartIds && _PartIds.Contains(item.Key))
+                    {
+                        deviceSingle.IsSelected = true;
+                    }
                     deviceSingle.AddHandle += DeviceSingle_AddHandle;
                     deviceSingle.ModifiedHandle += DeviceSingle_ModifiedHandle;
                     deviceSingle.DeletedHandle += DeviceSingle_DeletedHandle;
@@ -116,26 +131,30 @@ namespace AppSettingsHelper.CustomControls
             Int16 count = 0;
             DevicePartSingle devicePartSingle = sender as DevicePartSingle;
             DevicePart devicePart = devicePartSingle._DevicePart;
-            foreach (Control item in this.gbxContainer.Controls)
+            if (null != e)//如果参数是null，则代表双击了
             {
-                if (item is DevicePartSingle)
+                foreach (Control item in this.gbxContainer.Controls)
                 {
-                    DevicePartSingle tempSingle = item as DevicePartSingle;
-                    if (!tempSingle.IsSelected) continue;
-                    count++;
-                    if (count > 1)
+                    if (item is DevicePartSingle)
                     {
-                        devicePart = null;
-                        break;
+                        DevicePartSingle tempSingle = item as DevicePartSingle;
+                        if (!tempSingle.IsSelected) continue;
+                        count++;
+                        if (count > 1)
+                        {
+                            devicePart = null;
+                            break;
+                        }
                     }
                 }
             }
-            var mainAndRepair = new DeviceMainTainAndRepairEdit(this._deviceOperator, this._device.ID.ToString(), devicePart);
+            var mainAndRepair = new DeviceMainTainAndRepairEdit(this._deviceOperator, devicePart);
             mainAndRepair.StartPosition = FormStartPosition.CenterParent;
             if (mainAndRepair.ShowDialog() == DialogResult.OK)
             {
                 if (count > 1)
                 {
+                    if (mainAndRepair._DevicePart.RepairDetails.Count == 0) return;
                     foreach (Control item in this.gbxContainer.Controls)
                     {
                         if (item is DevicePartSingle)
@@ -167,11 +186,11 @@ namespace AppSettingsHelper.CustomControls
                                         }
                                         devicePartSingle._DevicePart.RepairDetails[maintain.Key] = maintain.Value;
                                     }
-                                    devicePartSingle.MaintainCount = devicePartSingle._DevicePart.RepairDetails.Count;                               
+                                    devicePartSingle.MaintainCount = devicePartSingle._DevicePart.RepairDetails.Count;
                                 }
                                 Task.Run(() =>
                                 {
-                                    GlobalSet.WriteDevicePartMainTainOrRepaitToFile(this._device.ID, devicePartSingle._DevicePart, _deviceOperator, SalesFeedBackMain.OperatorType.Add);
+                                    GlobalSet.WriteDevicePartMainTainOrRepaitToFile(this._device, devicePartSingle._DevicePart, _deviceOperator, SalesFeedBackMain.OperatorType.Add);
                                 });
                             }
                         }
@@ -181,19 +200,23 @@ namespace AppSettingsHelper.CustomControls
                 {
                     devicePartSingle.MaintainCount = this._deviceOperator == DeviceOperatorStyle.Maintain ? devicePart.MaintainDetails.Count
                     : devicePart.RepairDetails.Count;
-                    GlobalSet.WriteDevicePartMainTainOrRepaitToFile(this._device.ID, devicePartSingle._DevicePart, _deviceOperator, SalesFeedBackMain.OperatorType.Add);
-                } 
+                    GlobalSet.WriteDevicePartMainTainOrRepaitToFile(this._device, devicePartSingle._DevicePart, _deviceOperator, SalesFeedBackMain.OperatorType.Add);
+                }
             }
         }
-
+        /// <summary>
+        /// 删除部件直接保存到文件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void DeviceSingle_DeletedHandle(object sender, EventArgs e)
         {
             var partSingle = sender as DevicePartSingle;
-            if (MessageBox.Show("确定删除设备部件[" + partSingle._DevicePart.ID + "]吗?", "提示", MessageBoxButtons.OKCancel) == DialogResult.OK)
+            if (MessageBox.Show("确定删除设备部件[" + partSingle.DevicePartId + "]吗?", "提示", MessageBoxButtons.OKCancel) == DialogResult.OK)
             {
-                if (this._device.DeviceParts.ContainsKey(partSingle._DevicePart.ID))
+                if (this._device.DeviceParts.ContainsKey(partSingle.DevicePartId))
                 {
-                    this._device.DeviceParts.Remove(partSingle._DevicePart.ID);
+                    this._device.DeviceParts.Remove(partSingle.DevicePartId);
                     GlobalSet.WriteDevicePartToFile(_device, partSingle._DevicePart, SalesFeedBackMain.OperatorType.Delete);
                 }
                 if (_device.DeviceParts.Count == 0)
@@ -203,13 +226,17 @@ namespace AppSettingsHelper.CustomControls
                 }
             }
         }
-
+        /// <summary>
+        /// 修改部件信息之后直接保存文件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void DeviceSingle_ModifiedHandle(object sender, EventArgs e)
         {
             var partSingle = sender as DevicePartSingle;
-            if (_device.DeviceParts.ContainsKey(partSingle._DevicePart.ID))
+            if (_device.DeviceParts.ContainsKey(partSingle.DevicePartId))
             {
-                _device.DeviceParts[partSingle._DevicePart.ID] = partSingle._DevicePart;
+                _device.DeviceParts[partSingle.DevicePartId] = partSingle._DevicePart;
                 GlobalSet.WriteDevicePartToFile(_device, partSingle._DevicePart, SalesFeedBackMain.OperatorType.Modify);
             }
         }

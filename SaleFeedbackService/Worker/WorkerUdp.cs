@@ -17,6 +17,8 @@ using AppCommondHelper.PipeCommunication;
 using System.Diagnostics;
 using Microsoft.Extensions.Caching.Memory;
 using AppCommondHelper;
+using AppCommondHelper.WatchFileChanged;
+using System.Text;
 
 namespace SaleFeedbackService
 {
@@ -46,11 +48,7 @@ namespace SaleFeedbackService
             if (!Directory.Exists(GlobalSet.m_deviceJsonPath))
                 Directory.CreateDirectory(GlobalSet.m_deviceJsonPath);
             _fileProvider = new PhysicalFileProvider(GlobalSet.m_deviceJsonPath);
-            _fileProvider.Watch("*.json").RegisterChangeCallback((obj) =>
-            {
-                GlobalSet.m_Logger.Information($"The UdpNetworkServer detect the file changed");
-                InitDevices();
-            }, null);
+            ChangeToken.OnChange(() => _fileProvider.Watch("*.json"), () => LoadInitDevices());
             var udpSection = _configuration.GetSection(nameof(UdpSocketOption));
             if (udpSection != null)
             {
@@ -110,7 +108,7 @@ namespace SaleFeedbackService
                         {
                             //这里要做一个缓存的机制，加上过期时间，如果已经发送过消息，
                             //5分钟以内就不用再发了，节约系统资源
-                         
+
                             if (_cacheMemory.TryGetValue(item.Key, out keyExsit)) continue;
                             _cacheMemory.Set(item.Key, "", DateTimeOffset.Now.AddMinutes(5));
                             if (item.Value.MaintainCycles.Count == 0) return;
@@ -124,7 +122,7 @@ namespace SaleFeedbackService
                             }
                             else
                             {
-                                var lastMaintainTime = item.Value.MaintainDetails.OrderBy(p => p.Value.MaintainTime).First().Value.MaintainTime;
+                                var lastMaintainTime = item.Value.MaintainDetails.OrderBy(p => p.Value.MaintainTime).First().Value.MaintainTime.ToLocalTime();
                                 if (MaintainTimeCompareToLocalTime(item.Value, lastMaintainTime))
                                 {
                                     StartClientNamedPipe("SalesFeedBack", ac.Key + "," + item.Key);
@@ -137,6 +135,11 @@ namespace SaleFeedbackService
 
                 await Task.Delay(10000, stoppingToken);
             }
+        }
+        public void LoadInitDevices()
+        {
+            GlobalSet.m_Logger.Information($"The UdpNetworkServer detect the file changed");
+            InitDevices();
         }
         private void InitDevices()
         {

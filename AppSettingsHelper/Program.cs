@@ -75,7 +75,7 @@ namespace AppSettingsHelper
                 if (process.Id != current.Id)
                 {
                     var str = Assembly.GetExecutingAssembly().Location.Replace("/", "\\");
-                    if (Path.GetFileNameWithoutExtension(str) == Path.GetFileNameWithoutExtension(current.MainModule.FileName))
+                    if (Path.GetFileNameWithoutExtension(str).Equals(Path.GetFileNameWithoutExtension(current.MainModule.FileName)))
                     {
                         return process;
                     }

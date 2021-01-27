@@ -25,7 +25,7 @@ namespace AppSettingsHelper.CustomControls
         }
         public Int32 MaintainCount
         {
-            set 
+            set
             {
                 this.lbl_Count.Text = value.ToString();
             }
@@ -39,6 +39,7 @@ namespace AppSettingsHelper.CustomControls
             this.lbl_MaintainCount.Text = deviceOperatorStyle == DeviceOperatorStyle.Maintain ? "保养次数" : "维修次数";
             this.lbl_Count.Text = deviceOperatorStyle == DeviceOperatorStyle.Maintain ? devicePart.MaintainDetails.Count.ToString() : devicePart.RepairDetails.Count.ToString();
             this.Click += Item_Click;
+            this.DoubleClick += Double_Click;
             ContextMenuStrip contextMenuStrip = new ContextMenuStrip();
             var toolStripMenuItemAdd = new ToolStripMenuItem
             {
@@ -69,9 +70,11 @@ namespace AppSettingsHelper.CustomControls
             {
                 item.ContextMenuStrip = contextMenuStrip;
                 item.Click += Item_Click;
+                item.DoubleClick += Double_Click;
                 foreach (Control item1 in item.Controls)
                 {
                     item1.Click += Item_Click;
+                    item1.DoubleClick += Double_Click;
                     item1.ContextMenuStrip = contextMenuStrip;
                 }
             }
@@ -93,7 +96,17 @@ namespace AppSettingsHelper.CustomControls
                 ModifiedHandle?.Invoke(this, e);
             }
         }
-
+        private void Modify()
+        {
+            var dEdit = new DevicePartEdit(SalesFeedBackMain.OperatorType.Modify);
+            dEdit.StartPosition = FormStartPosition.CenterParent;
+            dEdit._DevicePart = this._devicePart;
+            if (dEdit.ShowDialog() == DialogResult.OK)
+            {
+                this._devicePart = dEdit._DevicePart;
+                ModifiedHandle?.Invoke(this, null);
+            }
+        }
         private void ToolStripMenuItemDelete_Click(object sender, EventArgs e)
         {
             if (MessageBox.Show("确定删除[" + this._devicePart.PartName + "]部件吗?", "提示", MessageBoxButtons.OKCancel) == DialogResult.OK)
@@ -102,21 +115,52 @@ namespace AppSettingsHelper.CustomControls
             }
         }
 
-        public bool IsSelected = false;
+        private Boolean _isSelected = false;
+        public Boolean IsSelected
+        {
+            get { return _isSelected; }
+            set
+            {
+                _isSelected = value;
+                if (value)
+                {
+                    this.BackColor = Color.AliceBlue;
+                }
+                else
+                {
+                    this.BackColor = Color.White;
+                }
+            }
+        }
 
         public String DevicePartId => this.lbl_partID.Text;
         private void Item_Click(object sender, EventArgs e)
         {
-            if (IsSelected)
+            if (_isSelected)
             {
-                IsSelected = false;
+                _isSelected = false;
                 this.BackColor = Color.White;
             }
             else
             {
-                IsSelected = true;
+                _isSelected = true;
                 this.BackColor = Color.AliceBlue;
             }
+        }
+        private void Double_Click(object sender, EventArgs e)
+        {  
+            //这个操作还原之前的状态
+            if (_isSelected)
+            {
+                _isSelected = false;
+                this.BackColor = Color.White;
+            }
+            else
+            {
+                _isSelected = true;
+                this.BackColor = Color.AliceBlue;
+            }
+            AddHandle?.Invoke(this, null);
         }
         public event EventHandler AddHandle;
         public event EventHandler ModifiedHandle;
