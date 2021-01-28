@@ -5,7 +5,7 @@
 
 #### 软件架构
 软件架构说明
-软件使用.net 5开发
+软件使用.netCore 3.1开发
 1、SalesFeedBackInfrasturcture数据实体和基础类库
 2、AppCommondHelper实用工具类库包含管道通信、Udp\Tcp通信、文件改变监控、Cmd命令辅助、使用UAC启动另一个线程并展示、Log
 3、AppSettingsHelper展示界面，界面图标元素来自Iconfont;
