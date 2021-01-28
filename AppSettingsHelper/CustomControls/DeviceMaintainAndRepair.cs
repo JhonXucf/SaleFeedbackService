@@ -3,7 +3,7 @@ using SalesFeedBackInfrasturcture.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
+using System.Linq;
 using System.Drawing;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -148,13 +148,14 @@ namespace AppSettingsHelper.CustomControls
                     }
                 }
             }
-            var mainAndRepair = new DeviceMainTainAndRepairEdit(this._deviceOperator, devicePart.Clone());
+            var mainAndRepair = new DeviceMainTainAndRepairEdit(this._deviceOperator, devicePart);
             mainAndRepair.StartPosition = FormStartPosition.CenterParent;
             if (mainAndRepair.ShowDialog() == DialogResult.OK)
             {
                 if (count > 1)
                 {
-                    if (mainAndRepair._DevicePart.RepairDetails.Count == 0) return;
+                    if (this._deviceOperator == DeviceOperatorStyle.Maintain && mainAndRepair._DevicePart.MaintainDetails.Count == 0) return;
+                    if (this._deviceOperator == DeviceOperatorStyle.Repair && mainAndRepair._DevicePart.RepairDetails.Count == 0) return;
                     foreach (Control item in this.gbxContainer.Controls)
                     {
                         if (item is DevicePartSingle)
@@ -188,19 +189,58 @@ namespace AppSettingsHelper.CustomControls
                                     }
                                     devicePartSingle.MaintainCount = devicePartSingle._DevicePart.RepairDetails.Count;
                                 }
-                                Task.Run(() =>
-                                {
-                                    GlobalSet.WriteDevicePartMainTainOrRepaitToFile(this._device, devicePartSingle._DevicePart, _deviceOperator, SalesFeedBackMain.OperatorType.Add);
-                                });
                             }
                         }
                     }
+                    GlobalSet.WriteDevicePartMainTainOrRepaitToFile(this._device, devicePartSingle._DevicePart, _deviceOperator, SalesFeedBackMain.OperatorType.Add);
                 }
                 else
                 {
-                    devicePartSingle.MaintainCount = this._deviceOperator == DeviceOperatorStyle.Maintain ? devicePart.MaintainDetails.Count
-                    : devicePart.RepairDetails.Count;
-                    GlobalSet.WriteDevicePartMainTainOrRepaitToFile(this._device, devicePartSingle._DevicePart, _deviceOperator, SalesFeedBackMain.OperatorType.Add);
+                    devicePartSingle.MaintainCount = this._deviceOperator == DeviceOperatorStyle.Maintain? mainAndRepair._DevicePart.MaintainDetails.Count:
+                         mainAndRepair._DevicePart.RepairDetails.Count;
+                    GlobalSet.WriteDevicePartMainTainOrRepaitToFile(this._device, devicePart, _deviceOperator, SalesFeedBackMain.OperatorType.Add);
+
+                    #region 不允许删除保养和维修记录
+                    //if (this._deviceOperator == DeviceOperatorStyle.Maintain)
+                    //{
+                    //    var deleteMaintains = new List<DeviceMaintain>();
+                    //    foreach (var item in devicePart.MaintainDetails)
+                    //    {
+                    //        //如果不存在，则说明删除了
+                    //        if (mainAndRepair._DevicePart.MaintainDetails.Keys.Where(p => !p.Contains(item.Key)).Count() == 0)
+                    //        {
+                    //            deleteMaintains.Add(item.Value);
+                    //        }
+                    //    }
+                    //    devicePartSingle.MaintainCount = mainAndRepair._DevicePart.MaintainDetails.Count;
+                    //    devicePartSingle._DevicePart = mainAndRepair._DevicePart;
+                    //    GlobalSet.WriteDevicePartMainTainOrRepaitToFile(this._device, devicePartSingle._DevicePart, _deviceOperator, SalesFeedBackMain.OperatorType.Add);
+                    //    if (deleteMaintains.Count > 0)
+                    //    {
+                    //        GlobalSet.WriteDevicePartMainTainOrRepaitToFile(this._device, devicePartSingle._DevicePart, _deviceOperator, SalesFeedBackMain.OperatorType.Delete, deleteMaintains);
+                    //    }
+                    //}
+                    //else
+                    //{
+                    //    devicePartSingle.MaintainCount = mainAndRepair._DevicePart.RepairDetails.Count;
+                    //    var deleteRepairs = new List<DeviceRepair>();
+                    //    foreach (var item in devicePart.RepairDetails)
+                    //    {
+                    //        //如果不存在，则说明删除了
+                    //        if (mainAndRepair._DevicePart.RepairDetails.Keys.Where(p => !p.Contains(item.Key)).Count() == 0)
+                    //        {
+                    //            deleteRepairs.Add(item.Value);
+                    //        }
+                    //    }
+                    //    devicePartSingle.MaintainCount = mainAndRepair._DevicePart.MaintainDetails.Count;
+                    //    devicePartSingle._DevicePart = mainAndRepair._DevicePart;
+                    //    GlobalSet.WriteDevicePartMainTainOrRepaitToFile(this._device, devicePartSingle._DevicePart, _deviceOperator, SalesFeedBackMain.OperatorType.Add);
+                    //    if (deleteRepairs.Count > 0)
+                    //    {
+                    //        GlobalSet.WriteDevicePartMainTainOrRepaitToFile(this._device, devicePartSingle._DevicePart, _deviceOperator, SalesFeedBackMain.OperatorType.Delete, null, deleteRepairs);
+                    //    }
+                    //}
+                    #endregion 
                 }
             }
         }

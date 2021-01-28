@@ -96,17 +96,6 @@ namespace AppSettingsHelper.CustomControls
                 ModifiedHandle?.Invoke(this, e);
             }
         }
-        private void Modify()
-        {
-            var dEdit = new DevicePartEdit(SalesFeedBackMain.OperatorType.Modify);
-            dEdit.StartPosition = FormStartPosition.CenterParent;
-            dEdit._DevicePart = this._devicePart;
-            if (dEdit.ShowDialog() == DialogResult.OK)
-            {
-                this._devicePart = dEdit._DevicePart;
-                ModifiedHandle?.Invoke(this, null);
-            }
-        }
         private void ToolStripMenuItemDelete_Click(object sender, EventArgs e)
         {
             if (MessageBox.Show("确定删除[" + this._devicePart.PartName + "]部件吗?", "提示", MessageBoxButtons.OKCancel) == DialogResult.OK)

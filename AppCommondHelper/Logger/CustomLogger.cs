@@ -76,11 +76,15 @@ namespace AppCommondHelper.Logger
                 sb.Append(ex.Message);
                 sb.Append(ex.StackTrace);
             }
-            using (StreamWriter sw = new StreamWriter(filePath, true, Encoding.UTF8))
+            try
             {
-                sw.WriteLineAsync(sb.ToString());
+                using (StreamWriter sw = new StreamWriter(filePath, true, Encoding.UTF8))
+                {
+                    sw.WriteLineAsync(sb.ToString());
+                }
             }
-            System.Threading.Tasks.Task.Delay(200);
+            catch 
+            { }
         }
         private String GetLogPath(LogEventLevel eventLevel)
         {

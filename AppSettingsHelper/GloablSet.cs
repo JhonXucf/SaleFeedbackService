@@ -27,7 +27,6 @@ namespace AppSettingsHelper
             {
                 AppName = "AppSettingsHelper",
                 LoggerPath = AppDomain.CurrentDomain.BaseDirectory,
-                IsEnableJsonSerilize = true
             };
         }
         #region 静态成员
@@ -146,7 +145,7 @@ namespace AppSettingsHelper
         /// <param name="operatorType"></param>
         /// <param name="deviceMaintain"></param>
         /// <param name="deviceRepair"></param>
-        public static void WriteDevicePartMainTainOrRepaitToFile(Device device, DevicePart devicePart, DeviceOperatorStyle operatorStyle, SalesFeedBackMain.OperatorType operatorType, DeviceMaintain deviceMaintain = null, DeviceRepair deviceRepair = null)
+        public static void WriteDevicePartMainTainOrRepaitToFile(Device device, DevicePart devicePart, DeviceOperatorStyle operatorStyle, SalesFeedBackMain.OperatorType operatorType)
         {
             switch (operatorType)
             {
@@ -196,35 +195,35 @@ namespace AppSettingsHelper
                             break;
                     }
                     break;
-                case SalesFeedBackMain.OperatorType.Delete:
-                    switch (operatorStyle)
-                    {
-                        case DeviceOperatorStyle.Maintain:
-                            Task.Run(() =>
-                            {
-                                var js = JsonHelper.GetSerilization(device);
-                                JsonHelper.WriteToFile(m_deviceJsonPath, m_deviceFileName + device.ID + m_FileExtensionName, js);
-                            });
-                            var main = deviceMaintain.Clone();
-                            main.MaintainImages = null;
-                            var opType = "设备部件保养删除##";
-                            m_Logger.Warning(m_AppOption.AppName + "##设备ID" + device.ID + "##部件ID" + devicePart.ID + "##" + opType + "保养ID" + deviceMaintain.ID + JsonHelper.GetSerilization(main));
-                            break;
-                        case DeviceOperatorStyle.Repair:
-                            Task.Run(() =>
-                            {
-                                var js = JsonHelper.GetSerilization(device);
-                                JsonHelper.WriteToFile(m_deviceJsonPath, m_deviceFileName + device.ID + m_FileExtensionName, js);
-                            });
-                            var repair = deviceRepair.Clone();
-                            repair.RepairImages = null;
-                            var opType1 = "设备部件修复删除##";
-                            m_Logger.Warning(m_AppOption.AppName + "##设备ID" + device.ID + "##部件ID" + devicePart.ID + "##" + opType1 + "修复ID" + deviceRepair.ID + JsonHelper.GetSerilization(repair));
-                            break;
-                        default:
-                            break;
-                    }
-                    break;
+                //case SalesFeedBackMain.OperatorType.Delete:
+                //    switch (operatorStyle)
+                //    {
+                //        case DeviceOperatorStyle.Maintain:
+                //            var sb = new StringBuilder();
+                //            foreach (var item in deviceMaintains)
+                //            {
+                //                var main = item.Clone();
+                //                main.MaintainImages = null;
+                //                var opType = "设备部件保养删除##";
+                //                sb.Append(m_AppOption.AppName + "##设备ID" + device.ID + "##部件ID" + devicePart.ID + "##" + opType + "保养ID" + main.ID + JsonHelper.GetSerilization(main));
+                //            } 
+                //            m_Logger.Warning(sb.ToString());
+                //            break;
+                //        case DeviceOperatorStyle.Repair:
+                //            var sbRepair = new StringBuilder();
+                //            foreach (var item in deviceRepairs)
+                //            {
+                //                var repair = item.Clone();
+                //                repair.RepairImages = null;
+                //                var opType = "设备部件修复删除##";
+                //                sbRepair.Append(m_AppOption.AppName + "##设备ID" + device.ID + "##部件ID" + devicePart.ID + "##" + opType + "修复ID" + repair.ID + JsonHelper.GetSerilization(repair));
+                //            } 
+                //            m_Logger.Warning(sbRepair.ToString());
+                //            break;
+                //        default:
+                //            break;
+                //    }
+                //    break;
                 default:
                     break;
             }

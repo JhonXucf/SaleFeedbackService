@@ -65,7 +65,17 @@ namespace AppSettingsHelper.CustomControls
             timer = new System.Threading.Timer(Processer, null, Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
             //立即执行一次
             timer.Change(TimeSpan.Zero, Timeout.InfiniteTimeSpan);
+            foreach (Control item in this.Controls)
+            {
+                item.DoubleClick += Item_DoubleClick;
+            }
         }
+
+        private void Item_DoubleClick(object sender, EventArgs e)
+        {
+            ModifyEventClicked?.Invoke(this, e);
+        }
+
         private void Processer(object sender)
         {
             //设置三分钟执行一次

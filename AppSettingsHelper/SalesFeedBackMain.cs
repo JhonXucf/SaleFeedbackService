@@ -17,7 +17,8 @@ using AppCommondHelper.PipeCommunication;
 using AppCommondHelper.Commond;
 using Microsoft.Extensions.Configuration;
 using AppCommondHelper;
-using AppCommondHelper.AppJsonToFile;
+using AppCommondHelper.JsonSerilize;
+using AppCommondHelper.Infrastucture;
 
 namespace AppSettingsHelper
 {
@@ -103,7 +104,7 @@ namespace AppSettingsHelper
         /// 防止查询日志太大导致的溢出---相当于作为分页集合
         /// </summary>
         ConcurrentDictionary<Int32, String> _SearchResults = new ConcurrentDictionary<Int32, String>();
-        String _ServiceName = "SaleFeedbackService";
+        String _ServiceName = "SaleMaintainService";
         #endregion
 
         #region 边框鼠标拖动及关闭
@@ -1001,7 +1002,7 @@ namespace AppSettingsHelper
             try
             {
                 string[] command = {
-                    @"sc.exe create " + _ServiceName + " binpath= " + GlobalSet.m_filePath + "SaleFeedbackService.exe start= auto" ,
+                    @"sc.exe create " + _ServiceName + " binpath= \"" + GlobalSet.m_filePath + "SaleFeedbackService.exe\" start= auto" ,
                      "sc.exe start  " + _ServiceName
                 };
                 var output = CmdHelper.ExeCommand(command);
@@ -1009,7 +1010,6 @@ namespace AppSettingsHelper
                 if (output.Contains("SUCCESS"))
                 {
                     ServiceIsRunStatus();
-                    this.lbMessage.Text = "服务已安装，正在运行...";
                 }
                 else
                 {
@@ -1026,9 +1026,11 @@ namespace AppSettingsHelper
             try
             {
                 SetAppSetting();
+                MessageBox.Show("保存成功");
             }
             catch (Exception ex)
             {
+                MessageBox.Show("保存失败");
                 GlobalSet.m_Logger.Error("服务配置文件设置异常", ex);
             }
         }
@@ -1071,10 +1073,10 @@ namespace AppSettingsHelper
 
                 //是否启用Tcp
                 var tcpEnable = configuration.GetValue<Boolean>("TcpSocketOption:IsEnableTcp");
-                if (udpEnable)
+                if (tcpEnable)
                 {
-                    this.cbx_enableUDP.Checked = true;
-                    this.gbx_UdpContainer.Enabled = true;
+                    this.cbx_enableTCP.Checked = true;
+                    this.gbx_TcpContainer.Enabled = true;
                     var ip = configuration.GetValue<string>("TcpSocketOption:IP");
                     this.tbx_ip.Text = ip;
                     var tcpPort = configuration.GetValue<string>("TcpSocketOption:Port");
@@ -1082,7 +1084,7 @@ namespace AppSettingsHelper
                     var isLoggerTcp = configuration.GetValue<Boolean>("TcpSocketOption:IsLoggerTcp");
                     if (isLoggerTcp)
                     {
-                        this.cbx_saveUdpLog.Checked = true;
+                        this.cbx_saveTcpLog.Checked = true;
                     }
                 }
             }
@@ -1095,39 +1097,110 @@ namespace AppSettingsHelper
                 if (DetectedServiceIsRun())
                 {
                     ServiceIsRunStatus();
-                    this.lbMessage.Text = "服务已安装，正在运行...";
-                    this.gbx_ServiceContainer.Enabled = false;
                     return;
                 }
                 ServiceIsExistNotRunStatus();
-                this.lbMessage.Text = "服务已安装，未运行...";
-                this.gbx_ServiceContainer.Enabled = false;
                 return;
             }
             ServiceIsNotExistStatus();
-            this.lbMessage.Text = "服务未安装...";
-            this.gbx_ServiceContainer.Enabled = false;
         }
         /// <summary>
         /// 设置appSettings配置文件
         /// </summary>
         private void SetAppSetting()
         {
-            IConfigurationRoot configuration = new ConfigurationBuilder().Add<WritableJsonConfigurationSource>(
-                (Action<WritableJsonConfigurationSource>)(s =>
+            #region obsolete
+            //这里试了很多种方式
+            //IConfigurationRoot configuration = new ConfigurationBuilder().Add<WritableJsonConfigurationSource>(
+            //    (Action<WritableJsonConfigurationSource>)(s =>
+            //    {
+            //        s.FileProvider = null;
+            //        s.Path = "appsettings.json";
+            //        s.Optional = false;
+            //        s.ReloadOnChange = true;
+            //        s.ResolveFileProvider();
+            //    })).Build();
+            //configuration.GetSection("AppOption:DomianName").Value = this.cbx_domain.Text;
+            //if (this.cbx_enableUDP.Checked)
+            //{
+            //    configuration.GetSection("UdpSocketOption:IsEnableUdp").Value = "True";
+            //    configuration.GetSection("UdpSocketOption:Port").Value = this.tbx_udpPort.Text;
+            //    if (this.cbx_saveUdpLog.Checked)
+            //    {
+            //        configuration.GetSection("UdpSocketOption:IsLoggerUdp").Value = "True";
+            //    }
+            //    else
+            //    {
+            //        configuration.GetSection("UdpSocketOption:IsLoggerUdp").Value = "False";
+            //    }
+            //}
+            //else
+            //{
+            //    configuration.GetSection("UdpSocketOption:IsEnableUdp").Value = "False";
+            //}
+            //if (this.cbx_enableTCP.Checked)
+            //{
+            //    configuration.GetSection("TcpSocketOption:IsEnableTcp").Value = "True";
+            //    configuration.GetSection("TcpSocketOption:IP").Value = this.tbx_ip.Text;
+            //    configuration.GetSection("TcpSocketOption:Port").Value = this.tbx_tcpPort.Text;
+            //    if (this.cbx_saveTcpLog.Checked)
+            //    {
+            //        configuration.GetSection("TcpSocketOption:IsLoggerTcp").Value = "True";
+            //    }
+            //    else
+            //    {
+            //        configuration.GetSection("TcpSocketOption:IsLoggerTcp").Value = "False";
+            //    }
+            //}
+            //else
+            //{
+            //    configuration.GetSection("TcpSocketOption:IsEnableTcp").Value = "False";
+            //}
+            #endregion
+            var appOption = new AppOption();
+            appOption.DomianName = this.cbx_domain.Text;
+            var udpOption = new UdpSocketOption();
+            if (this.cbx_enableUDP.Checked)
+            {
+                udpOption.IsEnableUdp = true;
+                var port = 0;
+                if (int.TryParse(this.tbx_udpPort.Text, out port)) udpOption.Port = port;
+                if (this.cbx_saveUdpLog.Checked)
                 {
-                    s.FileProvider = null;
-                    s.Path = "appsettings.json";
-                    s.Optional = false;
-                    s.ReloadOnChange = true;
-                    s.ResolveFileProvider();
-                })).Build();
-            //var st = configuration.GetSection("TcpSocketOption:IP").Value;
-            //Console.WriteLine(configuration.GetSection("TcpSocketOption:IP").Value); // Output: value1
-            //Console.ReadKey();
-
-            //configuration.GetSection("TcpSocketOption:IP").Value = "changed from codeeee";
-            //Console.WriteLine(configuration.GetSection("TcpSocketOption:IP").Value);
+                    udpOption.IsLoggerUdp = true;
+                }
+                else
+                {
+                    udpOption.IsLoggerUdp = false;
+                }
+            }
+            else
+            {
+                udpOption.IsEnableUdp = false;
+            }
+            var tcpOption = new TcpSocketOption();
+            if (this.cbx_enableTCP.Checked)
+            {
+                tcpOption.IsEnableTcp = true;
+                tcpOption.IP = this.tbx_ip.Text;
+                var port = 0;
+                if (int.TryParse(this.tbx_tcpPort.Text, out port)) tcpOption.Port = port;
+                if (this.cbx_saveTcpLog.Checked)
+                {
+                    tcpOption.IsLoggerTcp = true;
+                }
+                else
+                {
+                    tcpOption.IsLoggerTcp = false;
+                }
+            }
+            else
+            {
+                tcpOption.IsEnableTcp = false;
+            }
+            var appOptions = new { AppOption = appOption, TcpSocketOption = tcpOption, UdpSocketOption = udpOption };
+            var jsBuild = JsonHelper.WriteTToJsonBulider(appOptions);
+            JsonHelper.WriteToFile(GlobalSet.m_filePath, "appsettings.json", jsBuild.ToJson());
         }
 
         private void cbx_enableUDP_CheckedChanged(object sender, EventArgs e)
@@ -1141,6 +1214,10 @@ namespace AppSettingsHelper
         }
 
         private void btnServiceUninstall_Click(object sender, EventArgs e)
+        {
+            UninstallService();
+        }
+        private void UninstallService()
         {
             var output = string.Empty;
             string[] command = {
@@ -1166,8 +1243,11 @@ namespace AppSettingsHelper
                 this.lbMessage.Text = "服务卸载失败，请用管理员权限运行此程序，再重新卸载服务...";
             }
         }
-
         private void btnServiceStart_Click(object sender, EventArgs e)
+        {
+            StartService();
+        }
+        private void StartService()
         {
             string[] command = {
                 "sc.exe start " + _ServiceName,
@@ -1177,15 +1257,17 @@ namespace AppSettingsHelper
             if (DetectedServiceIsRun())
             {
                 ServiceIsRunStatus();
-                this.lbMessage.Text = "服务已启动,正在运行！";
             }
             else
             {
                 this.lbMessage.Text = "服务启动失败，请用管理员权限运行此程序，再重新启动服务...";
             }
         }
-
         private void btnServiceStop_Click(object sender, EventArgs e)
+        {
+            StopService();
+        }
+        private void StopService()
         {
             string[] command = {
                 "sc.exe stop " + _ServiceName,
@@ -1195,7 +1277,6 @@ namespace AppSettingsHelper
             if (!DetectedServiceIsRun())
             {
                 ServiceIsStopStatus();
-                this.lbMessage.Text = "服务已停止！";
             }
             else
             {
@@ -1207,15 +1288,17 @@ namespace AppSettingsHelper
         /// </summary>
         private void ServiceIsExistNotRunStatus()
         {
+            this.lbMessage.Text = "服务已安装，未运行...";
             this.btnServiceInstall.Enabled = this.btnServiceStop.Enabled = false;
-            this.btnServiceStart.Enabled = this.btnServiceUninstall.Enabled = true;
+            this.gbx_ServiceContainer.Enabled = this.btnServiceStart.Enabled = this.btnServiceUninstall.Enabled = true;
         }
         /// <summary>
         /// 服务已安装，正在运行
         /// </summary>
         private void ServiceIsRunStatus()
         {
-            this.btnServiceInstall.Enabled = this.btnServiceStart.Enabled = false;
+            this.lbMessage.Text = "服务已安装，正在运行...";
+            this.gbx_ServiceContainer.Enabled = this.btnServiceInstall.Enabled = this.btnServiceStart.Enabled = false;
             this.btnServiceStop.Enabled = this.btnServiceUninstall.Enabled = true;
         }
         /// <summary>
@@ -1223,17 +1306,23 @@ namespace AppSettingsHelper
         /// </summary>
         private void ServiceIsNotExistStatus()
         {
+            this.lbMessage.Text = "服务未安装...";
             this.btnServiceStart.Enabled = this.btnServiceStop.Enabled = this.btnServiceUninstall.Enabled = false;
-            this.btnServiceInstall.Enabled = true;
+            this.gbx_ServiceContainer.Enabled = this.btnServiceInstall.Enabled = true;
         }
         /// <summary>
         /// 服务停止运行
         /// </summary>
         private void ServiceIsStopStatus()
         {
+            this.lbMessage.Text = "服务已安装，未运行...";
             this.btnServiceInstall.Enabled = this.btnServiceStop.Enabled = false;
-            this.btnServiceStart.Enabled = this.btnServiceUninstall.Enabled = true;
+            this.gbx_ServiceContainer.Enabled = this.btnServiceStart.Enabled = this.btnServiceUninstall.Enabled = true;
         }
+        /// <summary>
+        /// 检测服务是否存在
+        /// </summary>
+        /// <returns></returns>
         private Boolean DetectedServiceIsExist()
         {
             string[] command = {
@@ -1249,6 +1338,10 @@ namespace AppSettingsHelper
                 return true;
             }
         }
+        /// <summary>
+        /// 检测服务是否运行
+        /// </summary>
+        /// <returns></returns>
         private Boolean DetectedServiceIsRun()
         {
             string[] command = {

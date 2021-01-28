@@ -54,96 +54,100 @@ namespace AppSettingsHelper.CustomControls
             this.Load += DeviceMainTainAndRepairEdit_Load;
             _deviceOperator = deviceOperator;
             _devicePart = devicePart;
-            ContextMenuStrip contextMenuStrip = new ContextMenuStrip();
-            var toolStripMenuItemDelete = new ToolStripMenuItem
-            {
-                Name = "toolStripMenuDelete",
-                Text = "删除",
-                Image = "fa-times-circle-o".GetBitmap(),
-            };
-            toolStripMenuItemDelete.Click += ToolStripMenuItemDelete_Click;
-            contextMenuStrip.Items.Add(toolStripMenuItemDelete);
-            var toolStripMenuItemSelectAll = new ToolStripMenuItem
-            {
-                Name = "toolStripMenuItemSelectAll",
-                Text = "全选",
-                Image = "fa-check-circle-o".GetBitmap(),
-            };
-            toolStripMenuItemSelectAll.Click += ToolStripMenuItemSelectAll_Click;
-            contextMenuStrip.Items.Add(toolStripMenuItemSelectAll);
-            var toolStripMenuItemNoSelete = new ToolStripMenuItem
-            {
-                Name = "toolStripMenuItemNoSelete",
-                Text = "反选",
-                Image = "fa-times-circle-o".GetBitmap(),
-            };
-            toolStripMenuItemNoSelete.Click += ToolStripMenuItemNoSelete_Click;
-            contextMenuStrip.Items.Add(toolStripMenuItemNoSelete);
-            this.dataGridView1.ContextMenuStrip = contextMenuStrip;
+            #region 我擅作主张将删除功能去掉了，如果以后有需要可以开启，我的意思是保养和维修数据不管是不是测试数据都可以保留
+            //ContextMenuStrip contextMenuStrip = new ContextMenuStrip();
+            //var toolStripMenuItemDelete = new ToolStripMenuItem
+            //{
+            //    Name = "toolStripMenuDelete",
+            //    Text = "删除",
+            //    Image = "fa-times-circle-o".GetBitmap(),
+            //};
+            //toolStripMenuItemDelete.Click += ToolStripMenuItemDelete_Click;
+            //contextMenuStrip.Items.Add(toolStripMenuItemDelete);
+            //var toolStripMenuItemSelectAll = new ToolStripMenuItem
+            //{
+            //    Name = "toolStripMenuItemSelectAll",
+            //    Text = "全选",
+            //    Image = "fa-check-circle-o".GetBitmap(),
+            //};
+            //toolStripMenuItemSelectAll.Click += ToolStripMenuItemSelectAll_Click;
+            //contextMenuStrip.Items.Add(toolStripMenuItemSelectAll);
+            //var toolStripMenuItemNoSelete = new ToolStripMenuItem
+            //{
+            //    Name = "toolStripMenuItemNoSelete",
+            //    Text = "反选",
+            //    Image = "fa-times-circle-o".GetBitmap(),
+            //};
+            //toolStripMenuItemNoSelete.Click += ToolStripMenuItemNoSelete_Click;
+            //contextMenuStrip.Items.Add(toolStripMenuItemNoSelete);
+            //this.dataGridView1.ContextMenuStrip = contextMenuStrip;
+            #endregion
         }
-        Boolean IsAllSelected = false;
-        private void ToolStripMenuItemNoSelete_Click(object sender, EventArgs e)
-        {
-            if (this.dataGridView1.Rows.Count == 0) return;
-            foreach (DataGridViewRow item in this.dataGridView1.Rows)
-            {
-                item.Selected = false;
-            }
-            IsAllSelected = false;
-        }
+        #region 删除功能
+        //Boolean IsAllSelected = false;
+        //private void ToolStripMenuItemNoSelete_Click(object sender, EventArgs e)
+        //{
+        //    if (this.dataGridView1.Rows.Count == 0) return;
+        //    foreach (DataGridViewRow item in this.dataGridView1.Rows)
+        //    {
+        //        item.Selected = false;
+        //    }
+        //    IsAllSelected = false;
+        //}
 
-        private void ToolStripMenuItemSelectAll_Click(object sender, EventArgs e)
-        {
-            if (this.dataGridView1.Rows.Count == 0) return;
-            foreach (DataGridViewRow item in this.dataGridView1.Rows)
-            {
-                item.Selected = true;
-            }
-            IsAllSelected = true;
-        }
+        //private void ToolStripMenuItemSelectAll_Click(object sender, EventArgs e)
+        //{
+        //    if (this.dataGridView1.Rows.Count == 0) return;
+        //    foreach (DataGridViewRow item in this.dataGridView1.Rows)
+        //    {
+        //        item.Selected = true;
+        //    }
+        //    IsAllSelected = true;
+        //}
 
-        private void ToolStripMenuItemDelete_Click(object sender, EventArgs e)
-        {
-            if (this.dataGridView1.Rows.Count == 0) return;
-            if (IsAllSelected)
-            {
-                if (MessageBox.Show("确定删除所有吗?", "提示", MessageBoxButtons.OKCancel) == DialogResult.OK)
-                {
-                    if (_deviceOperator == DeviceOperatorStyle.Maintain)
-                    { 
-                        _devicePart.MaintainDetails.Clear();
-                    }
-                    else
-                    { 
-                        _devicePart.RepairDetails.Clear();
-                    }
-                    dataGridView1.Rows.Clear();
-                }
-                return;
-            }
-            if (rowIndex < 0) return;
-            string Id = dataGridView1.Rows[rowIndex].Cells[1].Value.ToString();
-            if (MessageBox.Show("确定删除[" + Id + "]吗?", "提示", MessageBoxButtons.OKCancel) == DialogResult.OK)
-            {
-                if (_deviceOperator == DeviceOperatorStyle.Maintain)
-                {
-                    if (_devicePart.MaintainDetails.ContainsKey(Id))
-                    {
-                        _devicePart.MaintainDetails.Remove(Id);
-                    }
-                    dataGridView1.Rows.RemoveAt(rowIndex);
-                }
-                else
-                {
-                    if (_devicePart.RepairDetails.ContainsKey(Id))
-                    {
-                        _devicePart.RepairDetails.Remove(Id);
+        //private void ToolStripMenuItemDelete_Click(object sender, EventArgs e)
+        //{
+        //    if (this.dataGridView1.Rows.Count == 0) return;
+        //    if (IsAllSelected)
+        //    {
+        //        if (MessageBox.Show("确定删除所有吗?", "提示", MessageBoxButtons.OKCancel) == DialogResult.OK)
+        //        {
+        //            if (_deviceOperator == DeviceOperatorStyle.Maintain)
+        //            {
+        //                _devicePart.MaintainDetails.Clear();
+        //            }
+        //            else
+        //            {
+        //                _devicePart.RepairDetails.Clear();
+        //            }
+        //            dataGridView1.Rows.Clear();
+        //        }
+        //        return;
+        //    }
+        //    if (rowIndex < 0) return;
+        //    string Id = dataGridView1.Rows[rowIndex].Cells[1].Value.ToString();
+        //    if (MessageBox.Show("确定删除[" + Id + "]吗?", "提示", MessageBoxButtons.OKCancel) == DialogResult.OK)
+        //    {
+        //        if (_deviceOperator == DeviceOperatorStyle.Maintain)
+        //        {
+        //            if (_devicePart.MaintainDetails.ContainsKey(Id))
+        //            {
+        //                _devicePart.MaintainDetails.Remove(Id);
+        //            }
+        //            dataGridView1.Rows.RemoveAt(rowIndex);
+        //        }
+        //        else
+        //        {
+        //            if (_devicePart.RepairDetails.ContainsKey(Id))
+        //            {
+        //                _devicePart.RepairDetails.Remove(Id);
 
-                    }
-                    dataGridView1.Rows.RemoveAt(rowIndex);
-                }
-            }
-        }
+        //            }
+        //            dataGridView1.Rows.RemoveAt(rowIndex);
+        //        }
+        //    }
+        //}
+        #endregion
 
         private void DeviceMainTainAndRepairEdit_Load(object sender, EventArgs e)
         {
