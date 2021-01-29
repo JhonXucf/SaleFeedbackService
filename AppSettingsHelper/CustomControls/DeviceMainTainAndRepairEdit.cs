@@ -544,13 +544,21 @@ namespace AppSettingsHelper.CustomControls
         }
         private List<Bitmap> GetImages(List<Byte[]> listBytes)
         {
-            if (listBytes == null || listBytes.Count == 0) return null;
             List<Bitmap> images = new List<Bitmap>();
-            foreach (var item in listBytes)
+            try
             {
-                images.Add((Bitmap)item.byteArrayToImage());
+                if (listBytes == null || listBytes.Count == 0) return null;
+                foreach (var item in listBytes)
+                {
+                    images.Add((Bitmap)item.byteArrayToImage());
+                }
+            }
+            catch (Exception ex)
+            {
+                GlobalSet.m_Logger.Error("转换图片失败", ex);
             }
             return images;
+
         }
         private void btn_Translate_BtnClick(object sender, EventArgs e)
         {

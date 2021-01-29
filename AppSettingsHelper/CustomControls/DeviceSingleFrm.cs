@@ -86,38 +86,24 @@ namespace AppSettingsHelper.CustomControls
             {
                 return;
             }
-            this.Invoke(new Action(() =>
+            for (int i = 0; i < _PartIds.Count; i++)
             {
-                var count = 3;
-                while (count-- > 0)
+                if (this._device.DeviceParts.ContainsKey(_PartIds[i]))
                 {
-                    this.miantainShowCountControl1.EclipsBackColor = Color.LightCoral;
-                    Task.Delay(100);
-                    this.miantainShowCountControl1.EclipsBackColor = Color.IndianRed;
-                    Task.Delay(100);
-                    this.miantainShowCountControl1.EclipsBackColor = Color.Firebrick;
-                    Task.Delay(100);
-                    this.miantainShowCountControl1.EclipsBackColor = Color.Brown;
-                    Task.Delay(100);
-                    this.miantainShowCountControl1.EclipsBackColor = Color.DarkRed;
-                    Task.Delay(100);
-                    this.miantainShowCountControl1.EclipsBackColor = Color.Maroon;
-                    Task.Delay(100);
-                    this.miantainShowCountControl1.EclipsBackColor = Color.OrangeRed;
-                    Task.Delay(100);
-                    this.miantainShowCountControl1.EclipsBackColor = Color.Tomato;
-                    Task.Delay(100);
-                    this.miantainShowCountControl1.EclipsBackColor = Color.Coral;
-                    Task.Delay(100);
-                    this.miantainShowCountControl1.EclipsBackColor = Color.Salmon;
-                    Task.Delay(100);
-                    this.miantainShowCountControl1.EclipsBackColor = Color.DarkSalmon;
-                    Task.Delay(100);
-                    this.miantainShowCountControl1.EclipsBackColor = Color.LightSalmon;
-                    Task.Delay(100);
-                    this.miantainShowCountControl1.EclipsBackColor = Color.LightCoral;
+                    var devicePart = this._device.DeviceParts[_PartIds[i]];
+                    if (devicePart.MaintainCycles.Count == 0) continue;
+                    if (devicePart.MaintainDetails.Count == 0) continue;
+                    //取上次保养时间进行比较
+                    var lastMaintainTime = devicePart.MaintainDetails.OrderBy(p => p.Value.MaintainTime).First().Value.MaintainTime.ToLocalTime();
+                    //如果需要保养就继续比对下一个
+                    if (MaintainTimeCompareToLocalTime(devicePart, lastMaintainTime))
+                    {
+                        continue;
+                    }
+                    RemoveMaintainCount(devicePart.ID);
+                    i--;//减少一个
                 }
-            }));
+            }
 
         }
         private void SetDeviceInfo(Device device)

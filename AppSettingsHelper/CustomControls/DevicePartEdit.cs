@@ -200,25 +200,32 @@ namespace AppSettingsHelper.CustomControls
             }
             #endregion
             devicePart.PartImages = new List<byte[]>();
-            if (null != this.pcb_PartImage.Image)
+            try
             {
-                devicePart.PartImages.Add(this.pcb_PartImage.Image.ImageToByteArray());
+                if (null != this.pcb_PartImage.Image)
+                {
+                    devicePart.PartImages.Add(this.pcb_PartImage.Image.ImageToByteArray());
+                }
+                if (null != this.pcb_PartImage1.Image)
+                {
+                    devicePart.PartImages.Add(this.pcb_PartImage1.Image.ImageToByteArray());
+                }
+                if (null != this.pcb_PartImage2.Image)
+                {
+                    devicePart.PartImages.Add(this.pcb_PartImage2.Image.ImageToByteArray());
+                }
+                if (null != this.pcb_PartImage3.Image)
+                {
+                    devicePart.PartImages.Add(this.pcb_PartImage3.Image.ImageToByteArray());
+                }
+                if (null != this.pcb_PartImage4.Image)
+                {
+                    devicePart.PartImages.Add(this.pcb_PartImage4.Image.ImageToByteArray());
+                }
             }
-            if (null != this.pcb_PartImage1.Image)
+            catch (Exception ex)
             {
-                devicePart.PartImages.Add(this.pcb_PartImage1.Image.ImageToByteArray());
-            }
-            if (null != this.pcb_PartImage2.Image)
-            {
-                devicePart.PartImages.Add(this.pcb_PartImage2.Image.ImageToByteArray());
-            }
-            if (null != this.pcb_PartImage3.Image)
-            {
-                devicePart.PartImages.Add(this.pcb_PartImage3.Image.ImageToByteArray());
-            }
-            if (null != this.pcb_PartImage4.Image)
-            {
-                devicePart.PartImages.Add(this.pcb_PartImage4.Image.ImageToByteArray());
+                GlobalSet.m_Logger.Error("图片获取失败", ex);
             }
             if (_operatorType == SalesFeedBackMain.OperatorType.Add)
                 devicePart.Created = DateTime.UtcNow;
@@ -228,7 +235,7 @@ namespace AppSettingsHelper.CustomControls
         }
         SalesFeedBackMain.OperatorType _operatorType;
         String[] _Ids;
-        public DevicePartEdit(SalesFeedBackMain.OperatorType operatorType = SalesFeedBackMain.OperatorType.Add,String[] Ids = null)
+        public DevicePartEdit(SalesFeedBackMain.OperatorType operatorType = SalesFeedBackMain.OperatorType.Add, String[] Ids = null)
         {
             InitializeComponent();
             InitUnitStyles();
@@ -341,12 +348,12 @@ namespace AppSettingsHelper.CustomControls
                         pathImg = pOpenFileDialog.FileName;
                         this.pcb_PartImage.SizeMode = PictureBoxSizeMode.StretchImage;
                         this.pcb_PartImage.Image = Image.FromFile(pOpenFileDialog.FileName);
-                    } 
+                    }
                 }
             }
             catch (Exception ex)
             {
-                GlobalSet.m_Logger.Error("选择图片", ex);
+                GlobalSet.m_Logger.Error("选择图片失败", ex);
             }
         }
 
@@ -359,7 +366,7 @@ namespace AppSettingsHelper.CustomControls
                 this.pcb_PartImage2.Image = null;
                 this.pcb_PartImage3.Image = null;
                 this.pcb_PartImage4.Image = null;
-            } 
+            }
         }
 
         private void btn_Translate_BtnClick(object sender, EventArgs e)
@@ -378,7 +385,7 @@ namespace AppSettingsHelper.CustomControls
         private void pcb_PartImage1_Click(object sender, EventArgs e)
         {
             var pic = sender as PictureBox;
-            if (pic.Image!=null)
+            if (pic.Image != null)
             {
                 Image bitmap = (Image)pic.Image.Clone();
                 pic.Image = this.pcb_PartImage.Image;
