@@ -19,6 +19,7 @@ using Microsoft.Extensions.Caching.Memory;
 using AppCommondHelper;
 using AppCommondHelper.WatchFileChanged;
 using System.Text;
+using System.Reflection;
 
 namespace SaleFeedbackService
 {
@@ -198,7 +199,7 @@ namespace SaleFeedbackService
         private Boolean DetectAppSettingsIsRun()
         {
             return Process.GetProcessesByName("AppSettingsHelper").Length > 0;
-        }
+        } 
         private void RunAppSettings()
         {
             ApplicationLoader.PROCESS_INFORMATION procInfo;

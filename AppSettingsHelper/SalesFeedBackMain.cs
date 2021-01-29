@@ -1001,13 +1001,14 @@ namespace AppSettingsHelper
             this.lbMessage.Text = "正在安装服务，请稍后...";
             try
             {
+                SetAppSetting();
                 string[] command = {
                     @"sc.exe create " + _ServiceName + " binpath= \"" + GlobalSet.m_filePath + "SaleFeedbackService.exe\" start= auto" ,
                      "sc.exe start  " + _ServiceName
                 };
                 var output = CmdHelper.ExeCommand(command);
                 GlobalSet.m_Logger.Information(output);
-                if (output.Contains("SUCCESS"))
+                if (output.Contains("SUCCESS") || output.Contains("成功"))
                 {
                     ServiceIsRunStatus();
                 }
@@ -1329,7 +1330,7 @@ namespace AppSettingsHelper
                 "sc.exe query  " + _ServiceName
                 };
             var output = CmdHelper.ExeCommand(command);
-            if (output.Contains("FAILED"))
+            if (output.Contains("FAILED") || output.Contains("失败"))
             {
                 return false;
             }
@@ -1348,7 +1349,7 @@ namespace AppSettingsHelper
                 "sc.exe query  " + _ServiceName
                 };
             var output = CmdHelper.ExeCommand(command);
-            if (output.Contains("RUNNING"))
+            if (output.Contains("RUNNING") || output.Contains("运行"))
             {
                 return true;
             }

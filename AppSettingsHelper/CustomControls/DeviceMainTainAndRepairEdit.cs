@@ -155,7 +155,7 @@ namespace AppSettingsHelper.CustomControls
             {
                 case DeviceOperatorStyle.Maintain:
                     this.lbl_title.Text = "部件保养明细";
-                    InitDataGridview("保养");
+                    InitMaintainDataGridview("保养");
                     this.dataGridView1.Rows.Clear();
                     if (null != _devicePart)
                     {
@@ -167,7 +167,8 @@ namespace AppSettingsHelper.CustomControls
                             dr[1] = item.Value.ID.ToString();
                             dr[2] = item.Value.MaintainMan.ToString();
                             dr[3] = item.Value.MaintainTime.ToLocalTime().ToString();
-                            dr[4] = item.Value.MaintainBody.ToString();
+                            dr[4] = MaintainTimeToLocalTime(_devicePart, item.Value.MaintainTime).ToLocalTime().ToString();
+                            dr[5] = item.Value.MaintainBody.ToString();
                             _dt.Rows.Add(dr);
                         }
                     }
@@ -202,7 +203,48 @@ namespace AppSettingsHelper.CustomControls
             this.dataGridView1.DataSource = _dt;
             this.dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
-
+        private DateTime MaintainTimeToLocalTime(DevicePart devicePart, DateTime maintianTime)
+        {
+            foreach (var mainCycle in devicePart.MaintainCycles)
+            {
+                switch (mainCycle.Key)
+                {
+                    case DeviceMaintainStyle.Minute:
+                        maintianTime = maintianTime.AddMinutes(mainCycle.Value);
+                        break;
+                    case DeviceMaintainStyle.Hour:
+                        maintianTime = maintianTime.AddHours(mainCycle.Value);
+                        break;
+                    case DeviceMaintainStyle.Day:
+                        maintianTime = maintianTime.AddDays(mainCycle.Value);
+                        break;
+                    case DeviceMaintainStyle.Month:
+                        maintianTime = maintianTime.AddMonths(mainCycle.Value);
+                        break;
+                    case DeviceMaintainStyle.Quarter:
+                        maintianTime = maintianTime.AddMonths(mainCycle.Value * 3);
+                        break;
+                    case DeviceMaintainStyle.Year:
+                        maintianTime = maintianTime.AddYears(mainCycle.Value);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            return maintianTime;
+        }
+        void InitMaintainDataGridview(String title)
+        {
+            _dt = new DataTable();
+            _dt.Columns.AddRange(new DataColumn[] {
+                new DataColumn("序号",typeof(String)),
+                new DataColumn(title +"ID",typeof(String)),
+                new DataColumn(title + "人员",typeof(String)),
+                new DataColumn( title + "时间",typeof(String)),
+                new DataColumn("下次"+ title + "时间",typeof(String)),
+                new DataColumn( title + "详情",typeof(String)),
+            });
+        }
         void InitDataGridview(String title)
         {
             _dt = new DataTable();
@@ -275,7 +317,7 @@ namespace AppSettingsHelper.CustomControls
             }
             catch (Exception ex)
             {
-                GlobalSet.m_Logger.Error("添加图片",ex);
+                GlobalSet.m_Logger.Error("添加图片", ex);
             }
         }
 
@@ -304,7 +346,8 @@ namespace AppSettingsHelper.CustomControls
                                 this.dataGridView1.BeginEdit(true);
                                 this.dataGridView1.Rows[i].Cells[2].Value = this.txt_maintainOperator.Text;
                                 this.dataGridView1.Rows[i].Cells[3].Value = this.dtime_maintainTime.Value;
-                                this.dataGridView1.Rows[i].Cells[4].Value = this.txt_maintainDescription.Text;
+                                this.dataGridView1.Rows[i].Cells[4].Value = MaintainTimeToLocalTime(_devicePart, this.dtime_maintainTime.Value).ToLocalTime().ToString();
+                                this.dataGridView1.Rows[i].Cells[5].Value = this.txt_maintainDescription.Text;
                                 this.dataGridView1.EndEdit();
                                 break;
                             }
@@ -331,7 +374,8 @@ namespace AppSettingsHelper.CustomControls
                 dr[1] = _deviceMaintian.ID.ToString();
                 dr[2] = _deviceMaintian.MaintainMan.ToString();
                 dr[3] = _deviceMaintian.MaintainTime.ToLocalTime().ToString();
-                dr[4] = _deviceMaintian.MaintainBody.ToString();
+                dr[4] = MaintainTimeToLocalTime(_devicePart, this.dtime_maintainTime.Value).ToLocalTime().ToString();
+                dr[5] = _deviceMaintian.MaintainBody.ToString();
                 _dt.Rows.Add(dr);
             }
             else
@@ -411,6 +455,10 @@ namespace AppSettingsHelper.CustomControls
             columnIndex = e.ColumnIndex;
 
             this.tbx_maintainId.Text = dataGridView1.Rows[rowIndex].Cells[1].Value.ToString();
+            if (String.IsNullOrWhiteSpace(this.tbx_maintainId.Text))
+            {
+                return;
+            }
             this.txt_maintainOperator.Text = dataGridView1.Rows[rowIndex].Cells[2].Value.ToString();
             this.dtime_maintainTime.Value = DateTime.Parse(dataGridView1.Rows[rowIndex].Cells[3].Value.ToString());
             this.txt_maintainDescription.Text = dataGridView1.Rows[rowIndex].Cells[4].Value.ToString();

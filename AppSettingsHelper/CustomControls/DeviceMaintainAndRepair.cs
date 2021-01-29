@@ -196,7 +196,7 @@ namespace AppSettingsHelper.CustomControls
                 }
                 else
                 {
-                    devicePartSingle.MaintainCount = this._deviceOperator == DeviceOperatorStyle.Maintain? mainAndRepair._DevicePart.MaintainDetails.Count:
+                    devicePartSingle.MaintainCount = this._deviceOperator == DeviceOperatorStyle.Maintain ? mainAndRepair._DevicePart.MaintainDetails.Count :
                          mainAndRepair._DevicePart.RepairDetails.Count;
                     GlobalSet.WriteDevicePartMainTainOrRepaitToFile(this._device, devicePart, _deviceOperator, SalesFeedBackMain.OperatorType.Add);
 
@@ -241,6 +241,14 @@ namespace AppSettingsHelper.CustomControls
                     //    }
                     //}
                     #endregion 
+                }
+            }
+            else
+            {
+                if (count <= 1)
+                {
+                    devicePartSingle.MaintainCount = this._deviceOperator == DeviceOperatorStyle.Maintain ? mainAndRepair._DevicePart.MaintainDetails.Count :
+                     mainAndRepair._DevicePart.RepairDetails.Count;
                 }
             }
         }

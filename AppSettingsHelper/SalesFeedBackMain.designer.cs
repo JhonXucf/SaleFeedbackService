@@ -442,7 +442,7 @@
             this.tabPage9.Controls.Add(this.btnServiceStop);
             this.tabPage9.Controls.Add(this.btnServiceStart);
             this.tabPage9.Controls.Add(this.btnServiceInstall);
-            this.tabPage9.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.tabPage9.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.tabPage9.Location = new System.Drawing.Point(4, 34);
             this.tabPage9.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.tabPage9.Name = "tabPage9";
@@ -462,13 +462,13 @@
             this.gbx_ServiceContainer.Controls.Add(this.cbx_domain);
             this.gbx_ServiceContainer.Location = new System.Drawing.Point(9, 3);
             this.gbx_ServiceContainer.Name = "gbx_ServiceContainer";
-            this.gbx_ServiceContainer.Size = new System.Drawing.Size(467, 553);
+            this.gbx_ServiceContainer.Size = new System.Drawing.Size(467, 455);
             this.gbx_ServiceContainer.TabIndex = 11;
             this.gbx_ServiceContainer.TabStop = false;
             // 
             // btn_saveAppSettingJson
             // 
-            this.btn_saveAppSettingJson.Location = new System.Drawing.Point(324, 461);
+            this.btn_saveAppSettingJson.Location = new System.Drawing.Point(324, 402);
             this.btn_saveAppSettingJson.Name = "btn_saveAppSettingJson";
             this.btn_saveAppSettingJson.Size = new System.Drawing.Size(103, 30);
             this.btn_saveAppSettingJson.TabIndex = 15;
@@ -484,7 +484,7 @@
             this.gbx_TcpContainer.Controls.Add(this.tbx_tcpPort);
             this.gbx_TcpContainer.Controls.Add(this.lbl_tcpPort);
             this.gbx_TcpContainer.Enabled = false;
-            this.gbx_TcpContainer.Location = new System.Drawing.Point(40, 280);
+            this.gbx_TcpContainer.Location = new System.Drawing.Point(40, 231);
             this.gbx_TcpContainer.Name = "gbx_TcpContainer";
             this.gbx_TcpContainer.Size = new System.Drawing.Size(387, 159);
             this.gbx_TcpContainer.TabIndex = 14;
@@ -494,7 +494,7 @@
             // 
             this.tbx_ip.Location = new System.Drawing.Point(138, 28);
             this.tbx_ip.Name = "tbx_ip";
-            this.tbx_ip.Size = new System.Drawing.Size(163, 29);
+            this.tbx_ip.Size = new System.Drawing.Size(163, 23);
             this.tbx_ip.TabIndex = 15;
             this.tbx_ip.Text = "127.0.0.1";
             this.tbx_ip.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -504,7 +504,7 @@
             this.lbl_tcpIp.AutoSize = true;
             this.lbl_tcpIp.Location = new System.Drawing.Point(9, 30);
             this.lbl_tcpIp.Name = "lbl_tcpIp";
-            this.lbl_tcpIp.Size = new System.Drawing.Size(68, 24);
+            this.lbl_tcpIp.Size = new System.Drawing.Size(52, 17);
             this.lbl_tcpIp.TabIndex = 14;
             this.lbl_tcpIp.Text = "IP地址";
             // 
@@ -513,7 +513,7 @@
             this.cbx_saveTcpLog.AutoSize = true;
             this.cbx_saveTcpLog.Location = new System.Drawing.Point(9, 116);
             this.cbx_saveTcpLog.Name = "cbx_saveTcpLog";
-            this.cbx_saveTcpLog.Size = new System.Drawing.Size(230, 28);
+            this.cbx_saveTcpLog.Size = new System.Drawing.Size(179, 21);
             this.cbx_saveTcpLog.TabIndex = 13;
             this.cbx_saveTcpLog.Text = "将UDP信息保存到日志";
             this.cbx_saveTcpLog.UseVisualStyleBackColor = true;
@@ -522,7 +522,7 @@
             // 
             this.tbx_tcpPort.Location = new System.Drawing.Point(139, 71);
             this.tbx_tcpPort.Name = "tbx_tcpPort";
-            this.tbx_tcpPort.Size = new System.Drawing.Size(162, 29);
+            this.tbx_tcpPort.Size = new System.Drawing.Size(162, 23);
             this.tbx_tcpPort.TabIndex = 1;
             this.tbx_tcpPort.Text = "8888";
             this.tbx_tcpPort.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -532,7 +532,7 @@
             this.lbl_tcpPort.AutoSize = true;
             this.lbl_tcpPort.Location = new System.Drawing.Point(9, 73);
             this.lbl_tcpPort.Name = "lbl_tcpPort";
-            this.lbl_tcpPort.Size = new System.Drawing.Size(90, 24);
+            this.lbl_tcpPort.Size = new System.Drawing.Size(68, 17);
             this.lbl_tcpPort.TabIndex = 0;
             this.lbl_tcpPort.Text = "TCP端口";
             // 
@@ -542,7 +542,7 @@
             this.gbx_UdpContainer.Controls.Add(this.tbx_udpPort);
             this.gbx_UdpContainer.Controls.Add(this.lbl_udpPort);
             this.gbx_UdpContainer.Enabled = false;
-            this.gbx_UdpContainer.Location = new System.Drawing.Point(40, 110);
+            this.gbx_UdpContainer.Location = new System.Drawing.Point(40, 73);
             this.gbx_UdpContainer.Name = "gbx_UdpContainer";
             this.gbx_UdpContainer.Size = new System.Drawing.Size(387, 121);
             this.gbx_UdpContainer.TabIndex = 13;
@@ -553,7 +553,7 @@
             this.cbx_saveUdpLog.AutoSize = true;
             this.cbx_saveUdpLog.Location = new System.Drawing.Point(9, 74);
             this.cbx_saveUdpLog.Name = "cbx_saveUdpLog";
-            this.cbx_saveUdpLog.Size = new System.Drawing.Size(230, 28);
+            this.cbx_saveUdpLog.Size = new System.Drawing.Size(179, 21);
             this.cbx_saveUdpLog.TabIndex = 13;
             this.cbx_saveUdpLog.Text = "将UDP信息保存到日志";
             this.cbx_saveUdpLog.UseVisualStyleBackColor = true;
@@ -562,7 +562,7 @@
             // 
             this.tbx_udpPort.Location = new System.Drawing.Point(138, 25);
             this.tbx_udpPort.Name = "tbx_udpPort";
-            this.tbx_udpPort.Size = new System.Drawing.Size(163, 29);
+            this.tbx_udpPort.Size = new System.Drawing.Size(163, 23);
             this.tbx_udpPort.TabIndex = 1;
             this.tbx_udpPort.Text = "6666";
             this.tbx_udpPort.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -572,16 +572,16 @@
             this.lbl_udpPort.AutoSize = true;
             this.lbl_udpPort.Location = new System.Drawing.Point(9, 25);
             this.lbl_udpPort.Name = "lbl_udpPort";
-            this.lbl_udpPort.Size = new System.Drawing.Size(91, 24);
+            this.lbl_udpPort.Size = new System.Drawing.Size(70, 17);
             this.lbl_udpPort.TabIndex = 0;
             this.lbl_udpPort.Text = "UDP端口";
             // 
             // cbx_enableTCP
             // 
             this.cbx_enableTCP.AutoSize = true;
-            this.cbx_enableTCP.Location = new System.Drawing.Point(19, 247);
+            this.cbx_enableTCP.Location = new System.Drawing.Point(19, 204);
             this.cbx_enableTCP.Name = "cbx_enableTCP";
-            this.cbx_enableTCP.Size = new System.Drawing.Size(149, 28);
+            this.cbx_enableTCP.Size = new System.Drawing.Size(117, 21);
             this.cbx_enableTCP.TabIndex = 12;
             this.cbx_enableTCP.Text = "启用TCP通信";
             this.cbx_enableTCP.UseVisualStyleBackColor = true;
@@ -590,9 +590,9 @@
             // cbx_enableUDP
             // 
             this.cbx_enableUDP.AutoSize = true;
-            this.cbx_enableUDP.Location = new System.Drawing.Point(19, 77);
+            this.cbx_enableUDP.Location = new System.Drawing.Point(19, 50);
             this.cbx_enableUDP.Name = "cbx_enableUDP";
-            this.cbx_enableUDP.Size = new System.Drawing.Size(150, 28);
+            this.cbx_enableUDP.Size = new System.Drawing.Size(119, 21);
             this.cbx_enableUDP.TabIndex = 11;
             this.cbx_enableUDP.Text = "启用UDP通信";
             this.cbx_enableUDP.UseVisualStyleBackColor = true;
@@ -601,9 +601,9 @@
             // lbl_domain
             // 
             this.lbl_domain.AutoSize = true;
-            this.lbl_domain.Location = new System.Drawing.Point(19, 35);
+            this.lbl_domain.Location = new System.Drawing.Point(19, 21);
             this.lbl_domain.Name = "lbl_domain";
-            this.lbl_domain.Size = new System.Drawing.Size(90, 24);
+            this.lbl_domain.Size = new System.Drawing.Size(68, 17);
             this.lbl_domain.TabIndex = 9;
             this.lbl_domain.Text = "当前域名";
             // 
@@ -611,9 +611,9 @@
             // 
             this.cbx_domain.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbx_domain.FormattingEnabled = true;
-            this.cbx_domain.Location = new System.Drawing.Point(115, 32);
+            this.cbx_domain.Location = new System.Drawing.Point(115, 18);
             this.cbx_domain.Name = "cbx_domain";
-            this.cbx_domain.Size = new System.Drawing.Size(194, 32);
+            this.cbx_domain.Size = new System.Drawing.Size(194, 24);
             this.cbx_domain.TabIndex = 10;
             // 
             // lbMessage
@@ -622,7 +622,7 @@
             this.lbMessage.AutoSize = true;
             this.lbMessage.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.lbMessage.ForeColor = System.Drawing.Color.Blue;
-            this.lbMessage.Location = new System.Drawing.Point(9, 573);
+            this.lbMessage.Location = new System.Drawing.Point(9, 497);
             this.lbMessage.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbMessage.Name = "lbMessage";
             this.lbMessage.Size = new System.Drawing.Size(322, 31);

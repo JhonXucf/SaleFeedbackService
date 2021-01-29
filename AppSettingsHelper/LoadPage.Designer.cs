@@ -40,7 +40,7 @@ namespace AppSettingsHelper
             this.panel1.BackColor = System.Drawing.Color.Transparent;
             this.panel1.Controls.Add(this.pnl_Load);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 418);
+            this.panel1.Location = new System.Drawing.Point(0, 385);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(700, 15);
             this.panel1.TabIndex = 0;
@@ -60,7 +60,7 @@ namespace AppSettingsHelper
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(700, 433);
+            this.ClientSize = new System.Drawing.Size(700, 400);
             this.Controls.Add(this.panel1);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
